@@ -1,0 +1,199 @@
+<bundles>
+  <startLevel level="1">
+    <bundle>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>3.1.0</version>
+    </bundle>
+  </startLevel>
+
+    <!-- Jersey -->
+  <startLevel level="25">
+    <bundle>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.http.api</artifactId>
+      <version>2.3.0</version>
+    </bundle>
+    
+     <bundle>
+      <groupId>eu.ooffee</groupId>
+      <artifactId>eu.ooffee.generic.utils</artifactId>
+      <version>0.0.5-SNAPSHOT</version>
+    </bundle>
+    
+    <bundle>
+    	<groupId>com.google.code.gson</groupId>
+  		<artifactId>gson</artifactId>
+  		<version>2.2.3</version>
+    </bundle>
+    
+    <!-- attention cette version de commonslang s'ajoute à celle de stanbol -->
+    <!-- voir si un update de stanbol permet d'avoir cette version de commonslang nécessaire pour le module MediaManagement -->
+    <bundle>
+    	<groupId>org.apache.commons</groupId>
+  		<artifactId>commons-lang3</artifactId>
+  		<version>3.1</version>
+    </bundle>
+    
+  </startLevel>
+
+  <startLevel level="27">
+    
+    <bundle>
+      <groupId>eu.ooffee</groupId>
+      <artifactId>eu.ooffee.generic.namingandenumservice</artifactId>
+      <version>0.0.5-SNAPSHOT</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>eu.ooffee.utils</groupId>
+      <artifactId>google-api-client-osgi</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </bundle>
+    <bundle>
+      <groupId>eu.ooffee.utils</groupId>
+      <artifactId>wikipedia-parse-library</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </bundle>
+
+     <bundle>
+      <groupId>eu.europeana.api</groupId>
+      <artifactId>europeana-client</artifactId>
+      <version>0.2.0-SNAPSHOT</version>
+    </bundle>
+
+    <bundle>
+      <groupId>com.google.api.services.samples.youtube.cmdline</groupId>
+      <artifactId>samples</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </bundle>
+
+    <bundle>
+      <groupId>com.github.axet</groupId>
+      <artifactId>vget</artifactId>
+      <version>1.1.23</version> 
+    </bundle>
+    
+    <bundle>
+      <groupId>eu.ooffee.urban</groupId>
+      <artifactId>eu.ooffee.urbanxplore.endpoint</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </bundle>
+
+    <bundle>
+      <groupId>eu.ooffee</groupId>
+      <artifactId>eu.ooffee.generic.um</artifactId>
+      <version>0.0.5-SNAPSHOT</version>
+    </bundle>
+
+    <!-- graph bundle and related jsonld-java dependencies -->
+    <bundle>
+      <groupId>eu.ooffee</groupId>
+      <artifactId>eu.ooffee.graph</artifactId>
+      <version>0.0.5-SNAPSHOT</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>com.github.jsonld-java</groupId>
+      <artifactId>jsonld-java</artifactId>
+      <version>0.5.1</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>com.github.jsonld-java</groupId>
+      <artifactId>jsonld-java-clerezza</artifactId>
+      <version>0.5.1</version>
+    </bundle>
+
+    <bundle>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.3.3</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.3.3</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.3.3</version>
+    </bundle>
+
+    <!-- end graph bundle and related jsonld-java dependencies -->
+    
+    <!-- history bundle -->
+    <bundle>
+      <groupId>eu.ooffee</groupId>
+      <artifactId>eu.ooffee.history</artifactId>
+      <version>0.0.5-SNAPSHOT</version>
+    </bundle>
+    
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.jena.tdb.storage</artifactId>
+      <version>0.6</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.core</artifactId>
+      <version>0.13</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.jena.commons</artifactId>
+      <version>0.6</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.jena.facade</artifactId>
+      <version>0.13</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.jena.parser</artifactId>
+      <version>0.11</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.jena.serializer</artifactId>
+      <version>0.10</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.jena.sparql</artifactId>
+      <version>0.6</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>rdf.jena.storage</artifactId>
+      <version>0.6</version>
+    </bundle>
+    
+    <bundle>
+      <groupId>org.apache.clerezza</groupId>
+      <artifactId>platform.graphprovider.content</artifactId>
+      <version>0.6-incubating</version>
+    </bundle>
+      
+  </startLevel>
+
+  <startLevel level="28">
+    <bundle>
+      <groupId>eu.ooffee.urban</groupId>
+      <artifactId>eu.ooffee.urban.bundleconfig</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </bundle>
+  </startLevel>
+</bundles>

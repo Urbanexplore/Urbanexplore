@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+license agreements. See the NOTICE file distributed with this work for additional 
+information regarding copyright ownership. The ASF licenses this file to 
+You under the Apache License, Version 2.0 (the "License"); you may not use 
+this file except in compliance with the License. You may obtain a copy of 
+the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+by applicable law or agreed to in writing, software distributed under the 
+License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+OF ANY KIND, either express or implied. See the License for the specific 
+language governing permissions and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.apache.stanbol</groupId>
+    <artifactId>stanbol-parent</artifactId>
+    <version>4</version>
+  </parent>
+  
+  <groupId>eu.ooffee.urban</groupId>
+  <artifactId>eu.ooffee.urban.parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  
+  <name>Urban Parent</name>
+  <description>Manage versions for Urban</description>
+  <inceptionYear>2014</inceptionYear>
+  
+  <!--<scm> <connection> scm:svn:http://svn.apache.org/repos/asf/incubator/stanbol/trunk/enhancer/engines/zemanta/ 
+      </connection> <developerConnection> scm:svn:https://svn.apache.org/repos/asf/incubator/stanbol/trunk/enhancer/engines/zemanta/ 
+      </developerConnection> <url>http://incubator.apache.org/stanbol/</url> </scm> -->
+    
+  <properties>
+    <stanbol.version>0.12.0</stanbol.version>
+    <ooffee.generic.version>0.0.5-SNAPSHOT</ooffee.generic.version>
+    <ooffee.xplor.version>0.0.1-SNAPSHOT</ooffee.xplor.version>
+    <europeana.client.version>0.2.0-SNAPSHOT</europeana.client.version>
+    <google.api.service.youtube.version>0.0.1-SNAPSHOT</google.api.service.youtube.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Clerezza deps -->
+      
+      <!-- Stanbol Deps -->
+      <dependency>
+	<groupId>org.apache.stanbol</groupId>
+	<artifactId>org.apache.stanbol.enhancer.servicesapi</artifactId>
+	<version>${stanbol.version}</version>
+      </dependency>
+      <dependency>
+	<groupId>org.apache.stanbol</groupId>
+	<artifactId>org.apache.stanbol.commons.stanboltools.offline</artifactId>
+	<version>${stanbol.version}</version>
+      </dependency>
+      <dependency>
+	<groupId>org.apache.stanbol</groupId>
+	<artifactId>org.apache.stanbol.commons.jsonld</artifactId>
+	<version>${stanbol.version}</version>
+      </dependency>
+      <dependency>
+	<groupId>org.apache.stanbol</groupId>
+	<artifactId>org.apache.stanbol.commons.web.base</artifactId>
+	<version>${stanbol.version}</version>
+      </dependency>
+      <dependency>
+      <groupId>org.apache.stanbol</groupId>
+      <artifactId>org.apache.stanbol.commons.namespaceprefix.service</artifactId>
+      <version>${stanbol.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.stanbol</groupId>
+      <artifactId>org.apache.stanbol.entityhub.core</artifactId>
+      <version>${stanbol.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.stanbol</groupId>
+      <artifactId>org.apache.stanbol.entityhub.model.clerezza</artifactId>
+      <version>${stanbol.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.stanbol</groupId>
+      <artifactId>org.apache.stanbol.entityhub.query.clerezza</artifactId>
+      <version>${stanbol.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.stanbol</groupId>
+      <artifactId>org.apache.stanbol.entityhub.ldpath</artifactId>
+      <version>${stanbol.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.stanbol</groupId>
+      <artifactId>org.apache.stanbol.commons.indexedgraph</artifactId>
+      <version>${stanbol.version}</version>
+    </dependency>
+    <!-- for some Static LDPath utilities -->
+    <dependency>
+      <groupId>org.apache.stanbol</groupId>
+      <artifactId>org.apache.stanbol.entityhub.jersey</artifactId>
+      <version>${stanbol.version}</version>
+    </dependency>
+    
+      <!-- ooffee generic deps -->
+      <dependency>
+      	<groupId>eu.ooffee</groupId>
+      	<artifactId>eu.ooffee.generic.utils</artifactId>
+      	<version>${ooffee.generic.version}</version>
+      </dependency>
+      
+      <!-- Xplor dependencies version -->
+       <dependency>
+	 <groupId>eu.ooffee.xplor</groupId>
+	 <artifactId>superproperty</artifactId>
+	 <version>${ooffee.xplor.version}</version>
+       </dependency>
+       
+       <dependency>
+    	 <groupId>eu.ooffee</groupId>
+    	 <artifactId>eu.ooffee.generic.namingandenumservice</artifactId>
+    	 <version>${ooffee.generic.version}</version>
+       </dependency>
+       
+       <dependency>
+	 <groupId>eu.ooffee.xplor</groupId>
+	 <artifactId>rdfiser</artifactId>
+	 <version>${ooffee.xplor.version}</version>
+       </dependency>
+       
+       <!-- Europeana client dependencies version --> 
+       <dependency>
+	 <groupId>eu.europeana.api</groupId>
+	 <artifactId>europeana-client</artifactId>
+	 <version>${europeana.client.version}</version>
+       </dependency>
+
+        <!-- google api service youtube dependencies version --> 
+        <dependency>
+          <groupId>com.google.api.services.samples.youtube.cmdline</groupId>
+         <artifactId>samples</artifactId>
+         <version>${google.api.service.youtube.version}</version>
+      </dependency>
+
+     
+
+       
+       <!-- LH Deps -->
+      <!-- <dependency> -->
+      <!-- 	<groupId>eu.lh</groupId> -->
+      <!-- 	<artifactId>eu.lh.skosifier</artifactId> -->
+      <!-- 	<version>0.0.2-incubating-SNAPSHOT</version> -->
+      <!-- </dependency> -->
+      <!-- <dependency> -->
+      <!-- 	<groupId>eu.lh</groupId> -->
+      <!-- 	<artifactId>skosifier-web</artifactId> -->
+      <!-- 	<version>0.0.2-incubating-SNAPSHOT</version> -->
+      <!-- </dependency> -->
+      <!-- <dependency> -->
+      <!-- 	<groupId>eu.lh</groupId> -->
+      <!-- 	<artifactId>eu.lh.utils</artifactId> -->
+      <!-- 	<version>0.0.2-incubating-SNAPSHOT</version> -->
+      <!-- </dependency> -->
+      <!-- <dependency> -->
+      <!-- 	<groupId>eu.lh</groupId> -->
+      <!-- 	<artifactId>eu.lh.models</artifactId> -->
+      <!-- 	<version>0.0.2-incubating-SNAPSHOT</version> -->
+      <!-- </dependency> -->
+      
+    </dependencies>
+  </dependencyManagement>
+  
+</project>
+

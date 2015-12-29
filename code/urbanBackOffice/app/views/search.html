@@ -1,0 +1,343 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li><a ng-href="#/projects">Home</a></li>
+    <li><a ng-href="#/medias">Medias</a></li>
+    <li class="active"><a ng-href="#/search">Search</a></li>
+  <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<ol class="breadcrumb">
+  <li><a ng-href="#/">Home</a></li>
+  <li class="active">Search & Selection</li>
+</ol>
+<div class="hero-unit">
+<h3 class ="subTitle">{{titleView}}</h3>
+</div>
+
+<alert ng-repeat="alert in alertsSearch" type="{{alert.type}}" close="closeAlertSearch($index)">{{alert.msg}}</alert>
+<tabset>
+    <tab heading="Search">
+    <br>
+
+	<div class="row">
+    <form   name="myForm">
+      <div class="col-md-12">
+      	<div class="input-group col-md-12">
+				<input type="text" autofocus ng-model="searchParam.text" class="form-control"
+
+               required>
+		</div>
+		</br>
+         <div class="row">
+            <div class="col-md-3">
+            	<fieldset>
+						    <legend>Types</legend>
+                <div class="checkbox">
+                    <label>
+                      <input type="checkbox" ng-click="selectedType('IMAGE')"
+                        ng-model="modelContainerT[0].checked"  >Image
+                      </label>
+                </div>
+                 <div class="checkbox">
+                    <label>
+                      <input type="checkbox" ng-click="selectedType('VIDEO')"
+                        ng-model="modelContainerT[1].checked" selected  >Video
+                      </label>
+                </div>
+                 <div class="checkbox">
+                    <label>
+                      <input type="checkbox" ng-click="selectedType('TEXT')"
+                        ng-model="modelContainerT[2].checked"  >Text
+                      </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                      <input type="checkbox" ng-click="selectedType('SOUND')"
+                        ng-model="modelContainerT[3].checked"  >Sound
+                      </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                      <input type="checkbox" ng-click="selectedType('3D')"
+                        ng-model="modelContainerT[4].checked" >3D
+                      </label>
+                </div>
+					    </fieldset>
+            </div>
+            <div class="col-md-3 col-md-offset-1">
+            	<fieldset>
+						    <legend>Sources</legend>
+						    <div class="checkbox" ng-repeat="source in searchParam.sources">
+              			<label>
+
+                			<input
+               				type="checkbox" ng-click="selectedSource(source.value)"
+                        ng-model="modelContainerS[$index].checked" >{{source.name}}
+              			</label>
+            		</div>
+					    </fieldset>
+            </div>
+            <div class="col-md-4 col-md-offset-1">
+            	<fieldset>
+    						<legend>Advanced search</legend>
+    		    			<input type="text" class="form-control" ng-model="searchParam.place" placeholder="Place">
+    		    			<input type="date" class="form-control" ng-model="searchParam.date" placeholder="Date">
+    		    			<input type="text" class="form-control" ng-model="searchParam.creator" placeholder="Creator">
+					   </fieldset>
+            </div>
+
+         </div> <!-- row -->
+      </div>
+
+
+   </div><!-- row -->
+    <div class ="row" >
+      <div class="col-md-offset-10 col-md-2">
+        <button  ng-disabled="myForm.$invalid" disabled="disabled" class="btn btn-default"  ng-click="search();showme=true;"><span class="glyphicon glyphicon-search"></span> Search</button>
+
+        </div>
+   </div><!-- row -->
+   </form>
+
+    </tab>
+    <tab heading="Selection - UCG">
+    <br>
+
+	<div class="row">
+      <div class="col-md-12">
+      	<div class="input-group col-md-12">
+				<input type="text" class="form-control" ng-model="selectionParam.text">
+			</div>
+			</br>
+         <div class="row">
+            <div class="col-md-3 ">
+            	<fieldset>
+						<legend>Types</legend>
+	    				<div class="checkbox" ng-repeat="type in selectionParam.types">
+              			<label>
+                			<input
+               				type="checkbox" name="types[]"
+                				value="{{type.value}}"
+                				ng-model="type.selected" >{{type.name}}
+              				</label>
+            		</div>
+					</fieldset>
+            </div>
+            <div class="col-md-3 col-md-offset-1">
+            	<fieldset>
+						<legend>Sources</legend>
+			    		<div class="checkbox" ng-repeat="source in selectionParam.sources">
+              			<label>
+                			<input
+               				type="checkbox" name="sources[]"
+                				value="{{source.value}}"
+                				ng-model="source.selected" disabled="{{source.disabled}}" selected="{{source.selected}}">{{source.name}}
+              				</label>
+            		</div>
+					</fieldset>
+            </div>
+
+         </div> <!-- row -->
+      </div>
+   </div><!-- row -->
+
+
+    </tab>
+
+
+</tabset>
+
+<br>
+<div><!-- ng-show="showme" >-->
+  <hr />
+  <div class="hero-unit">
+    <h3 class ="subTitle">{{subTitleView1}}</h3>
+  </div>
+  <br>
+  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+  <div class="row">
+    <div class=" col-md-4">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-2">
+              <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            </div>
+
+            <div>
+              <div class=" dropdown btn-group">
+                <button type="button" class="btn btn-default btn-md dropdown-toggle" data-toggle="dropdown" >Cart
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" >
+                  <li role="presentation">
+                    <a href="#/search" ng-click="">Cart figé</a>
+                  </li>
+                   <li role="presentation">
+                    <a href="#/search" ng-click="">Cart dynamique</a>
+                  </li>
+                </ul>
+              </div>
+              <div class=" dropdown btn-group">
+                <button ng-disabled="selected.length <= 0" type="button" class="btn btn-default btn-md dropdown-toggle" data-toggle="dropdown" >Add to cart
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" >
+                  <li  ng-repeat="cart in carts" role="presentation">
+                    <a href="#/search" ng-click="addToCart(cart.id)">{{cart.name}}</a>
+                  </li>
+                  <li class="divider"></li>
+                  <li><a href="#/search" ng-click="isNewcart = !isNewcart">New Cart</a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div>
+          <div ng-init="isNewcart" ng-show="isNewcart" id="newcartForm">
+            <form  class="form-inline" name="newcartForm">
+              <div class="form-group">
+                <input type="hidden" ng-model="newcart.id" />
+                <input type="text" placeholder="Enter cart name" id="name" class="form-control" ng-model="newcart.name" required>
+              </div>
+              <button  class="btn btn-default" type="submit" ng-disabled="newcartForm.$invalid" ng-click="saveCart();isNewcart=false">
+                <span class="glyphicon glyphicon-shopping-cart"></span>New Cart
+              </button>
+            </form>
+          </div>
+        </div>
+        <a href="#/medias">
+          <div class="panel-footer">
+            <span class="pull-left">View all carts</span>
+            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+            <div class="clearfix"></div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-green">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-md-2">
+              <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+            </div>
+            <div>
+              <div class="btn-group">
+                <button ng-disabled="selected.length <= 0" type="button" class="btn btn-default btn-md" ng-click="addToMedias()">Add to medias </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#/medias">
+          <div class="panel-footer">
+            <span class="pull-left">View all medias</span>
+            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+            <div class="clearfix"></div>
+          </div>
+        </a>
+      </div>
+    </div>
+     <div class="col-md-4">
+      <div class="panel panel-yellow">
+        <div class="panel-heading">
+          <div class="row">
+            <!--<div class="col-md-1">
+              <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+            </div>-->
+            <div >
+              <ol disabled="selected.length <= 0" id="group_by_examples" class="nya-bs-select" ng-model="dynModelStep" >
+                <li nya-bs-option="step in stepsOption group by step.group">
+                  <span class="dropdown-header">{{$group}}</span>
+                  <a ng-click="selectedStep('step.id')">{{step.title}}
+                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                  </a>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <a href="#/project/{{projectId}}/step/{{stepSelected.id}}">
+          <div class="panel-footer">
+
+            <span class="pull-left">View step : {{stepSelected.title}}</span>
+            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+            <div class="clearfix"></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div> <!--.row-->
+  <div class="row">
+
+  </div>
+
+  <!---images -->
+  <div class="row" ng-show="modelContainerT[0].checked && modelContainerS[0].checked">
+    <hr/>
+    <div class="col-md-12">
+      <table datatable="" dt-options="dtOptionsI" dt-columns="dtColumnsI" class="row-border hover"></table>
+    </div>
+  </div>
+
+  <!---Video -->
+  <div class="row" ng-show="modelContainerT[1].checked && (modelContainerS[0].checked || modelContainerS[2].checked)">
+
+    <tabset >
+      <tab heading="Europeana"  >
+        <br>
+        <div class="col-md-12" >
+          <table datatable="" dt-options="dtOptionsEV" dt-columns="dtColumnsEV" class="row-border hover"></table>
+        </div>
+      </tab>
+      <tab heading="Youtube"  >
+        <br>
+        <div class="col-md-12" >
+           <table datatable="" dt-options="dtOptionsYV" dt-columns="dtColumnsYV" class="row-border hover"></table>
+        </div>
+      </tab>
+    </tabset>
+
+  </div>
+
+
+
+<!---Text -->
+  <div class="row" ng-show="modelContainerT[2].checked && (modelContainerS[0].checked || modelContainerS[1].checked)">
+    <tabset >
+      <tab heading="Europeana"  >
+        <br>
+        <div class="col-md-12" >
+          <table datatable="" dt-options="dtOptionsT" dt-columns="dtColumnsT" class="row-border hover"></table>
+        </div>
+      </tab>
+      <tab heading="Wikipedia"  >
+        <br>
+        <div class="col-md-12"  >
+           <table datatable="" dt-options="dtOptionsWT" dt-columns="dtColumnsWT" class="row-border hover"></table>
+        </div>
+      </tab>
+    </tabset>
+
+  </div>
+
+  <div class="row" ng-show="modelContainerT[3].checked && modelContainerS[0].checked">
+    <hr/>
+    <div class="col-md-12">
+      <table datatable="" dt-options="dtOptionsS" dt-columns="dtColumnsS" class="row-border hover"></table>
+    </div>
+  </div>
+
+  <div class="row" ng-show="modelContainerT[4].checked && modelContainerS[0].checked">
+    <hr/>
+    <div class="col-md-12" >
+      <table datatable="" dt-options="dtOptions3D" dt-columns="dtColumns3D" class="row-border hover"></table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li><a ng-href="#/projects">Home</a></li>
+    <li class="active" ><a ng-href="#/medias">Medias</a></li>
+    <li><a ng-href="#/search">Search</a></li>
+    <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<ol class="breadcrumb">
+  <li><a ng-href="#/">Home</a></li>
+  <li><a ng-href="#/medias">Carts</a></li>
+  <li class="active">{{cart.name}}</li>
+</ol>
+
+
+<table datatable="ng" dt-options="dtOptions" class="row-border hover" >
+    <thead>
+      <tr>
+        <th>Media</th>
+        <th>Title</th>
+        <th>Type</th>
+        <th>Source</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="media in cart.medias" ng-show="{{media | isEmpty}}" >
+        <td>
+          <a class="pull-left" href="{{trustSrc(media.link)}}">
+
+             <img width="200" height="130" ng-show="!isVideo('{{media.typeMedia}}')"  ng-src="{{trustSrc(media.link)}}" >
+
+              <embed width="200" height="130"  ng-show="isVideo('{{media.typeMedia}}')" ng-src="{{trustSrc(media.link)}}">
+
+          </a>
+
+        </td>
+        <td>{{media.title}}</td>
+        <td>{{media.typeMedia}}</td>
+        <td>{{media.source}}</td>
+      </tr>
+    </tbody>
+</table>
+<!--
+<div style="height: 305px">
+    <carousel interval="myInterval" disable-animation="false">
+      <slide ng-repeat="slide in slides" active="slide.active">
+        <img ng-src="{{trustSrc(slide.image)}}" style="margin:auto;">
+        <div class="carousel-caption">
+          <h4>Slide{{$index}}</h4>
+          <p>{{slide.text}}</p>
+        </div>
+      </slide>
+    </carousel>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+      <a class="btn btn-info" ng-click="addSlide()">Add Slide</a>
+    </div>
+    <div class="col-md-6">
+      Interval, in milliseconds: <input type="number" class="form-control" ng-model="myInterval">
+      <br />Enter a negative number to stop the interval.
+    </div>
+  </div>
+-->

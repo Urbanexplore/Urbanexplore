@@ -1,0 +1,135 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+
+    <title>URBAN EXPLORE</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/datatables/media/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-select/bootstrap-select.css" />
+    <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.min.css" />
+    <link rel="stylesheet" href="bower_components/angular-rdf-ui/dist/angular-rdf-ui.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/sb-admin-2.css">
+
+
+
+    <!-- endbuild -->
+  </head>
+  <body ng-app="urbanBackOfficeApp">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div class="container">
+
+      <div  class= "container" ng-view=""></div>
+
+      <div class="footer">
+        <p><span class="glyphicon glyphicon-heart"></span> from Ooffee team</p>
+
+      </div>
+    </div>
+
+     <script src="bower_components/tinymce/tinymce.min.js"></script>
+    <!-- build:js(.) scripts/oldieshim.js -->
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <![endif]-->
+    <!-- endbuild -->
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="bower_components/angular-datatables/dist/angular-datatables.js"></script>
+    <script src="bower_components/angular-ui-tinymce/src/tinymce.js"></script>
+    <script src="bower_components/leaflet/dist/leaflet.js"></script>
+    <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+    <script src="bower_components/angular-leaflet/dist/angular-leaflet-directive.js"></script>
+    <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+    <script src="bower_components/ng-file-upload-shim/angular-file-upload-shim.js"></script>
+    <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
+    <script src="bower_components/Leaflet.MakiMarkers/Leaflet.MakiMarkers.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/bootstrap-select/bootstrap-select.js"></script>
+    <script src="bower_components/angular-bootstrap-select/build/angular-bootstrap-select.js"></script>
+    <script src="bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
+    <script src="bower_components/angularjs-file-upload/angular-file-upload.js"></script>
+    <script src="bower_components/angular-file-upload/angular-file-upload.js"></script>
+    <script src="bower_components/es6-promise/promise.js"></script>
+    <script src="bower_components/jsonld/js/jsonld.js"></script>
+    <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
+    <script src="bower_components/angular-rdf-ui/dist/angular-rdf-ui.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+
+        <script src="scripts/config.js"></script>
+        <script src="scripts/services/jsonLD.js"></script>
+
+        <script src="scripts/services/projects.js"></script>
+        <script src="scripts/controllers/projects.js"></script>
+        <script src="scripts/controllers/project.js"></script>
+        <script src="scripts/controllers/step.js"></script>
+
+        <script src="scripts/controllers/users.js"></script>
+        <script src="scripts/services/users.js"></script>
+        <script src="scripts/controllers/user.js"></script>
+
+        <script src="scripts/controllers/search.js"></script>
+        <script src="scripts/controllers/footer.js"></script>
+        <script src="scripts/controllers/medias.js"></script>
+        <script src="scripts/services/medias.js"></script>
+        <script src="scripts/services/jsonLD.js"></script>
+        <script src="scripts/services/proxyProject.js"></script>
+        <script src="scripts/services/proxyMedia.js"></script>
+        <script src="scripts/services/publish.js"></script>
+        <script src="scripts/controllers/test.js"></script>
+        <script src="scripts/controllers/homepage.js"></script>
+        <script src="scripts/controllers/projectroute.js"></script>
+        <script src="scripts/controllers/login.js"></script>
+        <script src="scripts/controllers/media.js"></script>
+        <script src="scripts/controllers/cart.js"></script>
+
+
+        <script src="scripts/controllers/areaproject.js"></script>
+        <script src="scripts/controllers/stepviewipad.js"></script>
+
+        <script src="scripts/filters/myfilter.js"></script>
+
+
+
+
+        <script src="scripts/services/utils.js"></script>
+        <!-- endbuild -->
+</body>
+</html>

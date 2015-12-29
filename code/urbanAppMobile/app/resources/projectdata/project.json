@@ -1,0 +1,557 @@
+{
+  "@context": {
+    "http://ooffee.eu/ns/urban#author": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#dateCreate": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#dateUpdate": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#description": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#homepagedescription": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#homepageisVirtualObj": {
+      "@type": "http://www.w3.org/2001/XMLSchema#boolean"
+    },
+    "http://ooffee.eu/ns/urban#homepagelearnMore": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#id": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#isVisible": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#lat": {
+      "@type": "http://www.w3.org/2001/XMLSchema#double"
+    },
+    "http://ooffee.eu/ns/urban#link": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#lng": {
+      "@type": "http://www.w3.org/2001/XMLSchema#double"
+    },
+    "http://ooffee.eu/ns/urban#maxZoom": {
+      "@type": "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "http://ooffee.eu/ns/urban#medias": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#minZoom": {
+      "@type": "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "http://ooffee.eu/ns/urban#name": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#ordreDsStep": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#position": {
+      "@type": "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "http://ooffee.eu/ns/urban#source": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#status": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#steps": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#title": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#type": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#typeMedia": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#visual": {
+      "@type": "http://www.w3.org/2001/XMLSchema#string"
+    },
+    "http://ooffee.eu/ns/urban#zoom": {
+      "@type": "http://www.w3.org/2001/XMLSchema#integer"
+    },
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#",
+      "http://ooffee.eu/ns/urban#id": [
+        2,
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        22,
+        20,
+        19,
+        18,
+        14,
+        16,
+        12,
+        13,
+        10,
+        11
+      ],
+      "http://ooffee.eu/ns/urban#isVisible": [
+        0,
+        true
+      ],
+      "http://ooffee.eu/ns/urban#lat": [
+        48.38943,
+        48.387688,
+        48.384003,
+        48.382236,
+        48.38931,
+        48.382233,
+        48.385506,
+        48.383934,
+        48.38214,
+        48.384678,
+        48.38493,
+        48.382534,
+        48.38884,
+        48.388794,
+        48.382084,
+        48.38355,
+        48.38209,
+        48.382755,
+        48.38474
+      ],
+      "http://ooffee.eu/ns/urban#lng": [
+        -4.499341,
+        -4.5036864,
+        -4.5017767,
+        -4.502914,
+        -4.500242,
+        -4.501664,
+        -4.5024743,
+        -4.5010524,
+        -4.498268,
+        -4.501321,
+        -4.502635,
+        -4.5020556,
+        -4.4973993,
+        -4.497995,
+        -4.4999905,
+        -4.498054,
+        -4.4975924,
+        -4.502721,
+        -4.4998507
+      ],
+      "http://ooffee.eu/ns/urban#position": [
+        11,
+        10,
+        13,
+        12,
+        18,
+        19,
+        16,
+        14,
+        22,
+        20,
+        6,
+        5,
+        4,
+        3,
+        9,
+        8,
+        7,
+        1,
+        2
+      ],
+      "http://ooffee.eu/ns/urban#title": [
+        "ETAPE 4 // RUE DE LA VIE",
+        "ETAPE 3 // PARKING SUPER U",
+        "ETAPE 2 // MAISON DE LA FONTAINE",
+        "ETAPE 1// PONT DE RECOUVRANCE",
+        "New step"
+      ],
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a02b9",
+      "http://ooffee.eu/ns/urban#id": 11,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.384678,
+      "http://ooffee.eu/ns/urban#lng": -4.502635,
+      "http://ooffee.eu/ns/urban#position": 11,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a196d",
+      "http://ooffee.eu/ns/urban#id": 21,
+      "http://ooffee.eu/ns/urban#isVisible": true,
+      "http://ooffee.eu/ns/urban#lat": 48.389126,
+      "http://ooffee.eu/ns/urban#lng": -4.501058,
+      "http://ooffee.eu/ns/urban#position": 21,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a2034",
+      "http://ooffee.eu/ns/urban#id": 23,
+      "http://ooffee.eu/ns/urban#isVisible": true,
+      "http://ooffee.eu/ns/urban#lat": 48.38915,
+      "http://ooffee.eu/ns/urban#lng": -4.4995127,
+      "http://ooffee.eu/ns/urban#medias": [
+        "afb7f",
+        "a2f59",
+        "a1787"
+      ],
+      "http://ooffee.eu/ns/urban#position": 23,
+      "http://ooffee.eu/ns/urban#title": "ETAPE 5 // LES CAPUCINS",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a4368",
+      "http://ooffee.eu/ns/urban#id": 14,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.385506,
+      "http://ooffee.eu/ns/urban#lng": -4.502914,
+      "http://ooffee.eu/ns/urban#position": 14,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a57ae",
+      "http://ooffee.eu/ns/urban#id": 8,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.38214,
+      "http://ooffee.eu/ns/urban#lng": -4.5010524,
+      "http://ooffee.eu/ns/urban#position": 8,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a5c5e",
+      "http://ooffee.eu/ns/urban#id": 3,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.382755,
+      "http://ooffee.eu/ns/urban#lng": -4.4973993,
+      "http://ooffee.eu/ns/urban#position": 3,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a6f69",
+      "http://ooffee.eu/ns/urban#id": 4,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.382534,
+      "http://ooffee.eu/ns/urban#lng": -4.4975924,
+      "http://ooffee.eu/ns/urban#position": 4,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a7236",
+      "http://ooffee.eu/ns/urban#id": 13,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.38493,
+      "http://ooffee.eu/ns/urban#lng": -4.502721,
+      "http://ooffee.eu/ns/urban#position": 13,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a723c",
+      "http://ooffee.eu/ns/urban#id": 2,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.38355,
+      "http://ooffee.eu/ns/urban#lng": -4.497995,
+      "http://ooffee.eu/ns/urban#position": 2,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a726c",
+      "http://ooffee.eu/ns/urban#description": [
+        "Là où Recouvrance rime avec Marine...\n\nFace au pont de Recouvrance, c’est là que tout commence puisque Recouvrance (la « populaire\") s’est érigée face àBrest (l’ \"officielle\").\nRecouvrance se construit autour de  3 pôles  d’activités liés à la Marine :\n- La caserne du 2ème dépôt (la Cayenne) qui accueille les nouveaux conscrits avant leur affectation\n- Les Ateliers du plateau ou Capucins, ancien convent acheté par Louis XVI et attribué à la Marine en 1791 pour la construction navale, que l’on couvre des 3 grandes halles entre 1858 et 1864, avec le développement des bateaux en métal et des sous-marin.\n- La prison de Pontaillou, prison militaire de la Marine\nEntre marins et ouvriers, ses activités vont favoriser l’établissement d’une population pauvre. En parallèle, de nombreux petits commerces voient le jour.",
+        "Là où Recouvrance rime avec Marine...\n\nFace au pont de Recouvrance, c’est là que tout commence puisque Recouvrance (la « populaire\") s’est érigée face à Brest (l’ \"officielle\").\nRecouvrance se construit autour de  3 pôles  d’activités liés à la Marine :\n- La caserne du 2ème dépôt (la Cayenne) qui accueille les nouveaux conscrits avant leur affectation\n- Les Ateliers du plateau ou Capucins, ancien convent acheté par Louis XVI et attribué à la Marine en 1791 pour la construction navale, que l’on couvre des 3 grandes halles entre 1858 et 1864, avec le développement des bateaux en métal et des sous-marin.\n- La prison de Pontaillou, prison militaire de la Marine\nEntre marins et ouvriers, ses activités vont favoriser l’établissement d’une population pauvre. En parallèle, de nombreux petits commerces voient le jour."
+      ],
+      "http://ooffee.eu/ns/urban#id": 1,
+      "http://ooffee.eu/ns/urban#isVisible": true,
+      "http://ooffee.eu/ns/urban#lat": 48.383934,
+      "http://ooffee.eu/ns/urban#lng": -4.498054,
+      "http://ooffee.eu/ns/urban#medias": [
+        "ae252",
+        "afb7f",
+        "a2749",
+        "ab62e",
+        "a1787"
+      ],
+      "http://ooffee.eu/ns/urban#position": 1,
+      "http://ooffee.eu/ns/urban#title": "ETAPE 1 // PONT DE RECOUVRANCE",
+      "http://ooffee.eu/ns/urban#type": "step",
+      "http://ooffee.eu/ns/urban#visual": "/images/1442401848017.jpeg"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a791b",
+      "http://ooffee.eu/ns/urban#id": 16,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.387688,
+      "http://ooffee.eu/ns/urban#lng": -4.500242,
+      "http://ooffee.eu/ns/urban#position": 16,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a86b9",
+      "http://ooffee.eu/ns/urban#id": 18,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.388794,
+      "http://ooffee.eu/ns/urban#lng": -4.501664,
+      "http://ooffee.eu/ns/urban#position": 18,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a94e6",
+      "http://ooffee.eu/ns/urban#id": 7,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.38209,
+      "http://ooffee.eu/ns/urban#lng": -4.4999905,
+      "http://ooffee.eu/ns/urban#position": 7,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a9ac8",
+      "http://ooffee.eu/ns/urban#id": 10,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.384003,
+      "http://ooffee.eu/ns/urban#lng": -4.5024743,
+      "http://ooffee.eu/ns/urban#position": 10,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#a9bd2",
+      "http://ooffee.eu/ns/urban#id": 17,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.3886,
+      "http://ooffee.eu/ns/urban#lng": -4.500951,
+      "http://ooffee.eu/ns/urban#position": 17,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#ab1b1",
+      "http://ooffee.eu/ns/urban#id": 20,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.38931,
+      "http://ooffee.eu/ns/urban#lng": -4.501321,
+      "http://ooffee.eu/ns/urban#position": 20,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#aba53",
+      "http://ooffee.eu/ns/urban#id": 15,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.3857,
+      "http://ooffee.eu/ns/urban#lng": -4.5009933,
+      "http://ooffee.eu/ns/urban#position": 15,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#abb80",
+      "http://ooffee.eu/ns/urban#id": 12,
+      "http://ooffee.eu/ns/urban#isVisible": true,
+      "http://ooffee.eu/ns/urban#lat": 48.38474,
+      "http://ooffee.eu/ns/urban#lng": -4.5036864,
+      "http://ooffee.eu/ns/urban#position": 12,
+      "http://ooffee.eu/ns/urban#title": "ETAPE 3 // PARKING SUPER U",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#adb8f",
+      "http://ooffee.eu/ns/urban#id": 9,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.382236,
+      "http://ooffee.eu/ns/urban#lng": -4.5020556,
+      "http://ooffee.eu/ns/urban#position": 9,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#adec2",
+      "http://ooffee.eu/ns/urban#id": 19,
+      "http://ooffee.eu/ns/urban#isVisible": true,
+      "http://ooffee.eu/ns/urban#lat": 48.38943,
+      "http://ooffee.eu/ns/urban#lng": -4.5017767,
+      "http://ooffee.eu/ns/urban#position": 19,
+      "http://ooffee.eu/ns/urban#title": "ETAPE 4 // RUE DE LA VIE",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#ae010",
+      "http://ooffee.eu/ns/urban#description": "Ici une trace du passé réchappée du chaos…\n\nBrest connaitra 165 raids aériens de 1940 à 1944 avec un siège de l’aviation anglaise et américaine du 7 aout au 18 septembre, avec relativement peu de morts compte tenu de l’ampleur des attaques mais une ville entièrement détruite qui laisse à Recouvrance des images de chaos où des montagne de briques, de pierre et gravas ont remplacé les habitations.\nLe film de Jean Lazennec datant 1962, laisse pourtant voir un quartier plein de joie, qui reprend vie entre des baraques provisoires et un cadre urbain totalement renouvelé.\nC’est cette énergie populaire qui n’a pas pu être de détruite que nous retrouvons bientôt au XXIème siècle.",
+      "http://ooffee.eu/ns/urban#id": 6,
+      "http://ooffee.eu/ns/urban#isVisible": true,
+      "http://ooffee.eu/ns/urban#lat": 48.382084,
+      "http://ooffee.eu/ns/urban#lng": -4.499341,
+      "http://ooffee.eu/ns/urban#medias": "aedcc",
+      "http://ooffee.eu/ns/urban#position": 6,
+      "http://ooffee.eu/ns/urban#title": "ETAPE 2 // MAISON DE LA FONTAINE",
+      "http://ooffee.eu/ns/urban#type": "step",
+      "http://ooffee.eu/ns/urban#visual": "/images/1442401998948.jpg"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#af680",
+      "http://ooffee.eu/ns/urban#id": 22,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.38884,
+      "http://ooffee.eu/ns/urban#lng": -4.4998507,
+      "http://ooffee.eu/ns/urban#position": 22,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://ooffee.eu/ns/urban##step#afe54",
+      "http://ooffee.eu/ns/urban#id": 5,
+      "http://ooffee.eu/ns/urban#isVisible": 0,
+      "http://ooffee.eu/ns/urban#lat": 48.382233,
+      "http://ooffee.eu/ns/urban#lng": -4.498268,
+      "http://ooffee.eu/ns/urban#position": 5,
+      "http://ooffee.eu/ns/urban#title": "New step",
+      "http://ooffee.eu/ns/urban#type": "step"
+    },
+    {
+      "@id": "http://tofix.uri/a1787##a1787",
+      "http://ooffee.eu/ns/urban#description": "",
+      "http://ooffee.eu/ns/urban#id": "a1787",
+      "http://ooffee.eu/ns/urban#link": "/images/1442402105321.m4v",
+      "http://ooffee.eu/ns/urban#ordreDsStep": "Cinq",
+      "http://ooffee.eu/ns/urban#source": "interne",
+      "http://ooffee.eu/ns/urban#title": "Diaporama 2",
+      "http://ooffee.eu/ns/urban#type": "Media",
+      "http://ooffee.eu/ns/urban#typeMedia": "video/x-m4v"
+    },
+    {
+      "@id": "http://tofix.uri/a2749##a2749",
+      "http://ooffee.eu/ns/urban#description": "",
+      "http://ooffee.eu/ns/urban#id": "a2749",
+      "http://ooffee.eu/ns/urban#link": "/images/1442402068471.m4v",
+      "http://ooffee.eu/ns/urban#ordreDsStep": "Quatre",
+      "http://ooffee.eu/ns/urban#source": "interne",
+      "http://ooffee.eu/ns/urban#title": "Diaporama 1",
+      "http://ooffee.eu/ns/urban#type": "Media",
+      "http://ooffee.eu/ns/urban#typeMedia": "video/x-m4v"
+    },
+    {
+      "@id": "http://tofix.uri/a2f59##a2f59",
+      "http://ooffee.eu/ns/urban#description": "",
+      "http://ooffee.eu/ns/urban#id": "a2f59",
+      "http://ooffee.eu/ns/urban#link": "/images/1442402311931.m4v",
+      "http://ooffee.eu/ns/urban#ordreDsStep": "Quatre",
+      "http://ooffee.eu/ns/urban#source": "interne",
+      "http://ooffee.eu/ns/urban#title": "Diaporama 1",
+      "http://ooffee.eu/ns/urban#type": "Media",
+      "http://ooffee.eu/ns/urban#typeMedia": "video/x-m4v"
+    },
+    {
+      "@id": "http://tofix.uri/a76ca##a76ca",
+      "http://ooffee.eu/ns/urban#author": "Julien",
+      "http://ooffee.eu/ns/urban#dateCreate": "16/09/2015",
+      "http://ooffee.eu/ns/urban#dateUpdate": "16/09/2015",
+      "http://ooffee.eu/ns/urban#homepagedescription": [
+        "<div>Cette promenade urbaine a &eacute;t&eacute;<span class=\"Apple-converted-space\">&nbsp;</span>con&ccedil;ue<span class=\"Apple-converted-space\">&nbsp;</span>&agrave; la demande du service du<span class=\"Apple-converted-space\">&nbsp;</span>patrimoine, &agrave;<span class=\"Apple-converted-space\">&nbsp;</span>partir d&rsquo;un<span class=\"Apple-converted-space\">&nbsp;</span>workshop<span class=\"Apple-converted-space\">&nbsp;</span>men&eacute; par D&eacute;dale en 2012 avec des<span class=\"Apple-converted-space\">&nbsp;</span>&eacute;l&egrave;ves<span class=\"Apple-converted-space\">&nbsp;</span>de l&rsquo;Ecole Nationale Sup&eacute;rieure des Beaux Arts de Brest, &agrave;<span class=\"Apple-converted-space\">&nbsp;</span>Recouvrance.</div>\n<p>&nbsp;</p>\n<div>Constatant l&rsquo;apparition r&eacute;cente des artistes sur l&rsquo;&eacute;chiquier de l&rsquo;urbanisme notamment comme m&eacute;diateurs aupr&egrave;s des population locales,<span class=\"Apple-converted-space\">&nbsp;</span>le<span class=\"Apple-converted-space\">&nbsp;</span>work-shop<span class=\"Apple-converted-space\">&nbsp;</span>intitul&eacute;<span class=\"Apple-converted-space\">&nbsp;</span>&laquo;&nbsp;la ville r&eacute;-enchant&eacute;e&nbsp;&raquo;, proposait aux &eacute;l&egrave;ves des Beaux Arts de s&rsquo;essayer &agrave; cet exercice complexe de m&eacute;diation.&nbsp;<span class=\"Apple-converted-space\">&nbsp;</span>Gr&acirc;ce &agrave;<span class=\"Apple-converted-space\">&nbsp;</span>leur capacit&eacute; de d&eacute;tournement et<span class=\"Apple-converted-space\">&nbsp;</span>d&rsquo;innovation, ils devaient cr&eacute;er une &oelig;uvre leur permettant de rentrer en contact avec la population locale.</div>\n<div>Pour<span class=\"Apple-converted-space\">&nbsp;</span>stimuler&nbsp; leur imaginaire, nous les avons fait travailler &agrave; partir d&rsquo;images d&rsquo;archives.</div>\n<div>Partant<span class=\"Apple-converted-space\">&nbsp;</span>de ces m&ecirc;mes modalit&eacute;s de travail, cette promenade propose en pr&eacute;ambule une approche historique pour mieux comprendre le&nbsp;<span class=\"Apple-converted-space\">&nbsp;</span>discours<span class=\"Apple-converted-space\">&nbsp;</span>et le projet propos&eacute; par les &eacute;tudiants en 2012, puis elle pr&eacute;sente le travail des &eacute;tudiants et d&rsquo;autres projet artistiques similaires et finalement elle se termine sur la mise en perspective de cette nouvelle approche de l&rsquo;urbanisme participatif en le confrontant localement au nouveau grand projet de la ville de Brest (et de plus<span class=\"Apple-converted-space\">&nbsp;</span>local),<span class=\"Apple-converted-space\">&nbsp;</span>les Ateliers des Capucins.<br />En nous<span class=\"Apple-converted-space\">&nbsp;</span>interrogeant<span class=\"Apple-converted-space\">&nbsp;</span>sur le futur urbain proche de ce territoire, nous verrons comment cette culture r&eacute;v&eacute;l&eacute;e, cette identit&eacute;, doit s&rsquo;affirmer et<span class=\"Apple-converted-space\">&nbsp;</span>&nbsp;permettreaux&nbsp; habitants de s&rsquo;approprier leur futur.</div>",
+        "<div style=\"color: #000000; font-family: arial, sans-serif; font-size: 12.8px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; word-break: normal; background-color: #ffffff;\">Cette promenade urbaine a &eacute;t&eacute;<span class=\"Apple-converted-space\">&nbsp;</span>con&ccedil;ue<span class=\"Apple-converted-space\">&nbsp;</span>&agrave; la demande du service du<span class=\"Apple-converted-space\">&nbsp;</span>patrimoine, &agrave;<span class=\"Apple-converted-space\">&nbsp;</span>partir d&rsquo;un<span class=\"Apple-converted-space\">&nbsp;</span>workshop<span class=\"Apple-converted-space\">&nbsp;</span>men&eacute; par D&eacute;dale en 2012 avec des<span class=\"Apple-converted-space\">&nbsp;</span>&eacute;l&egrave;ves<span class=\"Apple-converted-space\">&nbsp;</span>de l&rsquo;Ecole Nationale Sup&eacute;rieure des Beaux Arts de Brest, &agrave;<span class=\"Apple-converted-space\">&nbsp;</span>Recouvrance.</div>\n<p style=\"color: #000000; font-family: arial, sans-serif; font-size: 12.8px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; word-break: normal; background-color: #ffffff;\">&nbsp;</p>\n<div style=\"color: #000000; font-family: arial, sans-serif; font-size: 12.8px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; word-break: normal; background-color: #ffffff;\">Constatant l&rsquo;apparition r&eacute;cente des artistes sur l&rsquo;&eacute;chiquier de l&rsquo;urbanisme notamment comme m&eacute;diateurs aupr&egrave;s des population locales,<span class=\"Apple-converted-space\">&nbsp;</span>le<span class=\"Apple-converted-space\">&nbsp;</span>work-shop<span class=\"Apple-converted-space\">&nbsp;</span>intitul&eacute;<span class=\"Apple-converted-space\">&nbsp;</span>&laquo;&nbsp;la ville r&eacute;-enchant&eacute;e&nbsp;&raquo;, proposait aux &eacute;l&egrave;ves des Beaux Arts de s&rsquo;essayer &agrave; cet exercice complexe de m&eacute;diation.&nbsp;<span class=\"Apple-converted-space\">&nbsp;</span>Gr&acirc;ce &agrave;<span class=\"Apple-converted-space\">&nbsp;</span>leur capacit&eacute; de d&eacute;tournement et<span class=\"Apple-converted-space\">&nbsp;</span>d&rsquo;innovation, ils devaient cr&eacute;er une &oelig;uvre leur permettant de rentrer en contact avec la population locale.</div>\n<div style=\"color: #000000; font-family: arial, sans-serif; font-size: 12.8px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; word-break: normal; background-color: #ffffff;\">Pour<span class=\"Apple-converted-space\">&nbsp;</span>stimuler&nbsp; leur imaginaire, nous les avons fait travailler &agrave; partir d&rsquo;images d&rsquo;archives.</div>\n<div style=\"color: #000000; font-family: arial, sans-serif; font-size: 12.8px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; -webkit-text-stroke-width: 0px; margin-top: 0pt; margin-bottom: 0pt; margin-left: 0in; direction: ltr; word-break: normal; background-color: #ffffff;\">Partant<span class=\"Apple-converted-space\">&nbsp;</span>de ces m&ecirc;mes modalit&eacute;s de travail, cette promenade propose en pr&eacute;ambule une approche historique pour mieux comprendre le&nbsp;<span class=\"Apple-converted-space\">&nbsp;</span>discours<span class=\"Apple-converted-space\">&nbsp;</span>et le projet propos&eacute; par les &eacute;tudiants en 2012, puis elle pr&eacute;sente le travail des &eacute;tudiants et d&rsquo;autres projet artistiques similaires et finalement elle se termine sur la mise en perspective de cette nouvelle approche de l&rsquo;urbanisme participatif en le confrontant localement au nouveau grand projet de la ville de Brest (et de plus<span class=\"Apple-converted-space\">&nbsp;</span>local),<span class=\"Apple-converted-space\">&nbsp;</span>les Ateliers des Capucins.<br />En nous<span class=\"Apple-converted-space\">&nbsp;</span>interrogeant<span class=\"Apple-converted-space\">&nbsp;</span>sur le futur urbain proche de ce territoire, nous verrons comment cette culture r&eacute;v&eacute;l&eacute;e, cette identit&eacute;, doit s&rsquo;affirmer et<span class=\"Apple-converted-space\">&nbsp;</span>&nbsp;permettreaux&nbsp; habitants de s&rsquo;approprier leur futur.</div>"
+      ],
+      "http://ooffee.eu/ns/urban#homepageisVirtualObj": true,
+      "http://ooffee.eu/ns/urban#homepagelearnMore": "",
+      "http://ooffee.eu/ns/urban#id": "a76ca",
+      "http://ooffee.eu/ns/urban#lat": 48.384,
+      "http://ooffee.eu/ns/urban#lng": -4.4983,
+      "http://ooffee.eu/ns/urban#maxZoom": 17,
+      "http://ooffee.eu/ns/urban#minZoom": 10,
+      "http://ooffee.eu/ns/urban#name": "MEMOIRE, ART ET TERRITOIRE",
+      "http://ooffee.eu/ns/urban#status": "App",
+      "http://ooffee.eu/ns/urban#steps": [
+        "a723c",
+        "af680",
+        "aba53",
+        "a791b",
+        "adec2",
+        "a57ae",
+        "a2034",
+        "a6f69",
+        "adb8f",
+        "ae010",
+        "a4368",
+        "a86b9",
+        "a726c",
+        "a9bd2",
+        "afe54",
+        "abb80",
+        "a9ac8",
+        "a5c5e",
+        "a7236",
+        "a94e6",
+        "a02b9",
+        "ab1b1",
+        "a196d"
+      ],
+      "http://ooffee.eu/ns/urban#type": "Project",
+      "http://ooffee.eu/ns/urban#zoom": 15
+    },
+    {
+      "@id": "http://tofix.uri/ab62e##ab62e",
+      "http://ooffee.eu/ns/urban#description": "Plan de la ville en 1670, période où la population de REcouvrance est encore supérieure à celle de Brest. REcouvrance sera indépendante jusqu’en 1680.\n\nLe passage de Brest à Recouvrance se fait alors en bateau dans des conditions parfois dangereuses compte tenu des surcharges. Il n’y a alors peu d’échanges.",
+      "http://ooffee.eu/ns/urban#id": "ab62e",
+      "http://ooffee.eu/ns/urban#link": "/images/1442402240765.jpeg",
+      "http://ooffee.eu/ns/urban#ordreDsStep": "Un",
+      "http://ooffee.eu/ns/urban#source": "interne",
+      "http://ooffee.eu/ns/urban#title": "Carte de Recouvrance en 1670",
+      "http://ooffee.eu/ns/urban#type": "Media",
+      "http://ooffee.eu/ns/urban#typeMedia": "image/jpeg"
+    },
+    {
+      "@id": "http://tofix.uri/ae252##ae252",
+      "http://ooffee.eu/ns/urban#description": "",
+      "http://ooffee.eu/ns/urban#id": "ae252",
+      "http://ooffee.eu/ns/urban#link": "/images/1442403253299.jpeg",
+      "http://ooffee.eu/ns/urban#ordreDsStep": "Deux",
+      "http://ooffee.eu/ns/urban#source": "interne",
+      "http://ooffee.eu/ns/urban#title": "Vue aérienne de Brest et Recouvrance en 1925",
+      "http://ooffee.eu/ns/urban#type": "Media",
+      "http://ooffee.eu/ns/urban#typeMedia": "image/jpeg"
+    },
+    {
+      "@id": "http://tofix.uri/aedcc##aedcc",
+      "http://ooffee.eu/ns/urban#description": "",
+      "http://ooffee.eu/ns/urban#id": "aedcc",
+      "http://ooffee.eu/ns/urban#link": "/images/1442402382494.m4v",
+      "http://ooffee.eu/ns/urban#ordreDsStep": "Un",
+      "http://ooffee.eu/ns/urban#source": "interne",
+      "http://ooffee.eu/ns/urban#title": "Diaporama >> Maison de la Fontaine",
+      "http://ooffee.eu/ns/urban#type": "Media",
+      "http://ooffee.eu/ns/urban#typeMedia": "video/x-m4v"
+    },
+    {
+      "@id": "http://tofix.uri/afb7f##afb7f",
+      "http://ooffee.eu/ns/urban#description": "1856 marque une date importante pour Recouvrance avec la construction du Pont Impérial (rebaptisé par la suite Pont National). Pendant toute la fin du XIXème et début XXème,  il est emprunté quotidiennement par des centaines de marins qui quittent la Cayenne pour rejoindre l’Arsenal et à l’inverse des centaines d’ouvriers passent de Brest à Recouvrance pour aller aux Ateliers.",
+      "http://ooffee.eu/ns/urban#id": "afb7f",
+      "http://ooffee.eu/ns/urban#link": "/images/1442402185967.jpeg",
+      "http://ooffee.eu/ns/urban#ordreDsStep": "Trois",
+      "http://ooffee.eu/ns/urban#source": "interne",
+      "http://ooffee.eu/ns/urban#title": "Pont Tournant",
+      "http://ooffee.eu/ns/urban#type": "Media",
+      "http://ooffee.eu/ns/urban#typeMedia": "image/jpeg"
+    }
+  ]
+}

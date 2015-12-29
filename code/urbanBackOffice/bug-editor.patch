@@ -1,0 +1,5199 @@
+diff --git a/code/urbanBackOffice/Gruntfile.js b/code/urbanBackOffice/Gruntfile.js
+index e2ca8dd..cde1395 100644
+--- a/code/urbanBackOffice/Gruntfile.js
++++ b/code/urbanBackOffice/Gruntfile.js
+@@ -511,8 +511,8 @@ module.exports = function (grunt) {
+   grunt.registerTask('build', [
+     'clean:dist',
+     'ngconstant:production',
+-    //TODO : restore this jshint test
+-    //'newer:jshint',
++    //TODO : restore this jshint directive to clean all the code
++    //'newer:jshint:all',
+     'wiredep',
+     'useminPrepare',
+     'concurrent:dist',
+diff --git a/code/urbanBackOffice/app/index.html b/code/urbanBackOffice/app/index.html
+index af430bf..09c87ac 100644
+--- a/code/urbanBackOffice/app/index.html
++++ b/code/urbanBackOffice/app/index.html
+@@ -39,7 +39,7 @@
+ 
+     <!-- Add your site or application content here -->
+     <div class="container">
+-      
++
+       <div  class= "container" ng-view=""></div>
+ 
+       <div class="footer">
+@@ -106,8 +106,6 @@
+         <script src="scripts/app.js"></script>
+ 
+         <script src="scripts/config.js"></script>
+-
+-        <script src="scripts/controllers/main.js"></script>
+         <script src="scripts/services/jsonLD.js"></script>
+ 
+         <script src="scripts/services/projects.js"></script>
+@@ -129,9 +127,8 @@
+         <script src="scripts/services/publish.js"></script>
+         <script src="scripts/controllers/test.js"></script>
+         <script src="scripts/controllers/homepage.js"></script>
+-        <script src="scripts/controllers/login.js"></script>
+         <script src="scripts/controllers/projectroute.js"></script>
+-
++        <script src="scripts/controllers/login.js"></script>
+         <script src="scripts/controllers/media.js"></script>
+         <script src="scripts/controllers/cart.js"></script>
+ 
+diff --git a/code/urbanBackOffice/app/scripts/app.js b/code/urbanBackOffice/app/scripts/app.js
+index 72cf5f2..7f4af6e 100644
+--- a/code/urbanBackOffice/app/scripts/app.js
++++ b/code/urbanBackOffice/app/scripts/app.js
+@@ -31,8 +31,8 @@ angular
+   .config(function ($routeProvider) {
+     $routeProvider
+       .when('/', {
+-        templateUrl: 'views/projects.html',
+-        controller: 'ProjectsCtrl'
++        templateUrl: 'views/login.html',
++        controller: 'LoginCtrl'
+       })
+       .when('/user/:userId', {
+         templateUrl: 'views/user.html',
+@@ -58,6 +58,10 @@ angular
+         templateUrl: 'views/footer.html',
+         controller: 'FooterCtrl'
+       })
++      .when('/homePage', {
++        templateUrl: 'views/homepage.html',
++        controller: 'HomepageCtrl'
++      })
+       .when('/homePage/:projectId', {
+         templateUrl: 'views/homepage.html',
+         controller: 'HomepageCtrl'
+@@ -110,6 +114,16 @@ angular
+         controller:'TestCtrl'
+       })
+ 
++      .when('/login',{
++        templateUrl:'views/login.html',
++        controller:'LoginCtrl'
++      })
++
++      .when('/projects',{
++        templateUrl:'views/projects.html',
++        controller:'ProjectsCtrl'
++      })
++
+ 
+       .when('/stepViewIpad/:projectId/step/:stepId', {
+         templateUrl: 'views/stepviewipad.html',
+@@ -124,7 +138,7 @@ angular
+         controller: 'FileCtrl'
+       })
+       .otherwise({
+-        redirectTo: '/'
++        redirectTo: '/login'
+       });
+ 
+   })
+diff --git a/code/urbanBackOffice/app/scripts/controllers/about.js b/code/urbanBackOffice/app/scripts/controllers/about.js
+deleted file mode 100644
+index 09ff339..0000000
+--- a/code/urbanBackOffice/app/scripts/controllers/about.js
++++ /dev/null
+@@ -1,17 +0,0 @@
+-'use strict';
+-
+-/**
+- * @ngdoc function
+- * @name sitejsApp.controller:AboutCtrl
+- * @description
+- * # AboutCtrl
+- * Controller of the sitejsApp
+- */
+-angular.module('urbanBackOfficeApp')
+-  .controller('AboutCtrl', function ($scope) {
+-    $scope.awesomeThings = [
+-      'HTML5 Boilerplate',
+-      'AngularJS',
+-      'Karma'
+-    ];
+-  });
+diff --git a/code/urbanBackOffice/app/scripts/controllers/areaproject.js b/code/urbanBackOffice/app/scripts/controllers/areaproject.js
+index 8be5f90..bda8ad4 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/areaproject.js
++++ b/code/urbanBackOffice/app/scripts/controllers/areaproject.js
+@@ -46,10 +46,11 @@ angular.module('urbanBackOfficeApp')
+ 
+ 
+ 
+-  var promise = ProxyProjectsService.getProjectJS(project_id);
++  var promise = ProxyProjectsService.getProjectJsById(project_id, false, false);
+   promise.then(function(data){
+-     $scope.project = ProjectsService.get(data, project_id);
+-  }).then(function(){
++    //$scope.project = ProjectsService.get(data, project_id);
++    $scope.project = data;
++  }).then(function(){ 
+      console.log("je trouve bien le projet");
+      console.log($scope.project.lat);
+      $scope.center.lat = 42;
+@@ -65,7 +66,7 @@ angular.module('urbanBackOfficeApp')
+ 
+          }
+      });
+-   });
++  });
+ 
+ 
+ 
+diff --git a/code/urbanBackOffice/app/scripts/controllers/footer.js b/code/urbanBackOffice/app/scripts/controllers/footer.js
+index db0c7b0..fc7a1c4 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/footer.js
++++ b/code/urbanBackOffice/app/scripts/controllers/footer.js
+@@ -41,9 +41,12 @@ angular.module('urbanBackOfficeApp')
+      };
+ 
+  	  var project_id = $routeParams.projectId;
+-    var promise = ProxyProjectsService.getProjectJS(project_id);
++   // var promise = ProxyProjectsService.getProjectJS(project_id);
++    var promise = ProxyProjectsService.getProjectJsById(project_id, true, false);
+     promise.then(function(data){
+-      $scope.project = ProjectsService.get(data,project_id);
++     // $scope.projects = data;
++      //$scope.project = ProjectsService.get(data,project_id);
++      $scope.project = data;
+       console.log ( $scope.project.footer);
+     });
+ 
+diff --git a/code/urbanBackOffice/app/scripts/controllers/homepage.js b/code/urbanBackOffice/app/scripts/controllers/homepage.js
+index f30eb27..602fd3c 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/homepage.js
++++ b/code/urbanBackOffice/app/scripts/controllers/homepage.js
+@@ -39,11 +39,12 @@ angular.module('urbanBackOfficeApp')
+     };
+ 
+     var project_id = $routeParams.projectId;
+-    var promise = ProxyProjectsService.getProjectJS(project_id);
++    //var promise = ProxyProjectsService.getProjectJS(project_id);
++    var promise = ProxyProjectsService.getProjectJsById(project_id, true, false);
+     promise.then(function(data){
+-     // $scope.projects = data;
+-      $scope.project = ProjectsService.get(data,project_id);
+-      console.log ($scope.project.homepage);
++    
++      $scope.project = data;
++      
+     });
+ 
+   	$scope.save = function() {
+@@ -80,6 +81,8 @@ angular.module('urbanBackOfficeApp')
+         .success(function(data){
+           console.log(data);
+           $scope.project.homepage.images = "images/"+fileName;
++         
++          console.warn ("penser a supprimer le fichier sur disque dur");
+           var promise = ProjectsService.saveProject($scope.project);
+           promise.then(function(d){
+             $scope.showImage = true;
+diff --git a/code/urbanBackOffice/app/scripts/controllers/login.js b/code/urbanBackOffice/app/scripts/controllers/login.js
+index 70543aa..b68cee1 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/login.js
++++ b/code/urbanBackOffice/app/scripts/controllers/login.js
+@@ -1,25 +1,29 @@
+ 'use strict';
+ 
+-/**
+- * @ngdoc function
+- * @name sitejsApp.controller:LoginCtrl
+- * @description
+- * # LoginCtrl
+- * Controller of the sitejsApp
+- */
+ angular.module('urbanBackOfficeApp')
+-  .controller('LoginCtrl', function ($scope, $auth) {
+-	  
+-	   $scope.submitted = false;
+-	   $scope.login = function () {
+-	 
+-	      if ($scope.loginForm.$valid) {
+-	         // Submit as normal
+-	         console.log('submitting form...');
+-	         //$auth.login($scope.credentials);
+-	      } else {
+-	         console.log('form invalid!');
+-	         $scope.submitted = true;
+-	      }
+-	   }
+-});
+\ No newline at end of file
++  .controller('LoginCtrl', function ($scope, $timeout,$sce, $routeParams,$location){
++
++$scope.loginT = function(){
++
++  if ($scope.credentials != null){
++
++    var tableLogin = new Array  ();
++    tableLogin["julien.brouillard@dedale.info"] = "passwordDedale";
++    tableLogin["barbara@packed.be"] = "urbanpacked";
++
++    if (tableLogin[$scope.credentials.username] == $scope.credentials.password){
++      $location.path('/projects');
++    }
++    else{
++      console.log("login ko");
++      alert("Le couple Login/Password n'a pas été reconnu");
++    }
++  }
++  else{
++    console.log("login ko");
++    alert("Veuillez saisir un couple Login/Password");
++  }
++
++};
++
++});
+diff --git a/code/urbanBackOffice/app/scripts/controllers/main.js b/code/urbanBackOffice/app/scripts/controllers/main.js
+deleted file mode 100644
+index ad78280..0000000
+--- a/code/urbanBackOffice/app/scripts/controllers/main.js
++++ /dev/null
+@@ -1,17 +0,0 @@
+-'use strict';
+-
+-/**
+- * @ngdoc function
+- * @name sitejsApp.controller:MainCtrl
+- * @description
+- * # MainCtrl
+- * Controller of the sitejsApp
+- */
+-angular.module('urbanBackOfficeApp')
+-  .controller('MainCtrl', function ($scope) {
+-    $scope.awesomeThings = [
+-      'HTML5 Boilerplate',
+-      'AngularJS',
+-      'Karma'
+-    ];
+-  });
+diff --git a/code/urbanBackOffice/app/scripts/controllers/media.js b/code/urbanBackOffice/app/scripts/controllers/media.js
+index 8bc29f5..572150a 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/media.js
++++ b/code/urbanBackOffice/app/scripts/controllers/media.js
+@@ -13,33 +13,22 @@ angular.module('urbanBackOfficeApp')
+     $scope.dtOptionsCart = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+ 
+   	var media_id = $routeParams.mediaId;
+-    /*
+-    var promiseMedia = ProxyMediasService.getMedias();
+-    promiseMedia.then(function(data){
+-      $scope.media = MediasService.getMedia(data,media_id);
+-    });
+-
+-    var promise = ProxyMediasService.getCarts();
+-    promise.then(function(data){
+-      $scope.carts = data;
+-      console.log($scope.carts);
+-    });
+-*/
++   
+     $scope.medias    = new Array();
+     $scope.media    = new Array();
+     $scope.carts    = new Array();
+     $scope.getCarts = new Array();
+     $scope.video = false;
++    
+     var promiseData = ProxyMediasService.getData();
+-
++ 
+     promiseData.then(function(dataAll){
+       $scope.carts = ProxyMediasService.getCartsFromData(dataAll);
+-      $scope.medias = ProxyMediasService.getMediasFromData(dataAll);
+-
+-
+-    }).then(function(d){
+-      if ($scope.medias.length != 0){
+-        $scope.media = MediasService.getMedia($scope.medias,media_id);
++    }).then(function(){
++      var promiseMedia= ProxyMediasService.getMediaJsById(media_id);
++      promiseMedia.then(function(d){
++      $scope.media = d;
++       
+        
+         if ($scope.media.typeMedia.toUpperCase().indexOf("VIDEO") > -1)
+           $scope.video == true;
+@@ -47,24 +36,16 @@ angular.module('urbanBackOfficeApp')
+           
+           $scope.video == false;
+         }
+-     
+-   
+ 
+       console.log($scope.video);
+       if ($scope.carts.length != 0)
+         $scope.getCarts = MediasService.getCartsInside(media_id, $scope.carts);
+-        
+ 
+-        
+-      }  
++      });
+     });
+ 
+ 
+ 
+-
+-
+-
+-
+  	//************** Partie panier *******************
+    $scope.alertsCart = new Array();
+ 
+diff --git a/code/urbanBackOffice/app/scripts/controllers/medias.js b/code/urbanBackOffice/app/scripts/controllers/medias.js
+index 6b4d79c..df3dcbc 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/medias.js
++++ b/code/urbanBackOffice/app/scripts/controllers/medias.js
+@@ -16,7 +16,7 @@ angular.module('urbanBackOfficeApp')
+ function MediasCtrl($scope, $timeout, $sce, $routeParams,$location, urlStanbol, MediasService, ProjectsService, $compile,DTOptionsBuilder, DTColumnDefBuilder,DTColumnBuilder, ProxyProjectsService,ProxyMediasService, FileUploader, $http) {
+ 
+   $scope.dtOptionsMedia = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+-  $scope.dtOptionsCart = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
++  $scope.dtOptionsCart  = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+ 
+ 
+   $scope.titleView = "MÉDIATHÈQUE & PANIERS";
+@@ -26,42 +26,44 @@ function MediasCtrl($scope, $timeout, $sce, $routeParams,$location, urlStanbol,
+  	//$scope.medias = MediasService.listMedias();
+   $scope.medias    = new Array();
+   $scope.carts    = new Array();
+-
+-  /*
+-
+-  var promiseMedia = ProxyMediasService.getMedias();
+-  promiseMedia.then(function(data){
+-    //console.log (data);
+-    $scope.medias = data;
++  var stepsByProject = new Array();
++  
++
++  var promiseData = ProxyMediasService.getData();
++  promiseData.then(function(dataAll){
++    $scope.carts = ProxyMediasService.getCartsFromData(dataAll);
++    $scope.medias = ProxyMediasService.getMediasFromData(dataAll);
++    
++    var promiseP =  ProxyProjectsService.getProjectsFromData(dataAll);
++    promiseP.then(function(dataP){
++      $scope.projects =dataP;
++      console.log ($scope.projects);
++    }).then(function(){  
++    
++      $scope.projects.forEach(function(p,i){
++
++          if(p.steps.length != 0){
++            var namep = p.name;
++            var idp = p.id;
++            p.steps.forEach(function(d,i){
++                if (d.isVisible){
++                  var m = {};
++                  m['id'] = d["@id"];
++                  m['idProject'] = idp;
++                  m['title'] = d.title;
++                  m['group']= namep;
++                  m['selected'] = false;
++
++                  stepsByProject.push(m);
++                }
++            });
++        }
++      });
++    $scope.stepsOption = stepsByProject;
+   });
+-  console.log ($scope.medias);
++});    
+ 
+-*/
+ 
+-var promiseData = ProxyMediasService.getData();
+-promiseData.then(function(dataAll){
+-  $scope.carts = ProxyMediasService.getCartsFromData(dataAll);
+-  $scope.medias = ProxyMediasService.getMediasFromData(dataAll);
+-  //$scope.projects = ProxyProjectsService.getProjectsFromData(dataAll);
+-});
+-
+-
+-
+-
+-
+-
+-/*
+-
+-var loadCarts = function(){
+-    var promise = ProxyMediasService.getCarts();
+-    promise.then(function(data){
+-      $scope.carts = data;
+-    });
+-}
+-
+-//chargement des paniers
+-loadCarts();
+-*/
+  	$scope.trustSrc = function(src) {
+     	return $sce.trustAsResourceUrl(src);
+   }
+@@ -301,11 +303,12 @@ $scope.addMediaToCart = function (media, cart) {
+ 
+ 
+ //****************************** Ajouter un media à une etape*****************
+-
+-var promise = ProxyProjectsService.getProjectJS();
++/*
++var promise = ProxyProjectsService.getProjectJS(true, false);
+ 
+ promise.then(function(data){
+   $scope.projects = data;
++  
+   //console.log ($scope.projects);
+   var stepsByProject = new Array();
+   $scope.projects.forEach(function(p,i){
+@@ -329,12 +332,7 @@ promise.then(function(data){
+   });
+   $scope.stepsOption = stepsByProject;
+ });
+-
+-
+-
+-
+-
+-
++*/
+ 
+ //ajouter media(s) à une etape selectionnée
+ 
+@@ -358,6 +356,7 @@ $scope.$watch("dynModelAll",function(v){
+           MediasService.addToStepMedia(p, step, $scope.medias);
+ 
+           var project = ProjectsService.get($scope.projects,d.idProject);
++          console.log (project);
+           ProjectsService.saveProject(project);
+ 
+ 
+@@ -410,14 +409,7 @@ $scope.uploadFile = function(){
+               $scope.showImage = true;
+               $scope.isUploadFormOpen = false;
+               $scope.medias.push(m);
+-              /*
+-              var promiseMedia = ProxyMediasService.getMedias();
+-              promiseMedia.then(function(data){
+-                $scope.medias = data;
+-                 $scope.alerts.push ({ type: 'success', msg: 'The file uploaded with success.' });
+-                closeAlert();
+-              })
+-               */
++             
+             });
+ 
+             //$scope.medias = "images/"+fileName;
+diff --git a/code/urbanBackOffice/app/scripts/controllers/project.js b/code/urbanBackOffice/app/scripts/controllers/project.js
+index a34e9b1..1086af4 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/project.js
++++ b/code/urbanBackOffice/app/scripts/controllers/project.js
+@@ -14,36 +14,37 @@ angular.module('urbanBackOfficeApp')
+ function ProjectCtrl($scope,$http,$timeout, $routeParams,$location, $resource, urlStanbol, ProjectsService, DTOptionsBuilder, DTColumnDefBuilder,  ProxyProjectsService, PublishService) {
+ 
+   	var project_id = $routeParams.projectId;
+-    $scope.alerts = new Array();
+-    $scope.closeAlert = function(index) {
+-      $scope.alerts.splice(index, 1);
+-    };
++    var nbMedias = 0;
+ 
+-  var closeAlert = function(){
+-       $timeout(function(){
+-        $scope.alerts.splice($scope.alerts.indexOf(alert), 1);
+-      }, 3000);//' to avoid calling apply
+-  };
++    
+ 
+     $scope.project = new Array();
+     $scope.isDefineArea = false;
+-    var promise = ProxyProjectsService.getProjectJS(project_id);
++    //var promise = ProxyProjectsService.getProjectJS(project_id);
++    var promise = ProxyProjectsService.getProjectJsById(project_id, true, false);
+     promise.then(function(data){
+ 
+-      $scope.project = ProjectsService.get(data, project_id);
+-       console.log($scope.project);
++      $scope.project = data;
++
++    }).then(function(){
++        console.log($scope.project.steps);
+ 
+-       
+-    }).then(function(d){
+-     
+-      $scope.nbMedia = ProjectsService.getNbMedia($scope.project);
+-      //console.log ($scope.project);
++      $scope.nbMedia = ProjectsService.getNbMediaFromSteps($scope.project.steps);
+       if ($scope.project.lat != 0.12345)
+          $scope.isDefineArea = true;
+ 
+-       
++
+     });
++    $scope.alerts = new Array();
++    $scope.closeAlert = function(index) {
++      $scope.alerts.splice(index, 1);
++    };
+ 
++    var closeAlert = function(){
++       $timeout(function(){
++        $scope.alerts.splice($scope.alerts.indexOf(alert), 1);
++      }, 3000);//' to avoid calling apply
++    };
+ 
+        $scope.titleView = "List of Steps";
+        $scope.subTitleView  = "Management Route";
+@@ -98,11 +99,11 @@ function ProjectCtrl($scope,$http,$timeout, $routeParams,$location, $resource, u
+            console.log ($scope.project) ;
+            PublishService.publishGlobal($scope.project);
+ 
+-           
++
+           }
+ 
+-        
+-          
++
++
+ 
+ 
+  }
+diff --git a/code/urbanBackOffice/app/scripts/controllers/projectroute.js b/code/urbanBackOffice/app/scripts/controllers/projectroute.js
+index ebc2336..3166add 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/projectroute.js
++++ b/code/urbanBackOffice/app/scripts/controllers/projectroute.js
+@@ -29,7 +29,6 @@ angular.module('urbanBackOfficeApp')
+ 
+         },
+         defaults: {
+-            tileLayer: 'images/site/cache/{z}/{x}_{y}.png',
+             //zoomControlPosition: 'topright',
+             tileLayerOptions: {
+                 opacity: 0.9,
+@@ -54,10 +53,11 @@ angular.module('urbanBackOfficeApp')
+     });
+ 
+ 
+-  var promise = ProxyProjectsService.getProjectJS(project_id);
+-
++  //var promise = ProxyProjectsService.getProjectJS(project_id);
++  var promise = ProxyProjectsService.getProjectJsById(project_id, true, false);
+   promise.then(function(data){
+-    $scope.project = ProjectsService.get(data, project_id);
++    //$scope.project = ProjectsService.get(data, project_id);
++    $scope.project = data;
+ 
+   }).then(function(){
+ 
+@@ -133,24 +133,19 @@ angular.module('urbanBackOfficeApp')
+ 
+  console.log ($scope.project);
+     $scope.$on('leafletDirectiveMap.click', function(event, args){
+-             console.log("event intercepte");
+              $scope.showme = true;
+              $scope.myCssVar = "col-md-8";
+              var latlng = args.leafletEvent.latlng;
+-             //console.log('Lat: ' + latlng.lat + '<br>Lng: ' + latlng.lng);
+              var leafEvent = args.leafletEvent;
+              console.warn('id pas unique avec $scope.markers.length +1');
+              var m1 = {
+-                 id : $scope.markers.length +1, //utils.guid()
+-                 lat: Math.round(leafEvent.latlng.lat*10000)/10000,
+-                 lng: Math.round(leafEvent.latlng.lng*10000)/10000,
+-                 //message: "My Added Marker",
++                 id : $scope.markers.length +1,
++                 lat: leafEvent.latlng.lat,
++                 lng: leafEvent.latlng.lng,
+                  focus: true,
+                  draggable: true,
+-                 //icon: iconC,
+                  isVisible : true,
+                  type : "step"
+-
+              };
+              $scope.markers.push(m1);
+              //centrer la carte ou on a cliqué
+@@ -170,14 +165,13 @@ $scope.$on('leafletDirectiveMarker.click', function(event, args){
+       $scope.myCssVar ="col-md-8";
+       console.log($scope.markers);
+ 
+-      var obj = $scope.markers[args.markerName];
++      var obj = args.model;
+       //centrer la carte ou on a cliqué
+       $scope.center.lat = obj.lat;
+       $scope.center.lng = obj.lng;
+-      $scope.step = ProjectsService.getStepByPosition($scope.project,obj.id);
+-      //$scope.step = obj;
+-      //$scope.step.isVisible = true;
+-      //console.log($scope.step.id);
++      ProjectsService.getStepByPosition($scope.project,obj.id).then(function(data){
++    	  $scope.step = data;
++      });
+ 
+     });
+ 
+diff --git a/code/urbanBackOffice/app/scripts/controllers/projects.js b/code/urbanBackOffice/app/scripts/controllers/projects.js
+index 272a29c..9ba84e0 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/projects.js
++++ b/code/urbanBackOffice/app/scripts/controllers/projects.js
+@@ -16,45 +16,13 @@ function ProjectsCtrl($scope,$timeout,$resource,$location,$sce, DTOptionsBuilder
+  	$scope.subTitleView1 = "Users"
+ 
+  $scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+-/*
+-     $scope.dtColumns = [
+-
+-        DTColumnBuilder.newColumn(null).withTitle('Name')
+-            .renderWith(function(data, type, full, meta){
+-             return data.name;
+-            }),
+-         DTColumnBuilder.newColumn(null).withTitle('Created')
+-            .renderWith(function(data, type, full, meta){
+-              return data.dateCreate;
+-            }),
+-         DTColumnBuilder.newColumn(null).withTitle('Modified' )
+-            .renderWith(function(data, type, full, meta){
+-             return data.dateUpdate;
+-            }),
+-         DTColumnBuilder.newColumn(null).withTitle('Creator')
+-            .renderWith(function(data, type, full, meta){
+-             return data.author;
+-            }),
+-
+-         DTColumnBuilder.newColumn(null).withTitle('Status')
+-            .renderWith(function(data, type, full, meta){
+-              return data.status;
+-            }),
+-        DTColumnBuilder.newColumn(null).withTitle('Actions').notSortable()
+-          	.renderWith(function(data, type, full, meta){
+-           	return '<button class="btn btn-warning" ng-click="edit(dtOptions.data['+meta.row+'])"><i class="fa fa-edit"></i></button><button class="btn btn-danger" ng-click="delete(dtOptions.data['+meta.row+'])"><i class="fa fa-trash-o"></i></button>';
+- 		        })
+-];
+-*/
+ 
+     //$scope.dtOptions.data = {};
+     $scope.projects = new Array();
+ 
+-    var promise = ProxyProjectsService.getProjectJS();
++    var promise = ProxyProjectsService.getProjectJS(false, false);
+     promise.then(function(data){
+       $scope.projects = data;
+-    	 //console.log(data.length);
+-       //$scope.dtOptions.data = data;
+ 
+     });
+ 
+@@ -68,21 +36,14 @@ function ProjectsCtrl($scope,$timeout,$resource,$location,$sce, DTOptionsBuilder
+         $scope.alerts.splice($scope.alerts.indexOf(alert), 1);
+       }, 3000);//' to avoid calling apply
+     };
+-    //$timeout(function() { closeAlert(); }, 2000);
++   
+    
+ 
+ 	/*view list of steps*/
+ 	$scope.edit = function(project) {
+-    /*
+-		  $scope.message = 'You are trying to edit the row with ID: ' + id;
+-      Edit some data and call server to make changes...
+-      Then reload the data so that DT is refreshed
+-      $scope.dtOptions.reloadData();
+-    */
+-		if(project == null){
+-    		var project = ProjectsService.getProject();
+-    	}
+-		$location.path('/project/'+project.id);
++    
++		if(project != null)		
++		  $location.path('/project/'+project.id);
+ 	}
+ 
+ 	$scope.save = function(){
+@@ -93,35 +54,12 @@ function ProjectsCtrl($scope,$timeout,$resource,$location,$sce, DTOptionsBuilder
+       $scope.newproject = {};
+       $scope.alerts.push ({ type: 'success', msg: 'Well done! your project is created'});
+       closeAlert();
+-      /*
+-      var promise = ProxyProjectsService.getProjectJS();
+-      $scope.dtOptions.data = {};
+-      promise.then(function(d){
+-          console.log (d.length);
+-          $scope.dtOptions.data = d;
+-          $scope.newproject = {};
+-          $scope.alerts.push ({ type: 'success', msg: 'Well done! your project is created'});
+-          closeAlert();
+-
+-      });*/
++     
+     });
+ 	}
+ 
+-	$scope.cancel = function(){
+-		modal.modal('hide');
+-	}
+-
+ 	$scope.delete = function(project){
+-
+-		    /*
+-        $scope.message = 'You are trying to remove the row with ID: ' + id;
+-        Delete some data and call server to make changes...
+-        Then reload the data so that DT is refreshed
+-        $scope.dtOptions.reloadData();
+-      */ 
+       if (project.id != undefined){
+-        /*console.log(row);
+-        var id = row["id"];*/
+         console.log(project.id);
+         ProjectsService.delete(project.id, $scope.projects);
+       
+@@ -136,8 +74,6 @@ function ProjectsCtrl($scope,$timeout,$resource,$location,$sce, DTOptionsBuilder
+   }
+ 
+ 
+-	$scope.goNext = function(hash){
+-		$location.path(hash);
+- 	}
++	
+ 
+  }
+diff --git a/code/urbanBackOffice/app/scripts/controllers/search.js b/code/urbanBackOffice/app/scripts/controllers/search.js
+index ecc93d7..5bbbafd 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/search.js
++++ b/code/urbanBackOffice/app/scripts/controllers/search.js
+@@ -18,38 +18,43 @@ angular.module('urbanBackOfficeApp')
+   $scope.searchParam = MediasService.getSearchParams();
+   $scope.selectionParam = MediasService.getSearchParams();
+ 
+-  var promise = ProxyMediasService.getCarts();
+-  promise.then(function(data){
+-    $scope.carts = data;
+-  });
+-
+-  var promiseProjects = ProxyProjectsService.getProjectJS();
+-
+-  promiseProjects.then(function(data){
+-    console.warn("To do : mettre ce chargement dans un service pour éviter de dupliquer le code avec medias");
+-    $scope.projects = data;
+-    var stepsByProject = new Array();
+-    $scope.projects.forEach(function(p,i){
+-
+-        if(p.steps.length != 0){
+-          var namep = p.name;
+-          var idp = p.id;
+-          p.steps.forEach(function(d,i){
+-            if (d.isVisible){
+-              var m = {};
+-              m['id'] = d["@id"];
+-              m['idProject'] = idp;
+-              m['title'] = d.title;
+-              m['group']= namep;
+-              m['selected'] = false;
+-
+-              stepsByProject.push(m);
+-            }
+-          });
+-      }
+-    });
++  $scope.carts    = new Array();
++  $scope.medias    = new Array();
++  var stepsByProject = new Array();
++  
++
++  var promiseData = ProxyMediasService.getData();
++  promiseData.then(function(dataAll){
++    $scope.carts = ProxyMediasService.getCartsFromData(dataAll);
++    $scope.medias = ProxyMediasService.getMediasFromData(dataAll);// pour la partie add to mediatheque
++    var promiseP =  ProxyProjectsService.getProjectsFromData(dataAll);
++    promiseP.then(function(dataP){
++      $scope.projects = dataP;
++      //console.log ($scope.projects);
++    }).then(function(){  
++    
++      $scope.projects.forEach(function(p,i){
++
++          if(p.steps.length != 0){
++            var namep = p.name;
++            var idp = p.id;
++            p.steps.forEach(function(d,i){
++                if (d.isVisible){
++                  var m = {};
++                  m['id'] = d["@id"];
++                  m['idProject'] = idp;
++                  m['title'] = d.title;
++                  m['group']= namep;
++                  m['selected'] = false;
++
++                  stepsByProject.push(m);
++                }
++            });
++        }
++      });
+     $scope.stepsOption = stepsByProject;
+   });
++});  
+ 
+  $scope.alertsSearch = new Array();
+     $scope.closeAlertSearch = function(index) {
+@@ -357,7 +362,7 @@ var updateSelected = function(action, id) {
+ };
+ 
+ $scope.updateSelection = function($event, id) {
+-  console.log (id);
++  //console.log (id);
+   //console.log($event);
+   var checkbox = $event.target;
+   var action = (checkbox.checked ? 'add' : 'remove');
+@@ -402,17 +407,14 @@ $scope.search = function(){
+     if (typesChecked.length == 0){
+       $scope.alertsSearch.push ({ type: 'danger', msg: 'Types: required field' });
+       closeAlertSearch();
+-      console.warn ("Types: required field");
++      //console.warn ("Types: required field");
+       return false;
+     }
+ 
+     if (sourcesChecked.length != 0){
+-       //Initialiser les datatables
+-      //console.log (sourcesChecked);
+-      //console.log (typesChecked.indexOf("TEXT"));
+-       // console.log (typesChecked.indexOf("VIDEO"));
++      
+       sourcesChecked.forEach(function(d,i){
+-          console.log (d);
++          //console.log (d);
+           if (d=="Youtube"){
+             if (typesChecked.indexOf("VIDEO") != -1)
+               getResultsYoutube($scope.searchParam.place, $scope.searchParam.date, $scope.searchParam.creator);
+@@ -429,7 +431,7 @@ $scope.search = function(){
+ 
+             }
+           }else if (d=="Wikipedia"){
+-              console.log ("search in wikipedia");
++              //console.log ("search in wikipedia");
+               if (typesChecked.indexOf("TEXT") != -1)
+                 getResultsWiki(d, "fr");
+               else
+@@ -639,7 +641,7 @@ $scope.saveCart = function() {
+ $scope.addToCart = function (cartId) {
+   if ($scope.selected.length > 0){ //selected ids
+     $scope.selected.forEach(function(p,i){
+-      console.log (p);
++      //console.log (p);
+       var promiseCreateMedia = MediasService.addMedia(p);
+       promiseCreateMedia.then(function(id){
+         MediasService.addToCartMedia(id, cartId);
+@@ -649,7 +651,7 @@ $scope.addToCart = function (cartId) {
+     closeAlert();
+ 
+   }else{ //rien n'est selectionné
+-    console.log ("selected id is null");
++    //console.log ("selected id is null");
+     $scope.alerts.push ({ type: 'warning', msg: 'No media selected.' });
+     closeAlert();
+   }
+@@ -659,8 +661,7 @@ $scope.addToCart = function (cartId) {
+ $scope.addToMedias = function(){
+ 
+   //ajouter à la médiatheque
+-  console.log ($scope.selected.size);
+- // MediasService.addMedia($scope.selected[0]);
++ 
+ 
+   if ($scope.selected.size != 0){
+     $scope.selected.forEach(function(d,i){
+@@ -683,7 +684,7 @@ $scope.addToMedias = function(){
+ 
+ $scope.stepSelected = {};
+ $scope.$watch("dynModelStep",function(v){
+-  console.log (v);
++ 
+ 
+   if (v != undefined || v != null){
+     //console.log (v.id);
+@@ -700,27 +701,22 @@ $scope.$watch("dynModelStep",function(v){
+           console.log(p);
+           var promiseCreate = MediasService.addMedia(p);
+           promiseCreate.then(function(id){
+-              console.log (id);
+-              var promiseMedia = ProxyMediasService.getMedias();
+-              promiseMedia.then(function(data){
+-                console.warn("To do : refléchir à peut etre mette ce chargement au début");
+-                $scope.medias = data;
+-                MediasService.addToStepMediaById(id, $scope.stepSelected, $scope.medias);
+-
+-                var project = ProjectsService.get($scope.projects,v.idProject);
+-                console.log(project);
+-                console.log($scope.project);
+-                ProjectsService.saveProject(project);
+-              })
++              //console.log (id);
++              MediasService.addToStepMediaById(id, $scope.stepSelected, $scope.medias);
++
++              var project = ProjectsService.get($scope.projects,v.idProject);
++              //console.log(project);
++              //console.log($scope.project);
++              ProjectsService.saveProject(project);
++         
+ 
+           });
+-          //  this.addToStepMediaById = function (mediaId, step, medias) {
+         });
+         $scope.alerts.push ({type: 'success', msg: 'Well done! The media have been added to selected step : '+$scope.stepSelected.title });
+         closeAlert();
+ 
+       }else{ //rien n'est selectionné
+-        console.log ("Nothing selected to add to step " + v.title);
++        //console.log ("Nothing selected to add to step " + v.title);
+         $scope.alerts.push ({ type: 'warning', msg: "Nothing selected to add to step " + v.title });
+         closeAlert();
+       }
+@@ -741,10 +737,7 @@ function extractLinkEuropeana(url, type){
+     var uri1 = uri.substring(4).split("&size=LARGE&type=IMAGE")[0];
+ 
+  return (uri1);
+- //var fff= getURLargs(url, "?");
+- //console.log (fff['uri']);
+-  //return (getURLargs(url, "?")['uri']);
+-  //return (getURLargs("&uri="+fff['uri'], "&")['uri']);
++
+ }
+ 
+ function getURLargs (url){
+diff --git a/code/urbanBackOffice/app/scripts/controllers/signup.js b/code/urbanBackOffice/app/scripts/controllers/signup.js
+deleted file mode 100644
+index 28fc380..0000000
+--- a/code/urbanBackOffice/app/scripts/controllers/signup.js
++++ /dev/null
+@@ -1,17 +0,0 @@
+-'use strict';
+-
+-/**
+- * @ngdoc function
+- * @name sitejsApp.controller:AboutCtrl
+- * @description
+- * # AboutCtrl
+- * Controller of the sitejsApp
+- */
+-angular.module('urbanBackOfficeApp')
+-  .controller('SignupCtrl', function ($scope) {
+-    $scope.awesomeThings = [
+-      'HTML5 Boilerplate',
+-      'AngularJS',
+-      'Karma'
+-    ];
+-  });
+diff --git a/code/urbanBackOffice/app/scripts/controllers/step.js b/code/urbanBackOffice/app/scripts/controllers/step.js
+index 7b8548f..c9bcc8d 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/step.js
++++ b/code/urbanBackOffice/app/scripts/controllers/step.js
+@@ -10,6 +10,8 @@
+ angular.module('urbanBackOfficeApp')
+   .controller('StepCtrl', function ($scope, $sce, $timeout,$routeParams, $location, ProjectsService, graphService, MediasService, $http,  urlStanbol, FileUploader, ProxyProjectsService, ProxyMediasService) {
+ 
++    console.log($scope);
++    /*
+     $scope.tinymceOptions = {
+       menubar:false,
+       statusbar: false,
+@@ -26,7 +28,7 @@ angular.module('urbanBackOfficeApp')
+ 
+       }
+     };
+-
++    */
+  	$scope.titleView = "Step information";
+   $scope.subTitleView1 = "Search";
+  	$scope.subTitleView2 = "Medias";
+@@ -34,28 +36,39 @@ angular.module('urbanBackOfficeApp')
+ 
+  	 var step_id    = $routeParams.stepId;
+  	 var project_id = $routeParams.projectId;
++  console.log(project_id);
++   var listOfMedias = new Array();
+ 
++   var step22 = [];
+ 
+-    var promise = ProxyProjectsService.getProjectJS(project_id);
++    var promise = ProxyProjectsService.getProjectJsById(project_id, true, true);
+    promise.then(function(data){
+      console.timeStamp("test");
+-     $scope.project = ProjectsService.get(data, project_id);
++     $scope.project = data;
+    }).then(function(){
+-     console.log($scope.project);
+-     console.timeStamp("step 2");
+-     $scope.step    = ProjectsService.getStepByPosition($scope.project,step_id);
+-     console.timeStamp("step 3");
+-    // console.log($scope.step.medias.length);
+-     console.log($scope.step);
+-     var listOfMedias = $scope.step.medias;
+-
+-     if (listOfMedias.length != 0){
+-      /*
++
++    var promiseStep =  ProjectsService.getStepByPosition($scope.project,step_id);
++    promiseStep.then(function(dataStep){
++      $scope.step = dataStep;
++      step22 = dataStep;
++    }).then(function(){
++     //step22 = ProjectsService.getStepByPosition($scope.project,step_id);
++     console.log(step22);
++     console.log(step22.medias);
++
++    //alert(step.medias);
++     listOfMedias = step22.medias;
++
++   console.log(listOfMedias);
++   console.log(listOfMedias.length);
++
++
+       listOfMedias.forEach(function(entry) {
+         console.log (entry);
+-        if 
++        console.log ("entry");
++
+       });
+-      */  
++
+       listOfMedias.sort(function(a,b){
+           if(a.ordreDsStep < b.ordreDsStep)
+             return(-1);
+@@ -64,8 +77,8 @@ angular.module('urbanBackOfficeApp')
+         });
+ 
+       $scope.step.medias = listOfMedias;
+-    }
+ 
++});
+ 
+    });
+ 
+@@ -93,14 +106,6 @@ angular.module('urbanBackOfficeApp')
+     };
+    var step = new Array();
+ 
+- $scope.isMediaEmpty=  function(input) {
+-    if (input.id != undefined)
+-      return true;
+-    else
+-     return false;
+-
+-  }
+-
+    $scope.isVideo = function(input){
+ 
+ 
+diff --git a/code/urbanBackOffice/app/scripts/controllers/stepviewipad.js b/code/urbanBackOffice/app/scripts/controllers/stepviewipad.js
+index 6315c14..fbb94f8 100644
+--- a/code/urbanBackOffice/app/scripts/controllers/stepviewipad.js
++++ b/code/urbanBackOffice/app/scripts/controllers/stepviewipad.js
+@@ -1,37 +1,47 @@
++'use strict';
++/**
+ 
+-
+--'use strict';
+-
+--
+-
+--/**
+-
+-- * @ngdoc function
+-
+-- * @name urbanBackOfficeApp.controller:StepviewipadCtrl
+-
+-- * @description
+-
+- * # StepviewipadCtrl
+-
+- * Controller of the urbanBackOfficeApp
+-
+- */
++* @ngdoc function
++* @name urbanBackOfficeApp.controller:StepviewipadCtrl
++* @description
++* # StepviewipadCtrl
++* Controller of the urbanBackOfficeApp
++*/
+ 
+ angular.module('urbanBackOfficeApp')
+ 
+   .controller('StepviewipadCtrl', function ($scope, $sce, $routeParams, $location, ProjectsService, graphService, MediasService, $http,  urlStanbol, FileUploader, ProxyProjectsService, ProxyMediasService) {
+ 
+    var step_id    = $routeParams.stepId;
+-
+    var project_id = $routeParams.projectId;
+-
+    var step = new Array();
+-
+-   var promise = ProxyProjectsService.getProjectJS(project_id);
++   var promise = ProxyProjectsService.getProjectJsById(project_id, true, true);
+    promise.then(function(data){
+-     $scope.project = ProjectsService.get(data, project_id);
+-     $scope.step    = ProjectsService.getStepByPosition($scope.project,step_id);
++     $scope.project = data;
++   }).then(function(){
++     //console.log($scope.project);
++     //$scope.step    = ProjectsService.getStepByPosition($scope.project,step_id);
++var promiseStep =  ProjectsService.getStepByPosition($scope.project,step_id);
++    promiseStep.then(function(dataStep){
++      $scope.step = dataStep;
++      var step22 = dataStep;
++    }).then(function(){
++
++     listOfMedias = step22.medias;
++
++
++
++      listOfMedias.sort(function(a,b){
++          if(a.ordreDsStep < b.ordreDsStep)
++            return(-1);
++          else
++            return(1);
++        });
++
++      $scope.step.medias = listOfMedias;
++      console.log($scope.step.medias);
++
++    });
+    });
+ 
+ 
+@@ -50,7 +60,7 @@ angular.module('urbanBackOfficeApp')
+ 
+       $location.path('/stepViewIpad/'+$scope.project.id+'/step/'+position);
+ 
+-    } 
++    }
+ 
+     $scope.previous = function (position) {
+ 
+@@ -64,14 +74,13 @@ angular.module('urbanBackOfficeApp')
+ 
+      	}
+ 
+-   }  
++   }
+ 
+     $scope.getClass = function getClass(idx, list) {
+     //console. log (idx);
+     if (idx % 2 == 0 ) return "pull-right";
+     else return "pull-left";
+-    
++
+ };
+ 
+  });
+-
+diff --git a/code/urbanBackOffice/app/scripts/services/medias.js b/code/urbanBackOffice/app/scripts/services/medias.js
+index 6fd530f..b3e42c1 100644
+--- a/code/urbanBackOffice/app/scripts/services/medias.js
++++ b/code/urbanBackOffice/app/scripts/services/medias.js
+@@ -10,27 +10,15 @@
+ angular.module('urbanBackOfficeApp')
+ 	 .service('MediasService', function ($filter, $http, jsonLD, graphService, urlStanbol, ProxyMediasService, ProxyProjectsService, $q, utils) {
+ 
+-    // AngularJS will instantiate a singleton by calling "new" on this function
+-    /*
+-    var medias = [
+-    	{id :1, title: 'Media Title 1' , typeMedia: 'video', source :'web', link :'http://www.youtube.com/v/oEmZnSpLdrU', description:'This is a description of the media 1',
+-        meta:''},
+-
+-        {id :2, title: 'Media Title 2' ,typeMedia: 'video', source :' web', link :'http://www.youtube.com/v/5brvrsgs4jo', description:'This is a description of the media 2'},
+-        {id :3, title: 'Media Title 3' ,typeMedia: 'video', source :' web', link :'http://www.youtube.com/v/A7PIU7npmz4', description:'This is a description of the media 3'},
+-        {id :4, title: 'louvre, punkah',typeMedia: 'image', source :'web',  link :'http://collections.rmg.co.uk/mediaLib/499/media-499130/large.jpg', description:'This is a description of the media 3'}
+-
+-    ];
+-*/
+     var carts = [];
+     var medias =[];
+-
+-    this.toJsonLd = function(obj){
+-
+-
+-
+-    }
+-
++/**
++ * retourne le nom des paniers ds lesquel un media donné à été ajouté 
++ *
++ * @param {string} mediaId : l'id du media
++ * @param {array} carts : tous les paniers
++ * @return {array} liste des paniers
++ */
+ 
+     this.getCartsInside = function(mediaId, carts){
+ 
+@@ -62,31 +50,8 @@ angular.module('urbanBackOfficeApp')
+         return listCarts;
+ 
+     }
+-   /*
+-    this.listMedias = function () {
+-        return medias;
+-    }
+-
+-    this.listCarts = function () {
+-        return carts;
+-    }
+-
+-     this.listTemplates = function () {
+-        return templates;
+-    }
+-
+-     this.listImages = function () {
+-        return images;
+-    }
+-*/
+-    this.get = function (id) {
+-        for (var i in medias) {
+-            if (medias[i].id == id) {
+-                return medias[i];
+-            }
+-        }
+-    }
+ 
++//****************CRUD Cart***********************
+     this.getCart= function (data,id) {
+ 				carts = data;
+ 
+@@ -97,7 +62,7 @@ angular.module('urbanBackOfficeApp')
+             }
+         }
+     }
+-//****************CRUD Cart***********************
++
+ 
+     this.saveCart = function (cart, mediaId) {
+ 				var def = $q.defer();
+@@ -220,15 +185,6 @@ angular.module('urbanBackOfficeApp')
+ 
+     }
+ 
+-/*
+-    this.addMedia = function (media) {
+-        console.log (media);
+-       //if (media.id != null)
+-            media.id = utils.guid();
+-            medias.push(media);
+-
+-    }
+-*/
+ 
+ ///******************************************media action ************************
+     this.addMedia = function (media) {
+@@ -278,20 +234,19 @@ this.getMedia= function (medias,id) {
+         }
+     }
+ 
+-
+-
+-    function getMedia ( medias, id) {
+-				console.log("function getMedia");
+-				console.log(medias)
+-				console.log(id);
++ function getMedia ( medias, id) {
++                console.log("function getMedia");
++                console.log(medias)
++                console.log(id);
+ 
+         for (var i in medias) {
+             if (medias[i].id == id) {
+-								console.log("trouve");
++                                console.log("trouve");
+                 return medias[i];
+             }
+         }
+     }
++   
+ 
+ 
+     this.deleteMedia = function (id, medias) {
+@@ -508,9 +463,9 @@ this.addToStepMedia = function (media, step, medias) {
+ 
+         }
+ 
+-        else{
+-                console.log(step.medias);
+-                return(step.medias.push(media.id));
++        else{ 
++            console.log(step.medias);
++            return(step.medias.push(media.id));
+         }
+ 
+ }
+diff --git a/code/urbanBackOffice/app/scripts/services/projects.js b/code/urbanBackOffice/app/scripts/services/projects.js
+index 603b150..5fbf698 100644
+--- a/code/urbanBackOffice/app/scripts/services/projects.js
++++ b/code/urbanBackOffice/app/scripts/services/projects.js
+@@ -46,8 +46,8 @@ angular.module('urbanBackOfficeApp')
+ 
+             project.lng = 0.12345;
+ 
+-            console.log(project.lat);
+-            console.log(project.lng);
++            //console.log(project.lat);
++            //console.log(project.lng);
+             project.zoom = 1;
+ 
+             project.type = 'Project';
+@@ -93,7 +93,7 @@ angular.module('urbanBackOfficeApp')
+             var baseUrl = "http://tofix.uri/"
+ 
+             var idGraph = baseUrl + project.id;
+-            console.log(idGraph);
++            //console.log(idGraph);
+ 
+ 
+             var facetteName = "data";
+@@ -108,7 +108,7 @@ angular.module('urbanBackOfficeApp')
+                         };
+                     }
+             };
+-            console.log(idGraph);
++            //console.log(idGraph);
+             var promiseGraph = graphService.getLazyGraph(idGraph,parameters,false);
+             promiseGraph.then(function(dataGraph){
+               var graph = dataGraph;
+@@ -162,48 +162,33 @@ angular.module('urbanBackOfficeApp')
+ 
+     }
+ 
+-    this.getProject = function (idProject) {
+-
+-        if((idProject == "undefined") || (idProject == null)){
+-            return createNewProject();;
+-        }else{
+-            for (var i in projects) {
+-                if (projects[i].id == idProject) {
+-                    return projects[i];
+-                }
+-            }
+-        }
+-
+-    }
++   
+ 
+     this.getSteps = function(project){
+ 
+         return(project.steps);
+     }
+ 
+-    this.getStepsByProject = function(project){
+-        var stepsByProject = new Array();
+-        project.steps.forEach(function(d,i){
+-            var m = {};
+-            m['id'] = d.id;
+-            m['name'] = d.name;
+-            m['project']= project.name;
+-            stepsByProject.push(m);
+-       });
+-        return(stepsByProject);
+-    }
+ 
+-     this.getNbMedia = function(project) {
++     this.getNbMediaFromSteps = function(steps) {
++         console.log("getNbMediaFromSteps");
+         var nbMedia = 0;
+-
+-        project.steps.forEach(function(step,i){
+-            step.medias.forEach(function(media,i){
+-
+-                if (media.id != undefined)
+-                    nbMedia++;
+-            });
++        console.log(steps);
++        steps.forEach(function(step){
++           // console.log (step);
++           // console.log (step.medias.length);
++           // console.log (step.visual);
++            
++            if (step.medias.length != 0){
++                console.log (step.medias);
++                for (var i in step.medias) {
++                
++                    if (media[i].id != undefined)
++                        nbMedia++;
++                }
++            }    
+         });    
+-        
++        console.log (nbMedia);
+        return nbMedia;
+ 
+     }
+@@ -220,16 +205,20 @@ angular.module('urbanBackOfficeApp')
+         }
+     }
+ 
++    //TODO : l'utilisation des promises est vraiment nécessaire sur cette fonction ? L'object project est déjà chargé normalement
+     this.getStepByPosition = function(project, step_id){
++        var initialisation = $q.defer();
++        var step = new Array();
+         console.log("getStepByPosition" + step_id);
+        for (var i in project.steps) {
+         console.warn("pq comparer position à id ??")
+             if (project.steps[i].id == step_id) {
+-                    console.log (project.steps[i]);
+-                    return project.steps[i];
+-                    break;
++                step = project.steps[i];
++                   
+             }
+-        }    
++        } 
++         initialisation.resolve(step);
++         return(initialisation.promise);   
+ 
+     }
+ 
+@@ -345,14 +334,6 @@ angular.module('urbanBackOfficeApp')
+         return(def.promise);
+     }
+ 
+-
+-
+-
+-    //simply returns the projects list
+-    this.list = function () {
+-        return projects;
+-    }
+-
+     this.deleteMediaFromStep= function(step,mediaId, project){
+         var def = $q.defer();
+         var uriToFix = "http://tofix.uri/";
+diff --git a/code/urbanBackOffice/app/scripts/services/proxyMedia.js b/code/urbanBackOffice/app/scripts/services/proxyMedia.js
+index df1da7e..fc09616 100644
+--- a/code/urbanBackOffice/app/scripts/services/proxyMedia.js
++++ b/code/urbanBackOffice/app/scripts/services/proxyMedia.js
+@@ -5,7 +5,49 @@ angular.module('urbanBackOfficeApp')
+ .service('ProxyMediasService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q) {
+ 
+   var uriBase = "http://ooffee.eu/ns/urban#";
++/*
++* charge tout les graph data
++*
++*
++*/
++  this.getData = function(){
++  //console.log ("getData");
++
++  var initialisation = $q.defer();
++    
++  var dataAll = new Array();
++  var parameters = {
++            scheme : '', //the default one
++            queryFn : function(/*string*/ uri){
++                return {
++                    method : 'GET',
++                    url : urlStanbol.address+'/graph/list/typeGraph?typeGraph=data'
++
++                };
++            }
++  };
++  var uriBase = "http://ooffee.eu/ns/urban#"
++
++    $http({
++        method : 'GET',
++        url : parameters.queryFn().url, //rdfuiConfig.server+'skosifier?uri='+uri,
++    }).success(function(data){
++      dataAll = data["@graph"];
++      initialisation.resolve(dataAll);
+ 
++      }).error(function(){
++        console.log("error get data");
++    })
++
++     return(initialisation.promise);  
++
++}
++
++/*
++* extract medias from graph data
++*
++*
++*/
+   this.getMediasFromData = function(dataAll){
+    
+   
+@@ -23,58 +65,50 @@ angular.module('urbanBackOfficeApp')
+ 
+     });
+ 
+-
+     return(mediasJS);
+-
+-    
++ 
+ }
+-  this.getMedias = function(){
+-    var initialisation = $q.defer();
+ 
+-    var mediasJS = new Array();
+-    var medias = new Array();
+-    var dataAll = new Array();
+ 
++ this.getMediaJsById = function(idMedia){
++    var initialisation = $q.defer();
++   
++    var baseUrl = "http://tofix.uri/"+idMedia;
++    var mediaJS = new Array();
++    var media = new Array();
++    var dataMedia;
+     var parameters = {
+             scheme : '', //the default one
+             queryFn : function(/*string*/ uri){
+                 return {
+                     method : 'GET',
+-                    url : urlStanbol.address+'/graph/list/typeGraph?typeGraph=data'
+-
++                    url:urlStanbol.address+'/graph/data/myUser/'+baseUrl,
+                 };
+             }
+     };
+ 
+-
+     $http({
+         method : 'GET',
+-        url : parameters.queryFn().url, //rdfuiConfig.server+'mediamanagement?uri='+uri,
+-    }).success(function(data){
+-        dataAll = data["@graph"];
+-        dataAll.forEach(function(d,i){
+-          if(d[uriBase+"type"] == "Media"){
+-            medias.push(d);
+-          }
+-        });
++        url : parameters.queryFn().url, 
+ 
++    }).success(function(data){
++      //console.log (data);
++        media =data;
+     }).error(function(){
+         console.log("error");
+     }).then(function(){
+ 
+-      medias.forEach(function(d,i){
+-        var mediaJS = self.createMedia(d);
+-        mediasJS.push(mediaJS);
+-
+-      });
+-
+-      initialisation.resolve(mediasJS);
+-
++      var mediaJS = self.createMedia(media);
++      //console.log (mediaJS);
++      initialisation.resolve(mediaJS);
+     });
+     return(initialisation.promise);
+   }
+-
+-
++/*
++**
++* parse object Media to object json
++*
++*/
+   this.createMedia = function(d){
+     console.log ("createMedia");
+     var mediaJS = {};
+@@ -203,39 +237,14 @@ angular.module('urbanBackOfficeApp')
+     return mediaJS;
+ }
+ 
+-this.getData = function(){
+-  //console.log ("getData");
+ 
+-  var initialisation = $q.defer();
+-    
+-  var dataAll = new Array();
+-  var parameters = {
+-            scheme : '', //the default one
+-            queryFn : function(/*string*/ uri){
+-                return {
+-                    method : 'GET',
+-                    url : urlStanbol.address+'/graph/list/typeGraph?typeGraph=data'
+-
+-                };
+-            }
+-  };
+-  var uriBase = "http://ooffee.eu/ns/urban#"
+ 
+-    $http({
+-        method : 'GET',
+-        url : parameters.queryFn().url, //rdfuiConfig.server+'mediamanagement?uri='+uri,
+-    }).success(function(data){
+-      dataAll = data["@graph"];
+-      initialisation.resolve(dataAll);
+-
+-      }).error(function(){
+-        console.log("error get data");
+-    })
+-
+-     return(initialisation.promise);  
+-
+-}
+ 
++/*
++* extract carts from graph data
++*
++*
++*/
+ this.getCartsFromData = function(dataAll){
+    var carts   = new Array();
+    var cartsJS = new Array();
+@@ -257,6 +266,13 @@ this.getCartsFromData = function(dataAll){
+ 
+ }
+ 
++/*
++**
++* parse object Cart to object json
++*
++*/
++
++
+ 
+ 
+ this.getCarts = function(){
+@@ -306,6 +322,7 @@ this.getCarts = function(){
+ 
+ }
+ 
++
+ this.createCart = function(d){
+ 
+     var cartJS = {};
+@@ -376,7 +393,11 @@ this.createCart = function(d){
+     return cartJS;
+ }
+ 
+-
++/*
++**
++* save general
++*
++*/
+   this.save = function(graph,uri, mediaJS){
+ 
+     var uriBase = "http://ooffee.eu/ns/urban#";
+@@ -393,8 +414,6 @@ this.createCart = function(d){
+       var mediaJSDataBase = new Array();
+       var modif = false;
+ 
+-//*************************** new code save ******************
+-
+        Object.keys(obj).forEach(function(K){
+         if(K.startsWith("_")){
+           if(!(angular.equals(obj[K],obj[K.substring(1)]))){
+@@ -441,7 +460,7 @@ this.createCart = function(d){
+ 
+ 
+ 
+-    }
++}
+ 
+     this.addMediaToCart = function(graph, idC, idM){
+       var def = $q.defer();
+@@ -457,5 +476,108 @@ this.createCart = function(d){
+       return(def.promise);
+     }
+ 
++
++/*
++**
++* utilisé uniquement pour les tests unitaires
++*
++*/
++  this.getMedias = function(){
++    var initialisation = $q.defer();
++
++    var mediasJS = new Array();
++    var medias = new Array();
++    var dataAll = new Array();
++
++    var parameters = {
++            scheme : '', //the default one
++            queryFn : function(/*string*/ uri){
++                return {
++                    method : 'GET',
++                    url : urlStanbol.address+'/graph/list/typeGraph?typeGraph=data'
++
++                };
++            }
++    };
++
++
++    $http({
++        method : 'GET',
++        url : parameters.queryFn().url, //rdfuiConfig.server+'skosifier?uri='+uri,
++    }).success(function(data){
++        dataAll = data["@graph"];
++        dataAll.forEach(function(d,i){
++          if(d[uriBase+"type"] == "Media"){
++            medias.push(d);
++          }
++        });
++
++    }).error(function(){
++        console.log("error");
++    }).then(function(){
++
++      medias.forEach(function(d,i){
++        var mediaJS = self.createMedia(d);
++        mediasJS.push(mediaJS);
++
++      });
++
++      initialisation.resolve(mediasJS);
++
++    });
++    return(initialisation.promise);
++  }
++/*
++**
++* utilisé uniquement pour les tests unitaires
++*
++*/
++  this.getCarts = function(){
++    console.log("getCarts");
++    var initialisation = $q.defer();
++    var carts = new Array();
++    var cartsJS = new Array();
++    var dataAll = new Array();
++    var parameters = {
++            scheme : '', //the default one
++            queryFn : function(/*string*/ uri){
++                return {
++                    method : 'GET',
++                    url : urlStanbol.address+'/graph/list/typeGraph?typeGraph=data'
++
++                };
++            }
++    };
++    var uriBase = "http://ooffee.eu/ns/urban#"
++
++    $http({
++        method : 'GET',
++        url : parameters.queryFn().url, //rdfuiConfig.server+'skosifier?uri='+uri,
++    }).success(function(data){
++        dataAll = data["@graph"];
++        dataAll.forEach(function(d,i){
++          if(d[uriBase+"type"] == "Cart"){
++            carts.push(d);
++          }
++        });
++
++    }).error(function(){
++        console.log("error get carts");
++    }).then(function(){
++
++      carts.forEach(function(d,i){
++        var cartJS = self.createCart(d);
++        cartsJS.push(cartJS);
++
++      });
++
++      initialisation.resolve(cartsJS);
++
++    });
++    return(initialisation.promise);
++
++
++}
++
+     var self = this;
+ });
+diff --git a/code/urbanBackOffice/app/scripts/services/proxyProject.js b/code/urbanBackOffice/app/scripts/services/proxyProject.js
+index b170469..388acc2 100644
+--- a/code/urbanBackOffice/app/scripts/services/proxyProject.js
++++ b/code/urbanBackOffice/app/scripts/services/proxyProject.js
+@@ -4,15 +4,19 @@
+ angular.module('urbanBackOfficeApp')
+ .service('ProxyProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService) {
+ 
+-  var uriBase = "http://ooffee.eu/ns/urban#";
+-  var dataAll = new Array();
+-
+-  this.getProjectJS = function(){
++	//note : jshint directive to remove "better written in dot notation warning"
++	
++	/*jshint -W069 */
++	
++  var uriBase = 'http://ooffee.eu/ns/urban#';
++  var dataAll = [];
++
++  this.getProjectJS = function(isSteps, isMedias){
+     var initialisation = $q.defer();
+ 
+-    var projectsJS = new Array();
+-    var projects = new Array();
+-    var steps = new Array();
++    var projectsJS = [];
++    var projects = [];
++    var steps = [];
+ 
+ 
+     var parameters = {
+@@ -31,110 +35,271 @@ angular.module('urbanBackOfficeApp')
+         method : 'GET',
+         url : parameters.queryFn().url, //rdfuiConfig.server+'mediamanagement?uri='+uri,
+     }).success(function(data){
+-        dataAll = data["@graph"];
+-        if (dataAll  != null){
++        dataAll = data['@graph'];
++        if (dataAll  !== null){
+           dataAll.forEach(function(d,i){
+-            if(d[uriBase+"type"] == "Project"){
++            if(d[uriBase+'type'] === 'Project'){
+               projects.push(d);
+             }
+-            if(d[uriBase+"type"] == "step"){
++            if(d[uriBase+'type'] === 'step'){
+               steps.push(d);
+             }
+           });
+         }
+-        //projects = data["@graph"];
++        //projects = data['@graph'];
+         //console.log(projectJS);
+     }).error(function(){
+-        console.log("error");
++        console.log('error');
+     }).then(function(){
+ 
+       projects.forEach(function(d,i){
+         var projectJS = self.createProject(d);
+-        var stepsTmp = new Array();
+-        if(d[uriBase+"steps"]!=null){
+-          if(angular.isArray(d[uriBase+"steps"])){
+-            d[uriBase+"steps"].forEach(function(s,i){
+-              var step = self.getStep(s);
+-              var medias = self.getMedias(steps, step["@id"]);
+-
+-              if (medias != undefined && medias != null){
+-              if(angular.isArray(medias)){
+-                medias.forEach(function(m){
+-                  var media = new Array();
+-                 console.log (m);
+-                  media = self.getMediaObj(m);
+-                  console.log (media);
+-                  if (media.id != undefined){
+-                    step.medias.push(media);
+-                    step._medias.push(media);
+-                  }
+ 
+-                    
+-                });
+-              }
+-              else {
+-                console.log("step 2");
+-                  var media = new Array();
+-                  media = self.getMediaObj(medias);
+-                  if (media.id != undefined){
+-                    step.medias.push(media);
+-                    step._medias.push(media);
++        if (isSteps){
++          var stepsTmp = [];
++          if(d[uriBase+'steps']!==null){
++            if(angular.isArray(d[uriBase+'steps'])){
++              d[uriBase+'steps'].forEach(function(s,i){
++                var step = self.getStep(s);
++                if (isMedias){
++                  var medias = self.getMedias(steps, step['@id']);
++                  if (medias !== undefined && medias !== null){
++                  if(angular.isArray(medias)){
++                    medias.forEach(function(m){
++                      var media = [];
++                      media = self.getMediaObj(m);
++                      step.medias.push(media);
++                      step._medias.push(media);
++                    });
+                   }
++                  else {
++                    console.log('step 2');
++                      var media = [];
++                      media = self.getMediaObj(medias);
++                      step.medias.push(media);
++                      step._medias.push(media);
++                    }
++                  } 
+                 }
+-              }
+-              console.log(step);
++                projectJS.steps.push(step);
++              });
++            }
++            else{
++              var step = self.getStep(d[uriBase+'steps']);
+               projectJS.steps.push(step);
+-            });
+-          }else{
+-            var step = self.getStep(d[uriBase+"steps"]);
+-            console.log(step);
+-            projectJS.steps.push(step);
++            }
++
+           }
+-        }
++        }  
+         projectsJS.push(projectJS);
+       });
+       initialisation.resolve(projectsJS);
+     });
+     return(initialisation.promise);
+-  }
+-
+-
++  };
+ 
+ 
+-this.getProjectsFromData = function(dataAll){
+-   var projects   = new Array();
+-   var projectsJS = new Array();
++  this.getProjectsFromData = function(dataAll){
++  var initialisation = $q.defer();
++   var projects   = [];
++   var projectsJS = [];
++   var steps = [];
+ 
+   dataAll.forEach(function(d,i){
+-   if(d[uriBase+"type"] == "Project"){
++   if(d[uriBase+'type'] === 'Project'){
+       projects.push(d);
+     }
++    if(d[uriBase+'type'] === 'step'){
++              steps.push(d);
++    }
+   });
+ 
+   projects.forEach(function(d,i){
+-   var projectJS = self.createProject(d);
+-    projectsJS.push(projectJS);
++        var projectJS = self.createProject(d);
++        var stepsTmp = [];
++        if(d[uriBase+'steps']!==null){
++          if(angular.isArray(d[uriBase+'steps'])){
++            d[uriBase+'steps'].forEach(function(s,i){
++              var step = self.getStepJsByProject(s,dataAll);
+ 
++              projectJS.steps.push(step);
++            });
++          }
++          else{
++            var step = self.getStepJsByProject(d[uriBase+'steps'], dataAll);
++            projectJS.steps.push(step);
++          }
++        }
++        projectsJS.push(projectJS);
+   });
+ 
+-  return(projectsJS);
+ 
++  initialisation.resolve(projectsJS);
++  return(initialisation.promise);
+ 
+-}
+-  this.getMedias = function(steps,id){
+-    var medias = new Array();
++};
++
++
++ this.getProjectJsById = function(idProject, isSteps, isMedias){
++    var initialisation = $q.defer();
++    var projectJS = [];
++    var project = [];
++    var steps = [];
++    var baseUrl = 'http://tofix.uri/'+idProject;
++    var dataProject;
++    var parameters = {
++            scheme : '', //the default one
++            queryFn : function(/*string*/ uri){
++                return {
++                    method : 'GET',
++                    url:urlStanbol.address+'/graph/data/myUser/'+baseUrl,
++                };
++            }
++    };
++
++    $http({
++        method : 'GET',
++        url : parameters.queryFn().url, //rdfuiConfig.server+'skosifier?uri='+uri,
++    }).success(function(data){
++      //console.log (data);
++        dataProject = data['@graph'];
++        //console.log (data);
++        //console.log (dataProject);
++        if (dataProject  !== null){
++          dataProject.forEach(function(d,i){
++            if(d[uriBase+'type'] === 'Project'){
++              project = d;
++            }
++            if(d[uriBase+'type'] === 'step'){
++              steps.push(d);
++            }
++          });
++        }else{
++          //console.log(data);
++          project = data;
++
++
++        }
++    }).error(function(){
++        console.log('error');
++    }).then(function(){
++      //console.log (project);
++      var projectJS = self.createProject(project);
++      //console.log (projectJS);
++      if (isSteps){
++        var stepsTmp = [];
++        if(project[uriBase+'steps']!==null){
++          if(angular.isArray(project[uriBase+'steps'])){
++            project[uriBase+'steps'].forEach(function(s,i){
++              var step = self.getStepJsByProject(s,dataProject);
++              //console.log (steps);
++               if (isMedias){  
++                var medias = self.getMedias(steps, step['@id']);
++                //console.log (medias);
++                if (medias !== undefined && medias !== null){
++                if(angular.isArray(medias)){
++                  medias.forEach(function(m){
++                	  if(typeof(m) === 'string'){
++                		  if (m.indexOf('BNode') === -1){ //les noeud vides
++                              var media = [];
++                              var promiseM = self.MediaJsById(m);
++                              promiseM.then(function(media){
++                                console.log (media);
++                                step.medias.push(media);
++                                step._medias.push(media);
++                              });  
++                            } 
++                	  }else{
++                		  console.log('cas particulier où l\'on a un object à la place d\'un string.');
++                	  }
++                  });
++                }
++                else {
++                  console.log('step 2');
++                    var media = [];
++                    //console.log (medias);
++                   
++                    var promiseM = self.MediaJsById(medias);
++                      promiseM.then(function(media){
++                        //console.log (media);
++                        step.medias.push(media);
++                        step._medias.push(media);
++                    });  
++                  }
++                }
++              }  
++
++                projectJS.steps.push(step);
++            }); //project.foreach
++          }
++          else{
++            var step = self.getStep(project[uriBase+'steps']);
++            projectJS.steps.push(step);
++          }
+ 
++        }
++       
++      }
++      initialisation.resolve(projectJS);
++    });
++    return(initialisation.promise);
++  };
++
++
++
++  this.getMedias = function(steps,id){
++    //console.log (steps);
++    var medias = [];
+     steps.forEach(function(step){
+       if(step["@id"] == uriBase +"#step#" +id){ // Je trouve la bonne étape
+         medias = step[uriBase + "medias"];
+       }
+     });
++    //console.log (medias);
+     return(medias);
+-  }
++  };
+ 
++  this.MediaJsById = function(id){
++    //console.log (id);
++    var initialisation = $q.defer();
++    var mediaJS = [];
++    var media = [];
++    var baseUrl = 'http://tofix.uri/'+id;
++    var uriToFix = 'http://tofix.uri/';
++    var parameters = {
++            scheme : '', //the default one
++            queryFn : function(/*string*/ uri){
++                return {
++                    method : 'GET',
++                    url:urlStanbol.address+'/graph/data/myUser/'+baseUrl,
++                };
++            }
++    };
++    $http({
++        method : 'GET',
++        url : parameters.queryFn().url, //rdfuiConfig.server+'skosifier?uri='+uri,
++   
++    }).success(function(d){
++      media = d;
++      
++    }).error(function(){
++        console.log('error');
++    }).then(function(){
++      //console.log (media);
++      if(media['@id']=== uriToFix +id + '##' +id){
++
++        mediaJS = ProxyMediasService.createMedia(media);
++        //console.log (mediaJS);
++        
++      }  
++    initialisation.resolve(mediaJS);
++    });
++    return(initialisation.promise);
++  };
++       
+   this.getMediaObj = function(id){
+     var mediaJS = {};
+-    var uriToFix = "http://tofix.uri/";
++    var uriToFix = 'http://tofix.uri/';
+     dataAll.forEach(function(d,i){
+       //console.log (d);
+       if(d["@id"]== uriToFix +id + "##" +id){
+@@ -246,400 +411,562 @@ this.getProjectsFromData = function(dataAll){
+     		  enumerable : true,
+     		  writable : true
+     	  });
+-
+-
+       }
+     });
+     return(mediaJS);
+-  }
++  };
+ 
+   this.getStep = function(id){
+ 
+     var step = {};
+-    //graphService.findNode("http://ooffee.eu/ns/urban##step#1d6c");
++    //graphService.findNode('http://ooffee.eu/ns/urban##step#1d6c');
+     dataAll.forEach(function(d,i){
+-      if(d["@id"]== uriBase +"#step#" +id){
+-          Object.defineProperty(step, "_id",{
+-            value : d[uriBase + "id"],
++      if(d['@id']=== uriBase +'#step#' +id){
++          Object.defineProperty(step, '_id',{
++            value : d[uriBase + 'id'],
+             enumerable : true,
+             writable : true
+           });
+ 
+ 
+-          Object.defineProperty(step, "id",{
+-            value : d[uriBase + "id"],
++          Object.defineProperty(step, 'id',{
++            value : d[uriBase + 'id'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "@id",{
++          Object.defineProperty(step, '@id',{
+             value : id,
+             enumerable : true,
+             writable : true
+           });
+ 
+ 
+-          Object.defineProperty(step, "_lng",{
+-              value : d[uriBase + "lng"],
++          Object.defineProperty(step, '_lng',{
++              value : d[uriBase + 'lng'],
+               enumerable : true,
+               writable : true
+           });
+ 
+ 
+-          Object.defineProperty(step, "lng",{
+-              value : d[uriBase + "lng"],
++          Object.defineProperty(step, 'lng',{
++              value : d[uriBase + 'lng'],
+               enumerable : true,
+               writable : true
+           });
+ 
+-          Object.defineProperty(step, "_message",{
+-              value : d[uriBase + "message"],
++          Object.defineProperty(step, '_message',{
++              value : d[uriBase + 'message'],
+               enumerable : true,
+               writable : true
+           });
+ 
+ 
+-          Object.defineProperty(step, "message",{
+-              value : d[uriBase + "message"],
++          Object.defineProperty(step, 'message',{
++              value : d[uriBase + 'message'],
+               enumerable : true,
+               writable : true
+           });
+ 
+ 
+-          Object.defineProperty(step, "_lat",{
+-              value : d[uriBase + "lat"],
++          Object.defineProperty(step, '_lat',{
++              value : d[uriBase + 'lat'],
+               enumerable : true,
+               writable : true
+           });
+ 
+ 
+-          Object.defineProperty(step, "lat",{
+-              value : d[uriBase + "lat"],
++          Object.defineProperty(step, 'lat',{
++              value : d[uriBase + 'lat'],
+               enumerable : true,
+               writable : true
+           });
+ 
+-          Object.defineProperty(step, "position", {
+-            value : d[uriBase + "position"],
++          Object.defineProperty(step, 'position', {
++            value : d[uriBase + 'position'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "_position", {
+-            value : d[uriBase + "position"],
++          Object.defineProperty(step, '_position', {
++            value : d[uriBase + 'position'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "title",{
+-            value : d[uriBase + "title"],
++          Object.defineProperty(step, 'title',{
++            value : d[uriBase + 'title'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "_title",{
+-            value : d[uriBase + "title"],
++          Object.defineProperty(step, '_title',{
++            value : d[uriBase + 'title'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "description",{
+-            value : d[uriBase + "description"],
++          Object.defineProperty(step, 'description',{
++            value : d[uriBase + 'description'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "_description",{
+-            value : d[uriBase + "description"],
++          Object.defineProperty(step, '_description',{
++            value : d[uriBase + 'description'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "learnMore",{
+-            value : d[uriBase + "learnMore"],
++          Object.defineProperty(step, 'learnMore',{
++            value : d[uriBase + 'learnMore'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "_learnMore",{
+-            value : d[uriBase + "learnMore"],
++          Object.defineProperty(step, '_learnMore',{
++            value : d[uriBase + 'learnMore'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "_isVisible",{
+-            value : d[uriBase + "isVisible"],
++          Object.defineProperty(step, '_isVisible',{
++            value : d[uriBase + 'isVisible'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "isVisible",{
+-            value : d[uriBase + "isVisible"],
++          Object.defineProperty(step, 'isVisible',{
++            value : d[uriBase + 'isVisible'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "_type",{
+-            value : d[uriBase + "type"],
++          Object.defineProperty(step, '_type',{
++            value : d[uriBase + 'type'],
+             enumerable : true,
+             writable : true
+           });
+-          Object.defineProperty(step, "type",{
+-            value : d[uriBase + "type"],
++          Object.defineProperty(step, 'type',{
++            value : d[uriBase + 'type'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "_visual",{
+-            value : d[uriBase + "visual"],
++          Object.defineProperty(step, '_visual',{
++            value : d[uriBase + 'visual'],
+             enumerable : true,
+             writable : true
+           });
+-          Object.defineProperty(step, "visual",{
+-            value : d[uriBase + "visual"],
++          Object.defineProperty(step, 'visual',{
++            value : d[uriBase + 'visual'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(step, "_medias",{
+-            value : new Array(),
++          Object.defineProperty(step, '_medias',{
++            value : [],
+             enumerable : true,
+             writable : true
+           });
+-          Object.defineProperty(step, "medias",{
+-            value : new Array(),
++          Object.defineProperty(step, 'medias',{
++            value : [],
+             enumerable : true,
+             writable : true
+           });
+       }
+     });
+     return(step);
+-  }
++  };
++
++  this.getStepJsByProject = function(id, dataProject){
++
++    var step = {};
++    //graphService.findNode('http://ooffee.eu/ns/urban##step#1d6c');
++    dataProject.forEach(function(d,i){
++      if(d['@id']=== uriBase +'#step#' +id){
++          Object.defineProperty(step, '_id',{
++            value : d[uriBase + 'id'],
++            enumerable : true,
++            writable : true
++          });
++
++
++          Object.defineProperty(step, 'id',{
++            value : d[uriBase + 'id'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '@id',{
++            value : id,
++            enumerable : true,
++            writable : true
++          });
++
++
++          Object.defineProperty(step, '_lng',{
++              value : d[uriBase + 'lng'],
++              enumerable : true,
++              writable : true
++          });
++
++
++          Object.defineProperty(step, 'lng',{
++              value : d[uriBase + 'lng'],
++              enumerable : true,
++              writable : true
++          });
++
++          Object.defineProperty(step, '_message',{
++              value : d[uriBase + 'message'],
++              enumerable : true,
++              writable : true
++          });
++
++
++          Object.defineProperty(step, 'message',{
++              value : d[uriBase + 'message'],
++              enumerable : true,
++              writable : true
++          });
++
++
++          Object.defineProperty(step, '_lat',{
++              value : d[uriBase + 'lat'],
++              enumerable : true,
++              writable : true
++          });
++
++
++          Object.defineProperty(step, 'lat',{
++              value : d[uriBase + 'lat'],
++              enumerable : true,
++              writable : true
++          });
++
++          Object.defineProperty(step, 'position', {
++            value : d[uriBase + 'position'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '_position', {
++            value : d[uriBase + 'position'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, 'title',{
++            value : d[uriBase + 'title'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '_title',{
++            value : d[uriBase + 'title'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, 'description',{
++            value : d[uriBase + 'description'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '_description',{
++            value : d[uriBase + 'description'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, 'learnMore',{
++            value : d[uriBase + 'learnMore'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '_learnMore',{
++            value : d[uriBase + 'learnMore'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '_isVisible',{
++            value : d[uriBase + 'isVisible'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, 'isVisible',{
++            value : d[uriBase + 'isVisible'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '_type',{
++            value : d[uriBase + 'type'],
++            enumerable : true,
++            writable : true
++          });
++          Object.defineProperty(step, 'type',{
++            value : d[uriBase + 'type'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '_visual',{
++            value : d[uriBase + 'visual'],
++            enumerable : true,
++            writable : true
++          });
++          Object.defineProperty(step, 'visual',{
++            value : d[uriBase + 'visual'],
++            enumerable : true,
++            writable : true
++          });
++
++          Object.defineProperty(step, '_medias',{
++            value : [],
++            enumerable : true,
++            writable : true
++          });
++          Object.defineProperty(step, 'medias',{
++            value : [],
++            enumerable : true,
++            writable : true
++          });
++      }
++    });
++    return(step);
++  };
++
+ 
+   this.createProject = function(d){
+     var projectJS = {};
+ 
+-    Object.defineProperty(projectJS, "_@id", {
+-        value : d["@id"],
++    Object.defineProperty(projectJS, '_@id', {
++        value : d['@id'],
+         enumerable : true,
+         writable : true
+       });
+ 
+-    Object.defineProperty(projectJS, "@id", {
+-      value : d["@id"],
++    Object.defineProperty(projectJS, '@id', {
++      value : d['@id'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_author", {
+-      value : d[uriBase + "author"],
++    Object.defineProperty(projectJS, '_author', {
++      value : d[uriBase + 'author'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "author", {
+-      value : d[uriBase + "author"],
++    Object.defineProperty(projectJS, 'author', {
++      value : d[uriBase + 'author'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_dateCreate", {
+-      value : d[uriBase + "dateCreate"],
++    Object.defineProperty(projectJS, '_dateCreate', {
++      value : d[uriBase + 'dateCreate'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "dateCreate", {
+-      value : d[uriBase + "dateCreate"],
++    Object.defineProperty(projectJS, 'dateCreate', {
++      value : d[uriBase + 'dateCreate'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_dateUpdate", {
+-      value : d[uriBase + "dateUpdate"],
++    Object.defineProperty(projectJS, '_dateUpdate', {
++      value : d[uriBase + 'dateUpdate'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "dateUpdate", {
+-      value : d[uriBase + "dateUpdate"],
++    Object.defineProperty(projectJS, 'dateUpdate', {
++      value : d[uriBase + 'dateUpdate'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_id", {
+-      value : d[uriBase  + "id"],
++    Object.defineProperty(projectJS, '_id', {
++      value : d[uriBase  + 'id'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "id", {
+-      value : d[uriBase  + "id"],
++    Object.defineProperty(projectJS, 'id', {
++      value : d[uriBase  + 'id'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_name", {
+-      value : d[uriBase + "name"],
++    Object.defineProperty(projectJS, '_name', {
++      value : d[uriBase + 'name'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "name", {
+-      value : d[uriBase + "name"],
++    Object.defineProperty(projectJS, 'name', {
++      value : d[uriBase + 'name'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_status", {
+-      value : d[uriBase + "status"],
++    Object.defineProperty(projectJS, '_status', {
++      value : d[uriBase + 'status'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "status", {
+-      value : d[uriBase + "status"],
++    Object.defineProperty(projectJS, 'status', {
++      value : d[uriBase + 'status'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_minZoom", {
+-      value : d[uriBase + "minZoom"],
++    Object.defineProperty(projectJS, '_minZoom', {
++      value : d[uriBase + 'minZoom'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "minZoom", {
+-      value : d[uriBase + "minZoom"],
++    Object.defineProperty(projectJS, 'minZoom', {
++      value : d[uriBase + 'minZoom'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_maxZoom", {
+-      value : d[uriBase + "maxZoom"],
++    Object.defineProperty(projectJS, '_maxZoom', {
++      value : d[uriBase + 'maxZoom'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "maxZoom", {
+-      value : d[uriBase + "maxZoom"],
++    Object.defineProperty(projectJS, 'maxZoom', {
++      value : d[uriBase + 'maxZoom'],
+       enumerable : true,
+       writable : true
+     });
+ 
+ 
+-    Object.defineProperty(projectJS, "_lat", {
+-      value : d[uriBase + "lat"],
++    Object.defineProperty(projectJS, '_lat', {
++      value : d[uriBase + 'lat'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "lat", {
+-      value : d[uriBase + "lat"],
++    Object.defineProperty(projectJS, 'lat', {
++      value : d[uriBase + 'lat'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "lng", {
+-      value : d[uriBase + "lng"],
++    Object.defineProperty(projectJS, 'lng', {
++      value : d[uriBase + 'lng'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_lng", {
+-      value : d[uriBase + "lng"],
++    Object.defineProperty(projectJS, '_lng', {
++      value : d[uriBase + 'lng'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_zoom", {
+-      value : d[uriBase + "zoom"],
++    Object.defineProperty(projectJS, '_zoom', {
++      value : d[uriBase + 'zoom'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "zoom", {
+-      value : d[uriBase + "zoom"],
++    Object.defineProperty(projectJS, 'zoom', {
++      value : d[uriBase + 'zoom'],
+       enumerable : true,
+       writable : true
+     });
+ 
+ 
+-        Object.defineProperty(projectJS, "_type", {
+-          value : d[uriBase + "type"],
++        Object.defineProperty(projectJS, '_type', {
++          value : d[uriBase + 'type'],
+           enumerable : true,
+           writable : true
+         });
+ 
+-        Object.defineProperty(projectJS, "type", {
+-          value : d[uriBase + "type"],
++        Object.defineProperty(projectJS, 'type', {
++          value : d[uriBase + 'type'],
+           enumerable : true,
+           writable : true
+         });
+ 
+-    Object.defineProperty(projectJS, "_ishomePage", {
+-      value : d[uriBase + "ishomePage"],
++    Object.defineProperty(projectJS, '_ishomePage', {
++      value : d[uriBase + 'ishomePage'],
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "ishomePage", {
+-      value : d[uriBase + "ishomePage"],
++    Object.defineProperty(projectJS, 'ishomePage', {
++      value : d[uriBase + 'ishomePage'],
+       enumerable : true,
+       writable : true
+     });
+ 
+     var homePage = {
+-      description : d[uriBase + "homepagedescription"],
+-      learnMore : d[uriBase + "homepagelearnMore"],
+-      images : d[uriBase + "homepageimages"],
++      description : d[uriBase + 'homepagedescription'],
++      learnMore : d[uriBase + 'homepagelearnMore'],
++      images : d[uriBase + 'homepageimages'],
+       isVirtualObj : true
+     };
+ 
+     var _homePage = angular.copy(homePage);
+ 
+-    Object.defineProperty(projectJS, "homepage", {
++    Object.defineProperty(projectJS, 'homepage', {
+       value : homePage,
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_homepage", {
++    Object.defineProperty(projectJS, '_homepage', {
+       value : _homePage,
+       enumerable : true,
+       writable : true
+     });
+ 
+     var footer = {
+-      about : d[uriBase + "footerabout"],
+-      help : d[uriBase + "footerhelp"],
+-      image : d[uriBase + "footerimage"],
++      about : d[uriBase + 'footerabout'],
++      help : d[uriBase + 'footerhelp'],
++      image : d[uriBase + 'footerimage'],
+       isVirtualObj : true
+     };
+ 
+     var _footer = angular.copy(footer);
+ 
+-    Object.defineProperty(projectJS, "footer", {
++    Object.defineProperty(projectJS, 'footer', {
+       value : footer,
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS, "_footer", {
++    Object.defineProperty(projectJS, '_footer', {
+       value : _footer,
+       enumerable : true,
+       writable : true
+     });
+ 
+-    Object.defineProperty(projectJS,"steps", {
+-      value : new Array(),
++    Object.defineProperty(projectJS,'steps', {
++      value : [],
+       enumerable : true,
+       writable : true
+     });
+ 
+ 
+-    Object.defineProperty(projectJS,"_steps", {
+-      value : new Array(),
++    Object.defineProperty(projectJS,'_steps', {
++      value : [],
+       enumerable : true,
+       writable : true
+     });
+@@ -653,165 +980,165 @@ this.getProjectsFromData = function(dataAll){
+       return(def.promise);
+     };
+     return projectJS;
+-}
++};
+ 
+ 
+ this.createStep = function(stepInProgress){
+   var step = {};
+ 
+-  Object.defineProperty(step, "_id",{
+-    value : stepInProgress["_id"] != "" ? stepInProgress["_id"] : "",
++  Object.defineProperty(step, '_id',{
++    value : stepInProgress['_id'] !== '' ? stepInProgress['_id'] : '',
+     enumerable : true,
+     writable : true
+   });
+ 
+ 
+-  Object.defineProperty(step, "id",{
+-    value : stepInProgress["id"],
++  Object.defineProperty(step, 'id',{
++    value : stepInProgress['id'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "@id",{
+-    value : stepInProgress["@id"] != null ? stepInProgress["@id"] : utils.guid()+"",
++  Object.defineProperty(step, '@id',{
++    value : stepInProgress['@id'] !== null ? stepInProgress['@id'] : utils.guid()+'',
+     enumerable : true,
+     writable : true
+   });
+ 
+ 
+-  Object.defineProperty(step, "_lng",{
+-      value : stepInProgress["_lng"] != "" ? stepInProgress["_lng"] : "",
++  Object.defineProperty(step, '_lng',{
++      value : stepInProgress['_lng'] !== '' ? stepInProgress['_lng'] : '',
+       enumerable : true,
+       writable : true
+   });
+ 
+ 
+-  Object.defineProperty(step, "lng",{
+-      value : stepInProgress.markers == null ? stepInProgress["lng"] : stepInProgress.markers["lng"],
++  Object.defineProperty(step, 'lng',{
++      value : stepInProgress.markers === null ? stepInProgress['lng'] : stepInProgress.markers['lng'],
+       enumerable : true,
+       writable : true
+   });
+ 
+ 
+-  Object.defineProperty(step, "_lat",{
+-      value : stepInProgress["_lat"] != "" ? stepInProgress["_lat"] : "",
++  Object.defineProperty(step, '_lat',{
++      value : stepInProgress['_lat'] !== '' ? stepInProgress['_lat'] : '',
+       enumerable : true,
+       writable : true
+   });
+ 
+ 
+-  Object.defineProperty(step, "lat",{
+-      value : stepInProgress.markers == null ? stepInProgress["lat"] : stepInProgress.markers["lat"],
++  Object.defineProperty(step, 'lat',{
++      value : stepInProgress.markers === null ? stepInProgress['lat'] : stepInProgress.markers['lat'],
+       enumerable : true,
+       writable : true
+   });
+ 
+-  Object.defineProperty(step, "position", {
+-    value : stepInProgress["position"],
++  Object.defineProperty(step, 'position', {
++    value : stepInProgress['position'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "_position", {
+-    value : stepInProgress["_position"] != "" ? stepInProgress["_position"] : "",
++  Object.defineProperty(step, '_position', {
++    value : stepInProgress['_position'] !== '' ? stepInProgress['_position'] : '',
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "_message", {
+-    value : stepInProgress["_message"] != "" ? stepInProgress["_message"] : "",
++  Object.defineProperty(step, '_message', {
++    value : stepInProgress['_message'] !== '' ? stepInProgress['_message'] : '',
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "message", {
+-    value : stepInProgress["message"],
++  Object.defineProperty(step, 'message', {
++    value : stepInProgress['message'],
+     enumerable : true,
+     writable : true
+   });
+ 
+ 
+-  Object.defineProperty(step, "_title",{
+-    value : stepInProgress["_title"] != "" ? stepInProgress["_title"] : "",
++  Object.defineProperty(step, '_title',{
++    value : stepInProgress['_title'] !== '' ? stepInProgress['_title'] : '',
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "title",{
+-    value : stepInProgress["title"],
++  Object.defineProperty(step, 'title',{
++    value : stepInProgress['title'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "_isVisible",{
+-    value : stepInProgress["_isVisible"],
++  Object.defineProperty(step, '_isVisible',{
++    value : stepInProgress['_isVisible'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "isVisible",{
+-    value : stepInProgress["isVisible"],
++  Object.defineProperty(step, 'isVisible',{
++    value : stepInProgress['isVisible'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "_type",{
+-    value : stepInProgress["_type"],
++  Object.defineProperty(step, '_type',{
++    value : stepInProgress['_type'],
+     enumerable : true,
+     writable : true
+   });
+-  Object.defineProperty(step, "type",{
+-    value : stepInProgress["type"],
++  Object.defineProperty(step, 'type',{
++    value : stepInProgress['type'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "_description",{
+-    value : stepInProgress["_description"],
++  Object.defineProperty(step, '_description',{
++    value : stepInProgress['_description'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "description",{
+-    value : stepInProgress["description"],
++  Object.defineProperty(step, 'description',{
++    value : stepInProgress['description'],
+     enumerable : true,
+     writable : true
+   });
+ 
+ 
+-  Object.defineProperty(step, "_learnMore", {
+-    value : stepInProgress["_learnMore"],
++  Object.defineProperty(step, '_learnMore', {
++    value : stepInProgress['_learnMore'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "learnMore", {
+-    value : stepInProgress["learnMore"],
++  Object.defineProperty(step, 'learnMore', {
++    value : stepInProgress['learnMore'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "_visual",{
+-    value : stepInProgress["_visual"],
++  Object.defineProperty(step, '_visual',{
++    value : stepInProgress['_visual'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "visual",{
+-    value : stepInProgress["visual"],
++  Object.defineProperty(step, 'visual',{
++    value : stepInProgress['visual'],
+     enumerable : true,
+     writable : true
+   });
+ 
+ 
+-  Object.defineProperty(step, "_medias",{
+-    value : stepInProgress["_medias"],
++  Object.defineProperty(step, '_medias',{
++    value : stepInProgress['_medias'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(step, "medias",{
+-    value : stepInProgress["medias"],
++  Object.defineProperty(step, 'medias',{
++    value : stepInProgress['medias'],
+     enumerable : true,
+     writable : true
+   });
+@@ -819,13 +1146,13 @@ this.createStep = function(stepInProgress){
+ 
+ 
+ 
+-  Object.defineProperty(step, "position", {
+-    value : stepInProgress["position"],
++  Object.defineProperty(step, 'position', {
++    value : stepInProgress['position'],
+     enumerable : true,
+     writable : true
+   });
+-  Object.defineProperty(step, "title",{
+-    value : stepInProgress["title"],
++  Object.defineProperty(step, 'title',{
++    value : stepInProgress['title'],
+     enumerable : true,
+     writable : true
+   });
+@@ -833,17 +1160,17 @@ this.createStep = function(stepInProgress){
+ 
+   step.saveObj = function(step, graph){
+      var def = $q.defer();
+-     console.log("step.saveObj");
++     console.log('step.saveObj');
+      var promise = self.saveObj(step,graph);
+      promise.then(function(){
+-       console.log("step sauvÃ©e");
++       console.log('step sauvÃ©e');
+        def.resolve();
+      });
+      return(def.promise);
+   };
+ 
+   return step;
+-}
++};
+ 
+ 
+   /******************************** JVX : 17/03/15***************************/
+@@ -854,8 +1181,8 @@ this.createStep = function(stepInProgress){
+   /**************************************************************************/
+ 
+   this.getProject = function(uri){
+-      var project = new Array();
+-      var uriBase = "http://ooffee.eu/ns/urban#";
++      var project = [];
++      var uriBase = 'http://ooffee.eu/ns/urban#';
+       var parameters = {
+       scheme : '', //the default one
+       queryFn : function(/*string*/ uri){
+@@ -868,176 +1195,175 @@ this.createStep = function(stepInProgress){
+ 
+     //uri = {{uri}};
+ 
+-      var promiseProject = graphService.getLazyGraph(uri,parameters,"");
++      var promiseProject = graphService.getLazyGraph(uri,parameters,'');
+       promiseProject.then(function(data){
+     	  
+     	  console.warn("Deprecated code, read the comments in the code");
+     	  //TODO : use the self.toJsObject function here.
+     	  //This is a previous implementation, and not clean about how this is really works.
+-    	  
+-    	  
+         project = data["@graph"];
++        
+         project.forEach(function(d,i){
+           var projectJS = {};
+ 
+-          Object.defineProperty(projectJS, "_author", {
+-            value : d[uriBase + "author"],
++          Object.defineProperty(projectJS, '_author', {
++            value : d[uriBase + 'author'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "author", {
+-            value : d[uriBase + "author"],
++          Object.defineProperty(projectJS, 'author', {
++            value : d[uriBase + 'author'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_dateCreate", {
+-            value : d[uriBase + "dateCreate"],
++          Object.defineProperty(projectJS, '_dateCreate', {
++            value : d[uriBase + 'dateCreate'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "dateCreate", {
+-            value : d[uriBase + "dateCreate"],
++          Object.defineProperty(projectJS, 'dateCreate', {
++            value : d[uriBase + 'dateCreate'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_dateUpdate", {
+-            value : d[uriBase + "dateUpdate"],
++          Object.defineProperty(projectJS, '_dateUpdate', {
++            value : d[uriBase + 'dateUpdate'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "dateUpdate", {
+-            value : d[uriBase + "dateUpdate"],
++          Object.defineProperty(projectJS, 'dateUpdate', {
++            value : d[uriBase + 'dateUpdate'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_id", {
+-            value : d[uriBase  + "id"],
++          Object.defineProperty(projectJS, '_id', {
++            value : d[uriBase  + 'id'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "id", {
+-            value : d[uriBase  + "id"],
++          Object.defineProperty(projectJS, 'id', {
++            value : d[uriBase  + 'id'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_name", {
+-            value : d[uriBase + "name"],
++          Object.defineProperty(projectJS, '_name', {
++            value : d[uriBase + 'name'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "name", {
+-            value : d[uriBase + "name"],
++          Object.defineProperty(projectJS, 'name', {
++            value : d[uriBase + 'name'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_status", {
+-            value : d[uriBase + "status"],
++          Object.defineProperty(projectJS, '_status', {
++            value : d[uriBase + 'status'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "status", {
+-            value : d[uriBase + "status"],
++          Object.defineProperty(projectJS, 'status', {
++            value : d[uriBase + 'status'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_minZoom", {
+-            value : d[uriBase + "minZoom"],
++          Object.defineProperty(projectJS, '_minZoom', {
++            value : d[uriBase + 'minZoom'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "minZoom", {
+-            value : d[uriBase + "minZoom"],
++          Object.defineProperty(projectJS, 'minZoom', {
++            value : d[uriBase + 'minZoom'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_maxZoom", {
+-            value : d[uriBase + "maxZoom"],
++          Object.defineProperty(projectJS, '_maxZoom', {
++            value : d[uriBase + 'maxZoom'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "maxZoom", {
+-            value : d[uriBase + "maxZoom"],
++          Object.defineProperty(projectJS, 'maxZoom', {
++            value : d[uriBase + 'maxZoom'],
+             enumerable : true,
+             writable : true
+           });
+ 
+ 
+-          Object.defineProperty(projectJS, "_lat", {
+-            value : d[uriBase + "lat"],
++          Object.defineProperty(projectJS, '_lat', {
++            value : d[uriBase + 'lat'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "lat", {
+-            value : d[uriBase + "lat"],
++          Object.defineProperty(projectJS, 'lat', {
++            value : d[uriBase + 'lat'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "lng", {
+-            value : d[uriBase + "lng"],
++          Object.defineProperty(projectJS, 'lng', {
++            value : d[uriBase + 'lng'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_lng", {
+-            value : d[uriBase + "lng"],
++          Object.defineProperty(projectJS, '_lng', {
++            value : d[uriBase + 'lng'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_zoom", {
+-            value : d[uriBase + "zoom"],
++          Object.defineProperty(projectJS, '_zoom', {
++            value : d[uriBase + 'zoom'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "zoom", {
+-            value : d[uriBase + "zoom"],
++          Object.defineProperty(projectJS, 'zoom', {
++            value : d[uriBase + 'zoom'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_ishomePage", {
+-            value : d[uriBase + "ishomePage"],
++          Object.defineProperty(projectJS, '_ishomePage', {
++            value : d[uriBase + 'ishomePage'],
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "ishomePage", {
+-            value : d[uriBase + "ishomePage"],
++          Object.defineProperty(projectJS, 'ishomePage', {
++            value : d[uriBase + 'ishomePage'],
+             enumerable : true,
+             writable : true
+           });
+ 
+           var center = {
+-            lng : d[uriBase + "lng"],
+-            lat : d[uriBase + "lat"],
+-            zoom : d[uriBase + "zoom"],
++            lng : d[uriBase + 'lng'],
++            lat : d[uriBase + 'lat'],
++            zoom : d[uriBase + 'zoom'],
+           };
+ 
+-          Object.defineProperty(projectJS, "center", {
++          Object.defineProperty(projectJS, 'center', {
+             value : center,
+             enumerable : true,
+             writable : true
+           });
+ 
+-          Object.defineProperty(projectJS, "_center", {
++          Object.defineProperty(projectJS, '_center', {
+             value : center,
+             enumerable : true,
+             writable : true
+@@ -1046,31 +1372,13 @@ this.createStep = function(stepInProgress){
+ 
+         return(project);
+     });
+-  }
+-  
+-  
+-  this.toJsObject = function(jsonLDData){
+-	  
+-	  
+-	  //TODO : reprendre ici en ajoutant ce service dans le truc de traitement du fichier
+-	  var projectJS = null;
+-	  jsonLDData['@graph'].forEach(function(d,i){
+-		   if(d[uriBase+"type"] == "Project"){
+-			   projectJS = self.createProject(d);
+-			   console.log('première version du projet créé');
+-			   console.log(projectJS);
+-			   console.log('il faut maintenant rajouter les liens vers les étapes et les médias');
+-		    }
+-	  });
+-	  
+-	  return projectJs;
+-  }
++  };
+ 
+ 
+   this.save = function(graph,uri, projectJS, center){
+     var def = $q.defer();
+-    var uriBase = "http://ooffee.eu/ns/urban#";
+-    var projectJSDataBase = new Array();
++    var uriBase = 'http://ooffee.eu/ns/urban#';
++    var projectJSDataBase = [];
+     var modif = false;
+     var promise = projectJS.saveObj(projectJS, graph);
+     promise.then(function(){
+@@ -1079,59 +1387,59 @@ this.createStep = function(stepInProgress){
+ 
+     return(def.promise);
+ 
+-  }
++  };
+ 
+   this.delete = function(graph, idProject){
+     var def = $q.defer();
+-    var uriAll = "http://www.culture-terminology.org/ontologies/history#all";
+-    var uriDelete = "http://www.culture-terminology.org/ontologies/history#delete";
++    var uriAll = 'http://www.culture-terminology.org/ontologies/history#all';
++    var uriDelete = 'http://www.culture-terminology.org/ontologies/history#delete';
+     var promiseChange = graphService.buildChanges(graph, idProject, uriAll, [uriAll]);
+     promiseChange.then(function(){
+-        console.log("fini");
++        console.log('fini');
+         def.resolve();
+     });
+     return(def.promise);
+-  }
++  };
+ 
+   this.deleteLienProjectStep = function(graph, uriProject, idStep){
+     var def = $q.defer();
+-    var uriAll = "http://www.culture-terminology.org/ontologies/history#all";
+-    var uriDelete = "http://www.culture-terminology.org/ontologies/history#delete";
++    var uriAll = 'http://www.culture-terminology.org/ontologies/history#all';
++    var uriDelete = 'http://www.culture-terminology.org/ontologies/history#delete';
+ 
+-    var promiseChange = graphService.buildChanges(graph, uriProject, uriBase + "steps", [idStep, null]);
++    var promiseChange = graphService.buildChanges(graph, uriProject, uriBase + 'steps', [idStep, null]);
+     promiseChange.then(function(){
+-      console.log("step supprimÃ©e");
++      console.log('step supprimÃ©e');
+ 
+       def.resolve();
+     });
+     return(def.promise);
+-  }
++  };
+ 
+   this.deleteLienStep = function(graph,  idMedia){
+     var def = $q.defer();
+-    var uriAll = "http://www.culture-terminology.org/ontologies/history#all";
+-    var uriDelete = "http://www.culture-terminology.org/ontologies/history#delete";
++    var uriAll = 'http://www.culture-terminology.org/ontologies/history#all';
++    var uriDelete = 'http://www.culture-terminology.org/ontologies/history#delete';
+ 
+-    var promiseChange = graphService.buildChanges(graph, uriAll, uriBase + "medias", [idMedia, null]);
++    var promiseChange = graphService.buildChanges(graph, uriAll, uriBase + 'medias', [idMedia, null]);
+     promiseChange.then(function(){
+-      console.log("media supprimée from step");
++      console.log('media supprimée from step');
+       def.resolve();
+     });
+     return(def.promise);
+-  }
++  };
+ 
+   this.saveObj = function(obj,graph){
+-
++	  console.log('start save obj');
+       var def = $q.defer();
+-      var uriBase = "http://ooffee.eu/ns/urban#";
+-      var projectJSDataBase = new Array();
++      var uriBase = 'http://ooffee.eu/ns/urban#';
++      var projectJSDataBase = [];
+       var modif = false;
+ 
+       Object.keys(obj).forEach(function(K){
+-        if(K.startsWith("_")){
++        if(K.startsWith('_')){
+           if(!(angular.equals(obj[K],obj[K.substring(1)]))){
+-            if((Array.isArray(obj[K.substring(1)]) || angular.isObject(obj[K.substring(1)])) && (obj[K.substring(1)]["@type"] != "xsd:double")){
+-                  console.warn("changement propriete array/object: " + K);
++            if((Array.isArray(obj[K.substring(1)]) || angular.isObject(obj[K.substring(1)])) && (obj[K.substring(1)]['@type'] !== 'xsd:double')){
++                  console.warn('changement propriete array/object: ' + K);
+                   if(obj[K.substring(1)].isVirtualObj){
+                         Object.keys(obj[K.substring(1)]).forEach(function(prop){
+                           var p = uriBase+K.substring(1)+prop;
+@@ -1142,41 +1450,38 @@ this.createStep = function(stepInProgress){
+                         });
+                   }
+                 else{
+-                    if(K.substring(1)!= "medias"){
+-                      console.log("ok");
++                    if(K.substring(1)!== 'medias'){
++                      console.log('ok');
+                       obj[K.substring(1)].forEach(function(step){
+-                        if(step["@id"] == null){
+-                          var objStep = self.createStep(step);
+-                          step["@id"] = "";
+-                          var promiseChange = graphService.buildChanges(graph, [null,obj['@id']], uriBase + "steps", [null,objStep['@id']]);
+-                          promiseChange.then(function(){
+-
+-                             objStep.saveObj(objStep,graph);
+-
+-                              def.resolve();
+-
+-
+-                          });
+-                        }
+-                      else{
+-                        console.log("ok2")
+-                        // Cas d'une step dÃ©jÃ  existante qu'on modifie
+-                        var objStep = self.createStep(step);
+-                          objStep.saveObj(objStep,graph);
+-
+-                            def.resolve();
+-
+-                        }
++                    	  if(step['@id'] === null){
++                    		  var objStep = self.createStep(step);
++                    		  step['@id'] = '';
++                    		  var promiseChange = graphService.buildChanges(graph, [null,obj['@id']], uriBase + 'steps', [null,objStep['@id']]);
++                    		  promiseChange.then(function(){
++                    			  objStep.saveObj(objStep,graph);
++                    			  def.resolve();
++
++
++                    		  });
++                    	  }
++	                      else{
++	                        console.log('ok2');
++	                        // Cas d'une step déjà  existante qu'on modifie
++	                        var objStep2 = self.createStep(step);
++	                        objStep2.saveObj(objStep2,graph);
++	                        def.resolve();
++	
++	                      }
+                       });
+                     }
+                     else{// objet non step -> medias des steps
+-                      console.warn("To do -> amÃ©liorer ce code pour le rendre plus gÃ©nÃ©rique... Rustine pas top ");
+-                      var medId = "";
++                      console.warn('To do -> amÃ©liorer ce code pour le rendre plus gÃ©nÃ©rique... Rustine pas top ');
++                      var medId = '';
+ 
+                       obj[K.substring(1)].forEach(function(media){
+-                        var promiseChange = graphService.buildChanges(graph, [null,uriBase+"#step#"+obj['@id']], uriBase + "medias", [null,media]);
++                        var promiseChange = graphService.buildChanges(graph, [null,uriBase+'#step#'+obj['@id']], uriBase + 'medias', [null,media]);
+                         promiseChange.then(function(){
+-                          console.log("ajout media");
++                          console.log('ajout media');
+                           obj[K] = obj[K.substring(1)];
+                           def.resolve();
+ 
+@@ -1187,27 +1492,27 @@ this.createStep = function(stepInProgress){
+                   }
+ 
+             }else{
+-              console.log("changement propriete : " + K);
+-              if((obj["@id"]!="" && (obj[K]!=obj[K.substring(1)]))){
++              //console.log('changement propriete : ' + K);
++              if((obj['@id']!=='' && (obj[K]!==obj[K.substring(1)]))){
+                 var oldV = obj[K];
+                 var newV = obj[K.substring(1)];
+-                console.log(oldV);
+-                console.log(newV);
++                //console.log(oldV);
++                //console.log(newV);
+ 
+-                if(obj["type"]=="Project"){
++                if(obj['type'] === 'Project'){
+                   var promiseChange = graphService.buildChanges(graph, [obj['@id'],obj['@id']], uriBase + K.substring(1), [oldV,newV]);
+-                  console.log("ok passage");
++                 // console.log('ok passage');
+                 }
+                 else{
+-                  var promiseChange = graphService.buildChanges(graph, [uriBase+"#step#"+obj['@id'],uriBase+"#step#"+obj['@id']], uriBase + K.substring(1), [oldV,newV]);
++                  var promiseChange = graphService.buildChanges(graph, [uriBase+'#step#'+obj['@id'],uriBase+'#step#'+obj['@id']], uriBase + K.substring(1), [oldV,newV]);
+                 }
+               }
+             else{
+-                if(obj["type"]=="Project"){
++                if(obj['type'] === 'Project'){
+                     var promiseChange = graphService.buildChanges(graph, [null,obj['@id']], uriBase + K.substring(1), [null,String(obj[K.substring(1)])]);
+                   }
+                 else{
+-                    var promiseChange = graphService.buildChanges(graph, [null,uriBase+"#step#"+obj['@id']], uriBase + K.substring(1), [null,String(obj[K.substring(1)])]);
++                    var promiseChange = graphService.buildChanges(graph, [null,uriBase+'#step#'+obj['@id']], uriBase + K.substring(1), [null,String(obj[K.substring(1)])]);
+                   }
+                 }
+               promiseChange.then(function(){
+@@ -1220,16 +1525,16 @@ this.createStep = function(stepInProgress){
+         }
+       });
+       return(def.promise);
+-    }
++    };
+ 
+   /* To do utiliser cette fonction pour sauvegarder chaque steps */
+ 
+ 
+   this.getCartJS = function(){
+     var initialisation = $q.defer();
+-    var carts = new Array();
+-    var cartsJS = new Array();
+-    var dataAll = new Array();
++    var carts = [];
++    var cartsJS = [];
++    var dataAll = [];
+     var parameters = {
+             scheme : '', //the default one
+             queryFn : function(/*string*/ uri){
+@@ -1240,30 +1545,30 @@ this.createStep = function(stepInProgress){
+                 };
+             }
+     };
+-    var uriBase = "http://ooffee.eu/ns/urban#"
++    var uriBase = 'http://ooffee.eu/ns/urban#'
+ 
+     $http({
+         method : 'GET',
+         url : parameters.queryFn().url, //rdfuiConfig.server+'mediamanagement?uri='+uri,
+     }).success(function(data){
+-        dataAll = data["@graph"];
++        dataAll = data['@graph'];
+         dataAll.forEach(function(d,i){
+-          if(d[uriBase+"type"] == "Cart"){
++          if(d[uriBase+'type'] === 'Cart'){
+             carts.push(d);
+           }
+         });
+-        //projects = data["@graph"];
++        //projects = data['@graph'];
+         //console.log(projectJS);
+     }).error(function(){
+-        console.log("error");
++        console.log('error');
+     }).then(function(){
+ 
+       carts.forEach(function(d,i){
+         var cartJS = self.createCart(d);
+-        console.log(cartJS);
+-        if(d[uriBase+"medias"]!=null){
+-          if(angular.isArray(d[uriBase+"medias"])){
+-            d[uriBase+"medias"].forEach(function(s,i){
++        //console.log(cartJS);
++        if(d[uriBase+'medias']!==null){
++          if(angular.isArray(d[uriBase+'medias'])){
++            d[uriBase+'medias'].forEach(function(s,i){
+               var media = self.getMedia(s,dataAll);
+               //console.log(media);
+               cartJS.medias.push(media);
+@@ -1271,7 +1576,7 @@ this.createStep = function(stepInProgress){
+             });
+           }
+           else{
+-            var media = self.getMedia(d[uriBase+"medias"], dataAll);
++            var media = self.getMedia(d[uriBase+'medias'], dataAll);
+             cartJS.medias.push(media);
+             //cartJS.medias.push(media);
+             //console.log(cartJS);
+@@ -1285,92 +1590,92 @@ this.createStep = function(stepInProgress){
+ };
+ 
+ this.getMedia = function(mediaId, dataAll){
+-  console.log("To do amÃ©liorer ce dataAll pas top du tout")
+-  var uriToFix ="http://tofix.uri/";
+-  var media = new Array();
++  console.log('To do amÃ©liorer ce dataAll pas top du tout')
++  var uriToFix ='http://tofix.uri/';
++  var media = [];
+ 
+   dataAll.forEach(function(d,i){
+ 
+-        //console.log(uriBase +"#step#" +mediaId);
+-        if(d[uriBase + "type"] == "Media"){
++        //console.log(uriBase +'#step#' +mediaId);
++        if(d[uriBase + 'type'] === 'Media'){
+         }
+-        //console.log(uriToFix +mediaId +"##" +mediaId)
+-        if(d["@id"] == mediaId){
++        //console.log(uriToFix +mediaId +'##' +mediaId)
++        if(d['@id'] === mediaId){
+           media = self.createMedia(d);
+ 
+         //  cart.medias.push(media);
+     }
+   });
+   return(media);
+-}
++};
+ 
+ 
+ //@TODO : idem remarque fonction suivante : cette fonction ne doit pas être dupliquée entre proxyProjet et proxyMedia.
+ this.createCart = function(d){
+   var cartJS = {};
+-  console.log(d);
+-  Object.defineProperty(cartJS, "id", {
+-    value : d[uriBase + "id"],
++  //console.log(d);
++  Object.defineProperty(cartJS, 'id', {
++    value : d[uriBase + 'id'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "_id", {
+-    value : d[uriBase + "id"],
++  Object.defineProperty(cartJS, '_id', {
++    value : d[uriBase + 'id'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "created", {
+-    value : d[uriBase + "created"],
++  Object.defineProperty(cartJS, 'created', {
++    value : d[uriBase + 'created'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "_created", {
+-    value : d[uriBase + "created"],
++  Object.defineProperty(cartJS, '_created', {
++    value : d[uriBase + 'created'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "name", {
+-    value : d[uriBase + "name"],
++  Object.defineProperty(cartJS, 'name', {
++    value : d[uriBase + 'name'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "_name", {
+-    value : d[uriBase + "name"],
++  Object.defineProperty(cartJS, '_name', {
++    value : d[uriBase + 'name'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "type", {
+-    value : d[uriBase + "type"],
++  Object.defineProperty(cartJS, 'type', {
++    value : d[uriBase + 'type'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "_type", {
+-    value : d[uriBase + "type"],
++  Object.defineProperty(cartJS, '_type', {
++    value : d[uriBase + 'type'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "medias", {
+-    value : new Array(),
++  Object.defineProperty(cartJS, 'medias', {
++    value : [],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(cartJS, "_medias", {
++  Object.defineProperty(cartJS, '_medias', {
+     value : new Array,
+     enumerable : true,
+     writable : true
+   });
+ 
+   return(cartJS);
+-}
++};
+ 
+ //TODO : pourquoi cette fonction semble dupliquée avec celle de proxyMedia.createMedia ??
+ //Il ne faut en laisser qu'une, apparement dans proxyMedia
+@@ -1380,131 +1685,131 @@ this.createMedia = function(d){
+ 
+  var mediaJS = {};
+ 
+-  Object.defineProperty(mediaJS, "_@id", {
+-    value : d[uriBase + "_@id"],
++  Object.defineProperty(mediaJS, '_@id', {
++    value : d[uriBase + '_@id'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "_description", {
+-    value : d[uriBase + "description"],
++  Object.defineProperty(mediaJS, '_description', {
++    value : d[uriBase + 'description'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "_id", {
+-    value : d[uriBase + "id"],
++  Object.defineProperty(mediaJS, '_id', {
++    value : d[uriBase + 'id'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "_link", {
+-    value : d[uriBase + "link"],
++  Object.defineProperty(mediaJS, '_link', {
++    value : d[uriBase + 'link'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "_source", {
+-    value : d[uriBase + "source"],
++  Object.defineProperty(mediaJS, '_source', {
++    value : d[uriBase + 'source'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "_title", {
+-    value : d[uriBase + "title"],
++  Object.defineProperty(mediaJS, '_title', {
++    value : d[uriBase + 'title'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "_type", {
+-    value : d[uriBase + "type"],
++  Object.defineProperty(mediaJS, '_type', {
++    value : d[uriBase + 'type'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "_typeMedia", {
+-    value : d[uriBase + "typeMedia"],
++  Object.defineProperty(mediaJS, '_typeMedia', {
++    value : d[uriBase + 'typeMedia'],
+     enumerable : true,
+     writable : true
+   });
+ 
+ 
+-  Object.defineProperty(mediaJS, "@id", {
+-    value : d[uriBase + "@id"],
++  Object.defineProperty(mediaJS, '@id', {
++    value : d[uriBase + '@id'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "description", {
+-    value : d[uriBase + "description"],
++  Object.defineProperty(mediaJS, 'description', {
++    value : d[uriBase + 'description'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "id", {
+-    value : d[uriBase + "id"],
++  Object.defineProperty(mediaJS, 'id', {
++    value : d[uriBase + 'id'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "link", {
+-    value : d[uriBase + "link"],
++  Object.defineProperty(mediaJS, 'link', {
++    value : d[uriBase + 'link'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "source", {
+-    value : d[uriBase + "source"],
++  Object.defineProperty(mediaJS, 'source', {
++    value : d[uriBase + 'source'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "title", {
+-    value : d[uriBase + "title"],
++  Object.defineProperty(mediaJS, 'title', {
++    value : d[uriBase + 'title'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "type", {
+-    value : d[uriBase + "type"],
++  Object.defineProperty(mediaJS, 'type', {
++    value : d[uriBase + 'type'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "typeMedia", {
+-    value : d[uriBase + "typeMedia"],
++  Object.defineProperty(mediaJS, 'typeMedia', {
++    value : d[uriBase + 'typeMedia'],
+     enumerable : true,
+     writable : true
+   });
+ 
+-  Object.defineProperty(mediaJS, "ordreDsStep", {
+-      value : d[uriBase + "ordreDsStep"],
++  Object.defineProperty(mediaJS, 'ordreDsStep', {
++      value : d[uriBase + 'ordreDsStep'],
+       enumerable : true,
+       writable : true
+     });
+-    Object.defineProperty(mediaJS, "_ordreDsStep", {
+-      value : d[uriBase + "ordreDsStep"],
++    Object.defineProperty(mediaJS, '_ordreDsStep', {
++      value : d[uriBase + 'ordreDsStep'],
+       enumerable : true,
+       writable : true
+     });
+   
+-  console.log(mediaJS);
++  //console.log(mediaJS);
+   return(mediaJS);
+-}
++};
+ 
+ this.saveMediaJS = function(obj,graph){
+   var def = $q.defer();
+-  var uriFixe = "http://tofix.uri/";
+-  var uriBase = "http://ooffee.eu/ns/urban#";
+-  var projectJSDataBase = new Array();
++  var uriFixe = 'http://tofix.uri/';
++  var uriBase = 'http://ooffee.eu/ns/urban#';
++  var projectJSDataBase = [];
+   var modif = false;
+   Object.keys(obj).forEach(function(K){
+-    if(K.startsWith("_")){
++    if(K.startsWith('_')){
+       if(!(angular.equals(obj[K],obj[K.substring(1)]))){
+         var oldV = obj[K];
+         var newV = obj[K.substring(1)];
+-        console.warn("To do : corriger le pb obj[@id] vide ");
+-        var promiseChange = graphService.buildChanges(graph, [uriFixe + obj['id']+"##"+obj['id'],uriFixe + obj['id']+"##"+obj['id']], uriBase + K.substring(1), [oldV,newV]);
++        console.warn('To do : corriger le pb obj[@id] vide ');
++        var promiseChange = graphService.buildChanges(graph, [uriFixe + obj['id']+'##'+obj['id'],uriFixe + obj['id']+'##'+obj['id']], uriBase + K.substring(1), [oldV,newV]);
+         promiseChange.then(function(){
+           def.resolve();
+         });
+diff --git a/code/urbanBackOffice/app/scripts/services/publish.js b/code/urbanBackOffice/app/scripts/services/publish.js
+index 338351b..767871c 100644
+--- a/code/urbanBackOffice/app/scripts/services/publish.js
++++ b/code/urbanBackOffice/app/scripts/services/publish.js
+@@ -2,8 +2,19 @@
+ 
+ 
+ angular.module('urbanBackOfficeApp')
+-.service('PublishService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, ProxyProjectsService) {
+-
++.service('PublishService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q) {
++
++	  
++	/* 
++	* Les ressoucres du project ( medias, tiles et data) sont enregistré ds
++	* publish/[idProject] 
++	* medias  [idProject]/images
++	* tiles   [idProject]/site
++	* data    [idProject]/project.json
++	*
++	*/
++
++	
+     /*
+     Ok telechargement ds publish/[idProject]/site
+     */
+@@ -11,32 +22,32 @@ angular.module('urbanBackOfficeApp')
+       var def = $q.defer();
+       /*
+       To do utiliser ce service avec les valeurs du project
+-      http://127.0.0.1:8080/mediamanagement/downloadTiles?lat=48.8763241&lon=2.315&zoomLimit="+zoomLimit+"&minZoom="+minZoom+"&maxZoom="+maxZoom+"&radius="+radius
++      http://127.0.0.1:8080/mediamanagement/downloadTiles?lat=48.8763241&lon=2.315&zoomLimit='+zoomLimit+'&minZoom='+minZoom+'&maxZoom='+maxZoom+'&radius='+radius
+       Copier les images obtenus dans le repertoire dist/images/site/cache/
+       */
+       var lat = project.lat || 56.94951;
+       var lng = project.lng || 24.10810;
+       var zoomLimit = project.maxZoom || 20;
+-      var minZoom = project.minZoom || 15;
++      var minZoom = project.minZoom || 10;
+       var maxZoom = project.maxZoom || 18;
+-      var radius = project.radius || 4;
++      var radius = project.radius || 8;
+       console.log (lat);
+-      $http.defaults.headers.common['Authorization'] = urlStanbol.pwd;
++      $http.defaults.headers.common.Authorization = urlStanbol.pwd;
+       $http({
+         method: 'GET',
+-        url: urlStanbol.address+"/mediamanagement/downloadTiles?idProject="+project.id+"&lat="+lat+"&lon="+lng+"&zoomLimit="+zoomLimit+"&minZoom="+minZoom+"&maxZoom="+maxZoom+"&radius="+radius,
++        url: urlStanbol.address+'/mediamanagement/downloadTiles?idProject='+project.id+'&lat='+lat+'&lon='+lng+'&zoomLimit='+zoomLimit+'&minZoom='+minZoom+'&maxZoom='+maxZoom+'&radius='+radius,
+ 
+       })
+-      .success(function (data, status, headers, config) {
++      .success(function (data, status) {
+         console.log(status);
+-        def.resolve({ message: "This is great!" });
+-      }).error(function (data, status, headers, config) {
++        def.resolve({ message: 'This is great!' });
++      }).error(function (data, status) {
+         console.log(status);
+-         def.reject({ message: "Really bad" });
++         def.reject({ message: 'Really bad' });
+       });
+ 
+       return def.promise;
+-    }
++    };
+   /*
+   downloadVideoYoutube from youtube
+   valable que pour les video youtube
+@@ -51,28 +62,28 @@ angular.module('urbanBackOfficeApp')
+       var videoId = linkVideo.split('/v/')[1];
+       console.log (videoId);
+      /* var ampersandPosition = video_id.indexOf('&');
+-      if(ampersandPosition != -1) {
++      if(ampersandPosition !=== -1) {
+         videoId = videoId.substring(0, ampersandPosition);
+       }
+       */
+       console.log(videoId);
+-      if (videoId != undefined){
+-        //linkVideo :"http://www.youtube.com/v/o5KsFRSwPAU"
+-        $http.defaults.headers.common['Authorization'] = urlStanbol.pwd;
++      if (videoId !== undefined){
++        //linkVideo :'http://www.youtube.com/v/o5KsFRSwPAU'
++        $http.defaults.headers.common.Authorization = urlStanbol.pwd;
+         $http({
+           method: 'GET',
+-          url: urlStanbol.address+"/mediamanagement/upload/youtube?idProject="+idProject+"&id="+videoId,
++          url: urlStanbol.address+'/mediamanagement/upload/youtube?idProject='+idProject+'&id='+videoId,
+         })
+-        .success(function (data, status, headers, config) {
++        .success(function (data, status) {
+             console.log(status);
+-            def.resolve({ message: "This is great!" });
+-        }).error(function (data, status, headers, config) {
++            def.resolve({ message: 'This is great!' });
++        }).error(function (data, status) {
+             console.log(status);
+-            def.reject({ message: "Really bad" });
++            def.reject({ message: 'Really bad' });
+         });
+          return def.promise;
+       }
+-    }
++    };
+ 
+     /*
+     download image from url
+@@ -82,47 +93,52 @@ angular.module('urbanBackOfficeApp')
+     this.downloadImage =  function (urlImage, destinationFile, idProject){
+       console.log (idProject);
+       var def = $q.defer();
+-      var urlImage = urlImage.replace("&", "%26");
+-      $http.defaults.headers.common['Authorization'] = urlStanbol.pwd;
++      urlImage = urlImage.replace('&', '%26');
++      $http.defaults.headers.common.Authorization = urlStanbol.pwd;
+       $http({
+         method: 'GET',
+-        url: urlStanbol.address+"/mediamanagement/uploadImages?idProject="+idProject+"&url="+urlImage+"&destinationFile="+destinationFile,
++        url: urlStanbol.address+'/mediamanagement/uploadImages?idProject='+idProject+'&url='+urlImage+'&destinationFile='+destinationFile,
+ 
+       })
+-      .success(function (data, status, headers, config) {
++      .success(function (data, status) {
+         console.log(status);
+-         def.resolve({ message: "This is great! downloadImage" });
+-      }).error(function (data, status, headers, config) {
++         def.resolve({ message: 'This is great! downloadImage' });
++      }).error(function (data, status) {
+         console.log(status);
+-        def.reject({ message: "Really bad: downloadImage" });
++        def.reject({ message: 'Really bad: downloadImage' });
+       });
+       return def.promise;
+ 
+-    }
++    };
+ 
+     this.copyFiles =  function (link, idProject){
+       console.log (idProject);
+       var def = $q.defer();
+-      var title = link.replace("/images/", "");
+-      var title = link.replace("images/", "");
++      if(!link){
++    	  def.reject({message : "The link passed is a null object"});
++    	  return def.promise;
++      }
++      
++      var title = link.replace('images/', '');
+       console.log (title);
+-      $http.defaults.headers.common['Authorization'] = urlStanbol.pwd;
++      $http.defaults.headers.common.Authorization = urlStanbol.pwd;
+       $http({
+         method: 'GET',
+-        url: urlStanbol.address+"/mediamanagement/copyFiles?idProject="+idProject+"&title="+title,
++        url: urlStanbol.address+'/mediamanagement/copyFiles?idProject='+idProject+'&title='+title,
+ 
+       })
+-      .success(function (data, status, headers, config) {
++      .success(function (data, status) {
+         console.log(status);
+-         def.resolve({ message: "This is great! copyFiles" });
+-      }).error(function (data, status, headers, config) {
++         def.resolve({ message: 'This is great! copyFiles' });
++      }).error(function (data, status) {
+         console.log(status);
+-        def.reject({ message: "Really bad: copyFiles" });
++        def.reject({ message: 'Really bad: copyFiles' });
+       });
+       return def.promise;
+ 
+-    }
++    };
+ 
++    //TODO : la gestion des deferer n'est pas bonne dans cette fonction. Ils ne servent à rien.
+     this.publishMedias = function(Project){
+       var def = $q.defer();
+       /* uploader les medias selon leur type et leurs sources
+@@ -133,15 +149,15 @@ angular.module('urbanBackOfficeApp')
+           entry.medias.forEach(function(d) {
+             //console.log (d);
+ 
+-            if (d.id != undefined){
+-              if (d.typeMedia=="VIDEO" && d.source=="Youtube"){
++            if (d.id !== undefined){
++              if (d.typeMedia === 'VIDEO' && d.source === 'Youtube'){
+ 
+-                var promiseYV = self.downloadVideoYoutube(d.link, Project.id)
++                var promiseYV = self.downloadVideoYoutube(d.link, Project.id);
+                 promiseYV.then(function(){
+ 
+ 
+                 });
+-              } else if (d.typeMedia.toUpperCase().indexOf("IMAGE") > -1 && d.source=="Europeana"){
++              } else if (d.typeMedia.toUpperCase().indexOf('IMAGE') > -1 && d.source === 'Europeana'){
+                 var promiseIE = self.downloadImage(d.link, d.id, Project.id);
+                 promiseIE.then(function(){
+ 
+@@ -149,11 +165,12 @@ angular.module('urbanBackOfficeApp')
+                 });
+ 
+               }
+-              else if (d.source=="interne"){
++              else if (d.source === 'interne'){
+                 //faire une copie, puisque l'image/video est déja sur le disque dur
+-                console.warn ("faire une copie, puisque l'image/video est déja sur le disque dur");
+-                var promiseIE = self.copyFiles(d.link, Project.id);
+-                promiseIE.then(function(){
++                console.log (d);
++                console.warn ('faire une copie, puisque l\'image/video est déja sur le disque dur');
++                var promiseIM = self.copyFiles(d.link, Project.id);
++                promiseIM.then(function(){
+ 
+ 
+                 });
+@@ -166,7 +183,7 @@ angular.module('urbanBackOfficeApp')
+ 
+ 
+       return(def.promise);
+-    }
++    };
+ 
+     this.publishRessources = function(Project){
+       var def = $q.defer();
+@@ -174,7 +191,7 @@ angular.module('urbanBackOfficeApp')
+       /* Copier coller les médias du projet dans le repertoire dist/images/ */
+ 
+       Project.steps.forEach(function(entry) {// download media selon leur types est sources
+-        if (entry.visual.length > 0){
++        if (entry.visual !== undefined && entry.visual.length > 0){
+           console.log (entry.visual);
+             var promiseIS = self.copyFiles(entry.visual, Project.id);
+                 promiseIS.then(function(){
+@@ -184,38 +201,38 @@ angular.module('urbanBackOfficeApp')
+         }
+       });
+        console.log (Project.homepage.images);
+-      if (Project.homepage.images != ""){
++      if (Project.homepage.images !== ''){
+         var promiseIH = self.copyFiles(Project.homepage.images, Project.id);
+-                promiseIH.then(function(){
++        promiseIH.then(function(){
+ 
+ 
+-                });
++        });
+       }
+       console.log (Project.footer.image);
+-      if (Project.footer.image != ""){
++      if (Project.footer.image !== ''){
+         var promiseIF = self.copyFiles(Project.footer.image, Project.id);
+-                promiseIF.then(function(){
++        promiseIF.then(function(){
+ 
+ 
+-                });
++        });
+       }
+       return(def.promise);   
+-    }
++    };
+ 
+     this.publishProject = function(ProjectJS){
+       var def = $q.defer();
+       console.log (ProjectJS.id);
+-      var facetteName = "data";
+-      var userName = "myUser";
++      var facetteName = 'data';
++      var userName = 'myUser';
+ 
+-      var baseUrl = "http://tofix.uri/"+ProjectJS.id;
+-      //var uri = "http://tofix.uri/"+ProjectJS.id;
++      var baseUrl = 'http://tofix.uri/'+ProjectJS.id;
++      //var uri = 'http://tofix.uri/'+ProjectJS.id;
+ 
+-      var idGraph = baseUrl + ProjectJS.id;
++      //var idGraph = baseUrl + ProjectJS.id;
+ 
+       var parameters = {
+               scheme : '', //the default one
+-              queryFn : function(/*string*/ uri){
++              queryFn : function(){
+                   return {
+                       method : 'GET',
+                       url : urlStanbol.address+'/graph/writerdf/'+facetteName+'/'+userName+'/'+baseUrl,
+@@ -227,37 +244,26 @@ angular.module('urbanBackOfficeApp')
+         url : parameters.queryFn().url,
+      
+       })
+-      .success(function (data, status, headers, config) {
++      .success(function (data, status) {
+         console.log(status);
+-         def.resolve({ message: "This is great! " });
+-      }).error(function (data, status, headers, config) {
++         def.resolve({ message: 'This is great! ' });
++      }).error(function (data, status) {
+         console.log(status);
+-        def.reject({ message: "Really bad: " });
++        def.reject({ message: 'Really bad: ' });
+       });
+ 
+ 
+       return(def.promise);
+-    }
+-
++    };
++    
+     
+-
+-  
+-/* 
+-* Les ressoucres du project ( medias, tiles et data) sont enregistré ds
+-* publish/[idProject] 
+-* medias  [idProject]/images
+-* tiles   [idProject]/site
+-* data    [idProject]/project.json
+-*
+-*/
+-
+-   
+     this.publishGlobal = function(Project){
+       var def = $q.defer();
+-      
++
+       var promisePublishMap = self.publishMap(Project);
+       var promisePublishMedias = self.publishMedias(Project);
+       var promisePublishProject = self.publishProject(Project);
++
+       var promisePublishRessources = self.publishRessources(Project);
+        
+       Promise.all([promisePublishRessources,promisePublishProject, promisePublishMap, promisePublishMedias]).then(function(){
+@@ -265,8 +271,10 @@ angular.module('urbanBackOfficeApp')
+         def.resolve();
+         
+       });  
++
++
+       return(def.promise);
+-    }
++    };
+ 
+     var self = this;
+ });
+diff --git a/code/urbanBackOffice/app/scripts/services/utils.js b/code/urbanBackOffice/app/scripts/services/utils.js
+index dc17158..b277470 100644
+--- a/code/urbanBackOffice/app/scripts/services/utils.js
++++ b/code/urbanBackOffice/app/scripts/services/utils.js
+@@ -15,10 +15,10 @@ angular.module('urbanBackOfficeApp')
+ 
+    this.guid = function(){
+         //console.log (Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1));
+-				var val = "a" +Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
++				var val = 'a' +Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+ 				while(angular.isNumber(val)){
+-					val = "a"+ Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
++					val = 'a'+ Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+ 				}
+         return(val);
+-    }
++    };
+  });
+diff --git a/code/urbanBackOffice/app/views/areaproject.html b/code/urbanBackOffice/app/views/areaproject.html
+index a8bb502..2f1e92d 100644
+--- a/code/urbanBackOffice/app/views/areaproject.html
++++ b/code/urbanBackOffice/app/views/areaproject.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li class="active" ><a ng-href="#/">Home</a></li>
++    <li class="active" ><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++  <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -28,7 +28,7 @@ Validez la valeur de zoom min, zoom max et cliquez sur Enregistrer.
+ </p>-->
+ 
+ 	<form class="form-inline areaForm">
+-  
++
+ 		<div class="form-group">
+     		<label  for="lat">Lat</label>
+     		<input style = "width:80px;" type="double" ng-model="center.lat" class="form-control" id="lat" placeholder="Enter lat">
+@@ -41,7 +41,7 @@ Validez la valeur de zoom min, zoom max et cliquez sur Enregistrer.
+     		<label for="zoom">Zoom</label>
+     		<input  style = "width:60px;" ng-model="center.zoom" class="form-control" id="zoom" placeholder="Enter zoom initial">
+   		</div>
+-      
++
+       <div class="form-group">
+         <label for="zoom">Min Zoom</label>
+         <input style = "width:60px;" ng-model="minZoom" class="form-control" id="minZoom" placeholder="Enter zoom min">
+@@ -50,13 +50,13 @@ Validez la valeur de zoom min, zoom max et cliquez sur Enregistrer.
+         <label for="zoom">Max Zoom</label>
+         <input style = "width:60px;" ng-model="maxZoom" class="form-control" id="maxZoom" placeholder="Enter zoom max">
+       </div>
+-      
+-     
++
++
+        <button type="submit" class="btn btn-default"ng-click="save()">Valider</button>
+ 
+-      
++
+     </form>
+-	
++
+ <br>
+ <div class="row">
+ 
+diff --git a/code/urbanBackOffice/app/views/cart.html b/code/urbanBackOffice/app/views/cart.html
+index 7309d85..fd6d604 100644
+--- a/code/urbanBackOffice/app/views/cart.html
++++ b/code/urbanBackOffice/app/views/cart.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li><a ng-href="#/">Home</a></li>
++    <li><a ng-href="#/projects">Home</a></li>
+     <li class="active" ><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -31,9 +31,9 @@
+           <a class="pull-left" href="{{trustSrc(media.link)}}">
+ 
+              <img width="200" height="130" ng-show="!isVideo('{{media.typeMedia}}')"  ng-src="{{trustSrc(media.link)}}" >
+-             
++
+               <embed width="200" height="130"  ng-show="isVideo('{{media.typeMedia}}')" ng-src="{{trustSrc(media.link)}}">
+-            
++
+           </a>
+ 
+         </td>
+diff --git a/code/urbanBackOffice/app/views/footer.html b/code/urbanBackOffice/app/views/footer.html
+index 25185fb..380e40d 100644
+--- a/code/urbanBackOffice/app/views/footer.html
++++ b/code/urbanBackOffice/app/views/footer.html
+@@ -3,7 +3,7 @@
+     <li class="active"><a ng-href="#/">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -19,7 +19,7 @@
+ </div>
+ <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+ <form class="form-horizontal" role="form">
+-  
++
+   <div class="form-group">
+     <label for="about" class="col-sm-2 control-label">About</label>
+     <div class="col-sm-10">
+@@ -36,7 +36,7 @@
+     <label for="title" class="col-sm-2 control-label">Hypertext links</label>
+     <div class="col-sm-10" >
+       <input ng-repeat="hyperlink in project.footer.hyperlinks" type="text" class="form-control" id="hyperlink.id" ng-model="hyperlink.value" >
+-      
++
+     </div>
+   </div>
+    <div class="form-group">
+@@ -51,7 +51,7 @@
+         </li>
+       </ul>
+           <button ng-click="uploadFile()">upload me</button>
+-     
++
+     </div>
+   </div>
+   <div class="form-group">
+@@ -59,6 +59,5 @@
+       <button type="submit" class="btn btn-default" ng-click="save()">Valider</button>
+     </div>
+   </div>
+-  
+-</form>
+ 
++</form>
+diff --git a/code/urbanBackOffice/app/views/homepage.html b/code/urbanBackOffice/app/views/homepage.html
+index 81e1bca..fcb0693 100644
+--- a/code/urbanBackOffice/app/views/homepage.html
++++ b/code/urbanBackOffice/app/views/homepage.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li class="active"><a ng-href="#/">Home</a></li>
++    <li class="active"><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -22,8 +22,10 @@
+   <div class="form-group">
+     <label for="header" class="col-sm-2 control-label">header</label>
+     <div class="col-sm-10">
++
+       <img  ng-src="{{trustSrc(project.homepage.images)}}" class="img-thumbnail" alt="{{project.name}}">
+       <input type="file" file-model="myFile" ng-model="project.homepage.images" nv-file-select="" uploader="uploader">
++
+           <ul ng-show= "!showImage">
+           <li ng-repeat="item in uploader.queue">
+ 
+@@ -63,4 +65,3 @@
+     </div>
+   </div>
+ </form>
+-
+diff --git a/code/urbanBackOffice/app/views/login.html b/code/urbanBackOffice/app/views/login.html
+index ff3942c..d47afca 100644
+--- a/code/urbanBackOffice/app/views/login.html
++++ b/code/urbanBackOffice/app/views/login.html
+@@ -1,18 +1,18 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li class="active"><a ng-href="#/">Home</a></li>
+-    <li><a ng-href="#/medias">Medias</a></li>
+-    <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
+-    <li><a ng-href="#/login">Login</a></li>
++    <li class="disabled"><a ng-href="#/projects">Home</a></li>
++    <li class="disabled"><a ng-href="#/medias">Medias</a></li>
++    <li class="disabled"><a ng-href="#/search">Search</a></li>
++    <!--<li class="disabled"><a ng-href="#/users">Users</a></li>-->
++    <li class="active"><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+   <h3 class="text-muted">Urban Explore</h3>
+ </div>
+-<ol class="breadcrumb">
++<!-- <ol class="breadcrumb">
+   <li><a ng-href="#/">Home</a></li>
+   <li class="active">Login</li>
+-</ol>
++</ol> -->
+  <div class="panel">
+     <div class="panel-heading">Login</div>
+ 		<div class="row ">
+@@ -45,12 +45,12 @@
+ 			      <div class="form-group">
+ 			        	<button type="submit"
+ 			                class="btn btn-primary pull-right"
+-			                value="Login" title="Login">Login</button>
++			                value="Login" title="Login" ng-click="loginT()">Login</button>
+ 			        <!-- ng-disabled="!loginForm.$valid" -->
+ 			      </div>
+ 	      		<p><a href="/forgot">Forgot password</a></p>
+ 	   		</form>
+ 	   	</div>
+-		</div>	
++		</div>
+    </div>
+-</div>
+\ No newline at end of file
++</div>
+diff --git a/code/urbanBackOffice/app/views/main.html b/code/urbanBackOffice/app/views/main.html
+deleted file mode 100644
+index 7addb36..0000000
+--- a/code/urbanBackOffice/app/views/main.html
++++ /dev/null
+@@ -1,23 +0,0 @@
+-<div class="jumbotron">
+-  <h1>'Allo, 'Allo!</h1>
+-  <p class="lead">
+-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
+-    Always a pleasure scaffolding your apps.
+-  </p>
+-  <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
+-</div>
+-
+-<div class="row marketing">
+-  <h4>HTML5 Boilerplate</h4>
+-  <p>
+-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
+-  </p>
+-
+-  <h4>Angular</h4>
+-  <p>
+-    AngularJS is a toolset for building the framework most suited to your application development.
+-  </p>
+-
+-  <h4>Karma</h4>
+-  <p>Spectacular Test Runner for JavaScript.</p>
+-</div>
+diff --git a/code/urbanBackOffice/app/views/media.html b/code/urbanBackOffice/app/views/media.html
+index 17c4493..43041a6 100644
+--- a/code/urbanBackOffice/app/views/media.html
++++ b/code/urbanBackOffice/app/views/media.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li><a ng-href="#/">Home</a></li>
++    <li><a ng-href="#/projects">Home</a></li>
+     <li class= "active"><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -19,15 +19,15 @@
+ 
+     <div class="row" ng-show="!{{media | isEmpty}}">
+     	<div class="col-md-6">
+-    		
++
+          <a class="pull-left" href="{{trustSrc(media.link)}}">
+-        
++
+            <img  width="400" height="280" ng-show="{{video}}"  ng-src="{{trustSrc(media.link)}}" >
+-           
++
+           <embed width="400" height="280" ng-show="{{!video}}" ng-src="{{trustSrc(media.link)}}">
+ 
+-          
+-         
++
++
+         </a>
+         </div>
+         <div class="col-md-6">
+@@ -40,11 +40,11 @@
+             <dd>{{media.typeMedia}}</dd>
+ 		        <dt>Cart(s) :</dt>
+ 		        <dd><a href="#/cart/{{cart.id}}"  ng-repeat="cart in getCarts">{{cart.name}} | </a> </dd>
+-		        
+-		        
++
++
+       		</dl>
+         </div>
+-       
++
+     </div>
+ </div>
+ 
+@@ -54,7 +54,7 @@
+ <div class=" hero-unit">
+   <div class = "row subTitle">
+     <h3 class ="">{{subTitleView2}}</h3>
+-    </div>   
++    </div>
+ </div>
+ <br>
+ <div class= "row">
+@@ -63,13 +63,13 @@
+         <div class="form-group">
+           <input type="hidden" ng-model="newcart.id" />
+           <input type="text" placeholder="Enter cart name" id="name" class="form-control" ng-model="newcart.name" required>
+-        </div>  
++        </div>
+         <button  class="btn btn-default" type="submit" ng-disabled="myForm.$invalid" ng-click="saveCart()">
+           <span class="glyphicon glyphicon-shopping-cart"></span>New Cart
+         </button>
+       </form>
+   </div>
+-</div>    
++</div>
+ 
+ <br>
+ <br>
+diff --git a/code/urbanBackOffice/app/views/medias.html b/code/urbanBackOffice/app/views/medias.html
+index 52890c9..6bcd0b1 100644
+--- a/code/urbanBackOffice/app/views/medias.html
++++ b/code/urbanBackOffice/app/views/medias.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li ><a ng-href="#/">Home</a></li>
++    <li ><a ng-href="#/projects">Home</a></li>
+     <li class="active" ><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -131,7 +131,7 @@
+       </td>
+ 
+       <td><a target="_blank" href="{{media.guid}}">{{media.title | limitTo: 30 }}{{media.title.length > 30 ? '...' : ''}}</a></td>
+-      
++
+       <td>{{media.typeMedia}}</td>
+       <td>{{media.source}}</td>
+       <td>
+diff --git a/code/urbanBackOffice/app/views/project.html b/code/urbanBackOffice/app/views/project.html
+index e33de8e..9309a37 100644
+--- a/code/urbanBackOffice/app/views/project.html
++++ b/code/urbanBackOffice/app/views/project.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li class="active"><a ng-href="#/">Home</a></li>
++    <li class="active"><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -62,7 +62,7 @@
+         <span ng-if = "!step.isVisible" class="glyphicon glyphicon-eye-close"></span>
+       </td>
+       <td>
+-        <button class="btn btn-warning" ng-click="edit(step)"><i class="fa fa-edit"></i></button>  
++        <button class="btn btn-warning" ng-click="edit(step)"><i class="fa fa-edit"></i></button>
+         <button class="btn btn-danger" ng-click="delete(step.id)"><span class="glyphicon glyphicon-trash"></span></button>
+       </td>
+     </tr>
+diff --git a/code/urbanBackOffice/app/views/projectroute.html b/code/urbanBackOffice/app/views/projectroute.html
+index b837200..d7d5688 100644
+--- a/code/urbanBackOffice/app/views/projectroute.html
++++ b/code/urbanBackOffice/app/views/projectroute.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li class="active"><a ng-href="#/">Home</a></li>
++    <li class="active"><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+diff --git a/code/urbanBackOffice/app/views/projects.html b/code/urbanBackOffice/app/views/projects.html
+index 5140a1c..032a162 100644
+--- a/code/urbanBackOffice/app/views/projects.html
++++ b/code/urbanBackOffice/app/views/projects.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li class="active"><a ng-href="#/">Home</a></li>
++    <li class="active"><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+diff --git a/code/urbanBackOffice/app/views/search.html b/code/urbanBackOffice/app/views/search.html
+index 2fbf53d..e90ef44 100644
+--- a/code/urbanBackOffice/app/views/search.html
++++ b/code/urbanBackOffice/app/views/search.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li><a ng-href="#/">Home</a></li>
++    <li><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li class="active"><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++  <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -27,7 +27,7 @@
+       <div class="col-md-12">
+       	<div class="input-group col-md-12">
+ 				<input type="text" autofocus ng-model="searchParam.text" class="form-control"
+-               
++
+                required>
+ 		</div>
+ 		</br>
+@@ -92,7 +92,7 @@
+          </div> <!-- row -->
+       </div>
+ 
+-    
++
+    </div><!-- row -->
+     <div class ="row" >
+       <div class="col-md-offset-10 col-md-2">
+@@ -100,7 +100,7 @@
+ 
+         </div>
+    </div><!-- row -->
+-   </form>  
++   </form>
+ 
+     </tab>
+     <tab heading="Selection - UCG">
+@@ -265,7 +265,7 @@
+         </div>
+         <a href="#/project/{{projectId}}/step/{{stepSelected.id}}">
+           <div class="panel-footer">
+-          
++
+             <span class="pull-left">View step : {{stepSelected.title}}</span>
+             <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+             <div class="clearfix"></div>
+@@ -341,4 +341,3 @@
+     </div>
+   </div>
+ </div>
+-
+diff --git a/code/urbanBackOffice/app/views/signup.html b/code/urbanBackOffice/app/views/signup.html
+deleted file mode 100644
+index 5f49eef..0000000
+--- a/code/urbanBackOffice/app/views/signup.html
++++ /dev/null
+@@ -1,37 +0,0 @@
+- <ol class="breadcrumb">
+-  <li><a ng-href="#/">Home</a></li>
+-  <li class="active">Sign up</li>
+-</ol>
+-<div class="col-lg-offset-2 col-lg-6">
+-	<div class="panel">
+-		<div class="panel-heading">Sign up</div>
+-		<form novalidate="" action="/signup" method="post" name="form" class="ng-pristine ng-invalid ng-invalid-required">
+-			<div class="form-group">
+-				<label class="control-label" for="username">Username</label>
+-				<input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-is-taken ng-valid-invalid-chars" autofocus="" ng-model="username" required="" unique-username="" placeholder="Username" id="username" name="username">
+-				<i class="halflings-icon refresh rotating" ng-show="busy" style="display: none;"></i>
+-				<span class="help-block" ng-show="form.username.$dirty &amp;&amp; form.username.$error.required" style="display: none;">Please choose a username</span>
+-				<span class="help-block" ng-show="form.username.$dirty &amp;&amp; form.username.$error.isTaken" style="display: none;">Username already taken</span>
+-				<span class="help-block" ng-show="form.username.$dirty &amp;&amp; form.username.$error.invalidChars" style="display: none;">Username may not contain any non-url-safe characters
+-				</span>
+-			</div>
+-			<div class="form-group">
+-				<label class="control-label" for="email">Email</label>
+-				<input type="email" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-email" required="" placeholder="Email" id="email" name="email" ng-model="email">
+-				<span class="help-block" ng-show="form.email.$dirty &amp;&amp; form.email.$error.email" style="display: none;">Email is invalid</span>
+-			</div>
+-			<div class="form-group">
+-				<label class="control-label" for="password">Password</label>
+-				<input type="password" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-match" match="verification" required="" ng-model="password" id="password" name="password">
+-				<span class="help-block" ng-show="form.password.$dirty &amp;&amp; form.password.$error.required" style="display: none;">Please enter a password</span>
+-			</div>
+-			<div class="form-group">
+-				<label class="control-label" for="verification">Repeat password</label>
+-				<input type="password" class="form-control ng-pristine ng-invalid ng-invalid-required ng-valid-match" match="password" required="" ng-model="verification" id="verification" name="verification">
+-				<span class="help-block" ng-show="form.verification.$dirty &amp;&amp; form.verification.$error.required" style="display: none;">Please repeat your password</span>
+-				<span class="help-block" ng-show="form.verification.$dirty &amp;&amp; form.verification.$error.match &amp;&amp; !form.verification.$error.required" style="display: none;">Passwords don't match</span>
+-			</div>
+-				<input type="submit" class="btn btn-primary" ng-disabled="form.$invalid" value="Sign up" disabled="disabled">
+-		</form>
+-	</div>
+-</div>
+\ No newline at end of file
+diff --git a/code/urbanBackOffice/app/views/step.html b/code/urbanBackOffice/app/views/step.html
+index 34eeaf0..673c664 100644
+--- a/code/urbanBackOffice/app/views/step.html
++++ b/code/urbanBackOffice/app/views/step.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li class="active"><a ng-href="#/">Home</a></li>
++    <li class="active"><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -66,7 +66,7 @@
+                                 <label class="radio-inline">
+                                     <input type="radio" required  name="inlineRadioOptions" id="inlineRadio0" ng-model="step.isVisible" value="0">Non Visible
+                                 </label>
+-        
++
+       </div>
+       <div class="form-group">
+         <label for="description" class="col-sm-2 control-label">Description</label>
+@@ -106,11 +106,11 @@
+ 
+ <ul class="media-list">
+ 
+-  <li class="media" ng-repeat="media in step.medias" ng-show="!isMediaEmpty('{{media}}')">
++  <li class="media" ng-repeat="media in step.medias" >
+ 
+     <h4 class="media-heading subTitle">{{media.title}}</h4>
+     <div class="row">
+-   
++
+       <div class="col-sm-3">
+         <a class="pull-left" href="{{trustSrc(media.link)}}">
+           <img  width="200" height="130" ng-show=" !isVideo('{{media.typeMedia}}')"  ng-src="{{trustSrc(media.link)}}" >
+@@ -122,7 +122,7 @@
+         </br>
+         <div>
+         <button class="btn btn-danger" ng-click="deleteMediaFromStep(media.id)"><span class="glyphicon glyphicon-trash"></span></button></div>
+-        
++
+       </div>
+     </div>
+     <br>
+@@ -133,7 +133,7 @@
+           <input required class="form-control" type="text" id="ordreDsStep" ng-model="media.ordreDsStep">
+           <h6>Ordre est un champs texte, pas numérique</h6>
+         </div>
+-        
++
+       </div>
+       <div class="form-group">
+         <label for="titleMedia" class="col-sm-2 control-label">Title</label>
+@@ -157,4 +157,3 @@
+ 
+   </li>
+ </ul>
+-
+diff --git a/code/urbanBackOffice/app/views/stepviewipad.html b/code/urbanBackOffice/app/views/stepviewipad.html
+index 2d8925c..5d666cd 100644
+--- a/code/urbanBackOffice/app/views/stepviewipad.html
++++ b/code/urbanBackOffice/app/views/stepviewipad.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li class="active"><a ng-href="#/">Home</a></li>
++    <li class="active"><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -20,56 +20,56 @@
+      	<button type="button" class="btn btn-default btn-xs" ng-click="previous({{step.position}})" >
+   			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+ 		</button>
+-     	
+-    </div>	
++
++    </div>
+  	<div class="col-md-10">
+ 
+ 	        <h2>Etape {{step.position}} : {{step.title}}</h2>
+ 	        <p class="text-justify"><div ng-bind-html="step.description"></div></p>
+ 	        <p class="text-justify">
+             <div ng-bind-html="step.learnMore"></div>
+-			     </p>     
+-	    
++			     </p>
++
+    	</div>
+    	<div class="col-md-1" ng-if="step.position < nbSteps">
+      	<button type="button" class="btn btn-default btn-xs" ng-click="next({{step.position}})">
+   			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+ 		</button>
+-     	
++
+     </div>
+-</div>  
++</div>
+ <br>
+ <!--
+ <div class="media" ng-repeat="media in step.medias">
+    <a class="pull-left" href="#">
+-    
++
+       <embed class="media-object" width="200" height="130" ng-src="{{trustSrc(media.link)}}">
+    </a>
+    <div class="media-body">
+       <h3 class="media-heading">{{media.title}}</h3>
+       <div class="text-justify" ng-bind-html="media.description"></div>
+-     
++
+   </div>
+ </div> -->
+ <div ng-repeat="media in step.medias" ng-show="{{media | isEmpty}}">
+         <div class="row text-center">
+           <a class="pull-left" href="{{trustSrc(media.link)}}">
+             <img  width="200" height="130" ng-show="!{{media.typeMedia | isVideo}}"  ng-src="{{trustSrc(media.link)}}" >
+-           
++
+             <embed width="200" height="130"  ng-show="{{media.typeMedia | isVideo}}" ng-src="{{trustSrc(media.link)}}">
+-          
++
+           </a>
+           </div>
+-        <div class="row"> 
++        <div class="row">
+             <h3>{{media.title}}</h3>
+-            <div class="text-justify" ng-bind-html="media.description"></div>       
++            <div class="text-justify" ng-bind-html="media.description"></div>
+         </div>
+-      <hr>  
+-</div> 
++      <hr>
++</div>
+ <div ng-repeat="mediaC in step.mediasConnexes" ng-show="{{mediaC | isEmpty}}">
+   <div class="media">
+       <a ng-class="getClass($index)" href="{{media.link}}">
+-        <img class="media-object" src="{{mediaC.src}}" alt="...">
++        <img class="media-object" src="{{mediaC.source}}" alt="...">
+       </a>
+     <div class="media-body">
+         <h3 class="media-heading">{{mediaC.title}}</h3>
+@@ -77,8 +77,6 @@
+     </div>
+   </div>
+   <hr>
+-</div> 
++</div>
+ 
+ <br>
+-
+-
+diff --git a/code/urbanBackOffice/app/views/user.html b/code/urbanBackOffice/app/views/user.html
+index 708ab0c..1e50a6b 100644
+--- a/code/urbanBackOffice/app/views/user.html
++++ b/code/urbanBackOffice/app/views/user.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li><a ng-href="#/">Home</a></li>
++    <li><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li class="active"><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -23,11 +23,11 @@
+         <div class="form-group col-md-6">
+           <label class="control-label" for="username">Username</label>
+           <input type="text" class="form-control"
+-                autofocus 
+-                ng-model="user.userName" 
++                autofocus
++                ng-model="user.userName"
+                 required
+                 unique-username=""
+-                placeholder="Username" 
++                placeholder="Username"
+                 id="username" name="username"
+                 ng-minlength=3
+                 ng-maxlength=20
+@@ -37,7 +37,7 @@
+              ng-show="signup_form.username.$dirty && signup_form.username.$invalid && !signup_form.username.$focused">
+             <span class="help-block" ng-show="signup_form.username.$error.required" >Please choose a username</span>
+             <span class="help-block" ng-show="signup_form.username.$dirty && signup_form.username.$error.isTaken" >Username already taken</span>
+-            
++
+             <span class="help-block" ng-show="signup_form.username.$error.minlength">
+                  Your username is required to be at least 3 characters
+             </span>
+@@ -50,8 +50,8 @@
+         <label class="control-label" for="email">Email</label>
+         <input type="email" class="form-control"
+             required
+-            placeholder="Email" 
+-            id="email" name="email" 
++            placeholder="Email"
++            id="email" name="email"
+             ng-model="user.email"
+             ng-class="{error: signup_form.email.$dirty && signup_form.email.$invalid}">
+ 
+@@ -62,25 +62,25 @@
+                      ng-show="signup_form.email.$error.email">
+                      That is not a valid email. Please input a valid email.
+               </span>
+-           
++
+           </div>
+       </div>
+     </div>
+-    <div class="row">  
++    <div class="row">
+       <div class="form-group col-md-6">
+         <label class="control-label" for="password">Password</label>
+         <input type="password" class="form-control"
+-              match="user.verification" 
++              match="user.verification"
+               required
+               ng-model="user.password"
+               id="password" name="password"
+               placeholder="Password"
+               ng-class="{error: signup_form.password.$dirty && signup_form.password.$invalid}">
+-        <div class="error" ng-show="signup_form.password.$dirty && signup_form.password.$invalid && !signup_form.password.$focused">      
+-          <span class="help-block" 
++        <div class="error" ng-show="signup_form.password.$dirty && signup_form.password.$invalid && !signup_form.password.$focused">
++          <span class="help-block"
+           ng-show="signup_form.password.$error.required" >Please enter a password</span>
+         </div>
+-      </div>  
++      </div>
+       <div class="form-group col-md-6">
+         <label class="control-label" for="verification">Repeat password</label>
+         <input type="password" class="form-control"
+@@ -89,21 +89,21 @@
+           ng-model="user.verification"
+           id="verification" name="verification"
+           ng-class="{error: signup_form.verification.$dirty && signup_form.verification.$invalid}">
+-        <div class="error" ng-show="signup_form.verification.$dirty && signup_form.verification.$invalid && !signup_form.verification.$focused">  
++        <div class="error" ng-show="signup_form.verification.$dirty && signup_form.verification.$invalid && !signup_form.verification.$focused">
+           <span class="help-block" ng-show="signup_form.verification.$error.required" >Please repeat your password</span>
+           <span class="help-block" ng-show="signup_form.verification.$error.match && !signup_form.verification.$error.required">Passwords don't match</span>
+-        </div>  
++        </div>
+       </div>
+     </div>
+ 
+-    <div class="row">  
++    <div class="row">
+       <div class="form-group col-md-6">
+         <label class="control-label" for="name">Name</label>
+         <input type="text" class="form-control"
+-                autofocus 
+-                ng-model="user.name" 
++                autofocus
++                ng-model="user.name"
+                 required
+-                placeholder="Name" 
++                placeholder="Name"
+                 id="name" name="name"
+                 ng-minlength=3
+                 ng-maxlength=20
+@@ -112,7 +112,7 @@
+           <div class="error"
+              ng-show="signup_form.name.$dirty && signup_form.name.$invalid && !signup_form.name.$focused">
+             <span class="help-block" ng-show="signup_form.name.$error.required" >Please choose a name</span>
+-            
++
+             <span class="help-block" ng-show="signup_form.name.$error.minlength">
+                  Your name is required to be at least 3 characters
+             </span>
+@@ -124,10 +124,10 @@
+       <div class="form-group col-md-6">
+         <label class="control-label" for="firstname">First Name</label>
+         <input type="text" class="form-control"
+-                autofocus 
+-                ng-model="user.firstname" 
++                autofocus
++                ng-model="user.firstname"
+                 required
+-                placeholder="First Name" 
++                placeholder="First Name"
+                 id="firstname" name="firstname"
+                 ng-minlength=3
+                 ng-maxlength=20
+@@ -136,7 +136,7 @@
+           <div class="error"
+              ng-show="signup_form.firstname.$dirty && signup_form.firstname.$invalid && !signup_form.name.$focused">
+             <span class="help-block" ng-show="signup_form.firstname.$error.required" >Please choose a firstname</span>
+-            
++
+             <span class="help-block" ng-show="signup_form.firstname.$error.minlength">
+                  Your firstname is required to be at least 3 characters
+             </span>
+@@ -146,7 +146,7 @@
+           </div>
+       </div>
+     </div>
+-    <div class="row"> 
++    <div class="row">
+       <div class="form-group col-md-6">
+         <label class="control-label" for="avatar">Avatar</label>
+         <img width ="100" height="100" src="{{user.avatar}}" class="img-thumbnail" alt="{{user.username}}">
+@@ -157,29 +157,29 @@
+ 
+           <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"> </div>
+         </li>
+-        </ul>  
++        </ul>
+           <p class="help-block">Pour modifier votre avatar, click sur Browse puis upload me</p>
+       </div>
+       <div class="form-group col-md-6">
+         <label class="control-label" for="accountType">Account Type</label>
+          <div class="radio" ng-repeat="type in user.accountType">
+               <label>
+-                <input 
+-                type="radio" 
+-                name="accountType"  
+-                value="true" 
++                <input
++                type="radio"
++                name="accountType"
++                value="true"
+                 ng-model="type.ischecked" >
+                 {{type.name}}
+               </label>
+             </div>
+       </div>
+-    </div> 
++    </div>
+     <div class="row">
+-      <div class="form-group col-md-10">  
++      <div class="form-group col-md-10">
+           <input type="submit" class="btn btn-primary" ng-disabled="signup_form.$invalid" value="Sign up" disabled="disabled" ng-click="save()">
+       </div>
+     </div>
+     </form>
+   </div>
+-  
++
+ </div>
+diff --git a/code/urbanBackOffice/app/views/users.html b/code/urbanBackOffice/app/views/users.html
+index b906e67..68caf8c 100644
+--- a/code/urbanBackOffice/app/views/users.html
++++ b/code/urbanBackOffice/app/views/users.html
+@@ -1,9 +1,9 @@
+ <div class="header">
+   <ul class="nav nav-pills pull-right">
+-    <li><a ng-href="#/">Home</a></li>
++    <li><a ng-href="#/projects">Home</a></li>
+     <li><a ng-href="#/medias">Medias</a></li>
+     <li><a ng-href="#/search">Search</a></li>
+-    <li class="active"><a ng-href="#/users">Users</a></li>
++    <!--<li><a ng-href="#/users">Users</a></li>-->
+     <li><a ng-href="#/login">Login</a></li>
+ 
+   </ul>
+@@ -34,7 +34,7 @@
+         <td>{{user.dateCreate}}</td>
+         <td>{{user.createdBy}}</td>
+         <td>{{user.nbProject}}</td>
+-      
++
+         <td>
+           <button class="btn btn-warning" ng-click="edit(user)"><i class="fa fa-edit"></i></button>
+           <button class="btn btn-danger" ng-click="delete(user.id)"><i class="fa fa-trash"></i></button></td>
+@@ -48,15 +48,3 @@
+   <br>
+ 
+ </div>
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-

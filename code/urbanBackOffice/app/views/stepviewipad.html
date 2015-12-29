@@ -1,0 +1,82 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li class="active"><a ng-href="#/projects">Home</a></li>
+    <li><a ng-href="#/medias">Medias</a></li>
+    <li><a ng-href="#/search">Search</a></li>
+    <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<ol class="breadcrumb">
+  <li><a ng-href="#/">Home</a></li>
+  <li><a ng-href="#/project/{{project.id}}">{{project.name}}</a></li>
+  <li><a ng-href="#/project/{{project.id}}/step/{{step.id}}">{{step.title}}</a></li>
+  <li class="active"> Preview {{step.title}}</li>
+</ol>
+<div class="row">
+	<div class="col-md-1" ng-if="step.position > 1">
+     	<button type="button" class="btn btn-default btn-xs" ng-click="previous({{step.position}})" >
+  			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		</button>
+
+    </div>
+ 	<div class="col-md-10">
+
+	        <h2>Etape {{step.position}} : {{step.title}}</h2>
+	        <p class="text-justify"><div ng-bind-html="step.description"></div></p>
+	        <p class="text-justify">
+            <div ng-bind-html="step.learnMore"></div>
+			     </p>
+
+   	</div>
+   	<div class="col-md-1" ng-if="step.position < nbSteps">
+     	<button type="button" class="btn btn-default btn-xs" ng-click="next({{step.position}})">
+  			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		</button>
+
+    </div>
+</div>
+<br>
+<!--
+<div class="media" ng-repeat="media in step.medias">
+   <a class="pull-left" href="#">
+
+      <embed class="media-object" width="200" height="130" ng-src="{{trustSrc(media.link)}}">
+   </a>
+   <div class="media-body">
+      <h3 class="media-heading">{{media.title}}</h3>
+      <div class="text-justify" ng-bind-html="media.description"></div>
+
+  </div>
+</div> -->
+<div ng-repeat="media in step.medias" ng-show="{{media | isEmpty}}">
+        <div class="row text-center">
+          <a class="pull-left" href="{{trustSrc(media.link)}}">
+            <img  width="200" height="130" ng-show="!{{media.typeMedia | isVideo}}"  ng-src="{{trustSrc(media.link)}}" >
+
+            <embed width="200" height="130"  ng-show="{{media.typeMedia | isVideo}}" ng-src="{{trustSrc(media.link)}}">
+
+          </a>
+          </div>
+        <div class="row">
+            <h3>{{media.title}}</h3>
+            <div class="text-justify" ng-bind-html="media.description"></div>
+        </div>
+      <hr>
+</div>
+<div ng-repeat="mediaC in step.mediasConnexes" ng-show="{{mediaC | isEmpty}}">
+  <div class="media">
+      <a ng-class="getClass($index)" href="{{media.link}}">
+        <img class="media-object" src="{{mediaC.source}}" alt="...">
+      </a>
+    <div class="media-body">
+        <h3 class="media-heading">{{mediaC.title}}</h3>
+        <div class="text-justify" ng-bind-html="mediaC.description"></div>
+    </div>
+  </div>
+  <hr>
+</div>
+
+<br>

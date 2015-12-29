@@ -1,0 +1,31 @@
+<div class="row"> <div class="col-md-6"> <leaflet id="map" paths="paths" locate="locate" center="center" markers="markers" event-broadcast="events" height="720px" defaults="defaults"></leaflet> </div> <div class="col-md-6 shadowHome" style="height:720"> <div class="row" style="background-color:white;margin-left:10px"> <img ng-src="{{trustSrc(project.footer.footerimages)}}"> </div> <div class="row" style="background-color:white;margin-left:10px"> <img ng-src="images/png24.png" width="100%" height="240" /><div class="span7"> <h2 style="padding:0px 0px 0px 20px;background-color:white">{{project.name}}</h2> <div class="text-justify" style="background-color:white;padding-left:8px" ng-bind-html="project.homepage.description"></div> </div> <br> <div class="span7 text-center" style="padding:0px 0px 0px 20px;background-color:white"> <button class="btn btn-default btn-home" type="button" ng-click="vueMixte()">Commencer la promenade</button> <br><br> <button class="btn btn-default btn-home" type="button" ng-click="open('md')">En savoir plus</button> <br> <img src="images/logoAppli.png" style="padding-bottom:1px"> <!--<button class="btn btn-primary btn-md" type="button" ng-click="openApropos('md')">A propos</button>--> </div> </div> </div> </div> <script type="text/ng-template" id="myModalContent.html"><div class="modal-header">
+        <h3 class="modal-title">En savoir plus</h3>
+        </div>
+        <div class="modal-body">
+        <p class="text-justify"><strong><em>Les Promenades du Tram </em></strong></p><p><strong>Visites enrichies du parcours artistique du T3</strong></p><p>Mode innovant et ludique de découverte de la ville, les Promenades enrichies du tram proposent, sur l'invitation de la Ville de Paris, une déambulation à la fois artistique et urbaine autour des nouvelles œuvres qui jalonnent le prolongement de la ligne T3, entre la Porte d'Ivry et la Porte de la Chapelle. iPad en main, le public est invité à explorer les territoires et projets parcourus par le tram, se laissant guider par le récit de conférenciers, spécialistes en art contemporain et en urbanisme.</p><p>Créer un signal dans la ville, renouveler les formes et fonctions du mobilier urbain, valoriser les ressources naturelles du territoire : autant d'enjeux que l'art est capable de relever et sur lequel les conférenciers entendent ouvrir le dialogue. Grâce à l'accès à des contenus multimédias variés, la promenade révèle l'étonnant processus de réalisation du parcours artistique du T3, du début de sa conception en 2007 à aujourd'hui.</p>
+                
+
+        </div>
+        <div class="modal-footer">
+        <button class="btn btn-warning" ng-click="cancel()">Close</button>
+        </div></script> <script type="text/ng-template" id="myModalApropos.html"><div class="modal-header">
+        <h3 class="modal-title">A propos</h3>
+        </div>
+        <div class="modal-body">
+        <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.
+            Nulla quam velit, vulputate eu pharetra nec, mattis ac neque.
+         </p>
+         <div class="footer">
+            <div class ="row">
+                <div class="col-sm-2"><p>Aide</p></div>
+                <div class="col-sm-2"><p>paramètres</p></div>
+                <div class="col-sm-2"><p>citytelling.fr</p></div>
+                <div class="col-sm-2"><p>dedale.info</p></div>
+                 <div class="col-sm-2"><p>smartcity</p></div>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+
+        <button class="btn btn-warning" ng-click="cancel()">Close</button>
+        </div></script>

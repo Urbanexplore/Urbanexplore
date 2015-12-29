@@ -1,0 +1,39 @@
+<div class="row col-md-12">
+		<ul class="nav nav-pills nav-justified">
+	  		<li role="presentation"><a href="#/vuemixte/{{step.id}}">vue mixte</a></li>
+	  		<li role="presentation" class="active"><a href="#/map/{{step.id}}">vue carte</a></li>
+	  		<li role="presentation" class=""><a href="#/etape/{{step.id}}">vue étape</a></li>
+		</ul>
+</div>
+<div class="row" ng-hide="true">
+		<div class="col-md-1" ng-if="step.position > 1">
+	     	<button type="button" class="btn btn-default btn-xs" ng-if="firstStepId != step.id" ng-click="previous()" >
+	  			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			</button>
+
+	    </div>
+	 	<div class="col-md-10" ng-hide="true">
+
+		    <h2>Etape {{step.position}} :{{step.title}}</h2>
+
+	   	</div>
+	   	<div class="col-md-1" ng-if="lastStepId != step.id" >
+	     	<button type="button" class="btn btn-default btn-xs" ng-if="lastStepId != step.id" ng-click="next()">
+	  			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			</button>
+
+	    </div>
+</div>
+<div class="row">
+	 <div class="col-md-12">
+	    	
+	    	<leaflet  id="map" paths="paths"  center="center" markers="markers" event-broadcast="events"  defaults="defaults"></leaflet>
+				<div class="boutonLeft boutonSwitchStep"><img src="imagesCommun/bt_left.png" width="48px" height="48px" ng-if="firstStepId != step.id" ng-click="previous()" ></div>
+				<div class="boutonRightMap boutonSwitchStep"><img src="imagesCommun/bt_right.png" width="48px" height="48px" ng-if="lastStepId != step.id" ng-click="next()"></div>
+
+          	<button class="btn btn-default boutonBottom" type="button" ng-click="initialiser()">Vue d'ensemble</button>
+    			<!--<<a class="btn btn-default boutonBottom" href="#" role="button"><span class="glyphicon ">vue d'ensemble</span></a>-->
+  		  
+				
+	</div>
+</div>

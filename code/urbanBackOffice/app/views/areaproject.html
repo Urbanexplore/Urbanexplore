@@ -1,0 +1,64 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li class="active" ><a ng-href="#/projects">Home</a></li>
+    <li><a ng-href="#/medias">Medias</a></li>
+    <li><a ng-href="#/search">Search</a></li>
+  <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<style>
+.areaForm .form-group input {
+    width:140px;
+}
+</style>
+<ol class="breadcrumb">
+    <li><a ng-href="#/">Home</a></li>
+    <li><a ng-href="#/project/{{project.id}}">Project</a></li>
+    <li class="active">{{project.name}} Area</li>
+</ol>
+<div class="row">
+<p>Select the area of project in the cart.
+Confirm the value of zoom min, max zoom, initial zoom and click Save.</p>
+</div>
+<!--<p>Choisissez la zone de votre promenande en defilant la carte.
+Validez la valeur de zoom min, zoom max et cliquez sur Enregistrer.
+</p>-->
+
+	<form class="form-inline areaForm">
+
+		<div class="form-group">
+    		<label  for="lat">Lat</label>
+    		<input style = "width:80px;" type="double" ng-model="center.lat" class="form-control" id="lat" placeholder="Enter lat">
+  		</div>
+  		<div class="form-group">
+    		<label for="lat"> Lng</label>
+    		<input style = "width:80px;"  type="double" ng-model="center.lng" class="form-control " id="lat" placeholder="Enter lat">
+  		</div>
+  		<div class="form-group">
+    		<label for="zoom">Zoom</label>
+    		<input  style = "width:60px;" ng-model="center.zoom" class="form-control" id="zoom" placeholder="Enter zoom initial">
+  		</div>
+
+      <div class="form-group">
+        <label for="zoom">Min Zoom</label>
+        <input style = "width:60px;" ng-model="minZoom" class="form-control" id="minZoom" placeholder="Enter zoom min">
+      </div>
+      <div class="form-group">
+        <label for="zoom">Max Zoom</label>
+        <input style = "width:60px;" ng-model="maxZoom" class="form-control" id="maxZoom" placeholder="Enter zoom max">
+      </div>
+
+
+       <button type="submit" class="btn btn-default"ng-click="save()">Valider</button>
+
+
+    </form>
+
+<br>
+<div class="row">
+
+    <leaflet  center="center" width="720" height="400" ></leaflet>
+</div>

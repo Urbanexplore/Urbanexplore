@@ -1,0 +1,17 @@
+{
+	metadata:
+	{
+	"http://purl.org/dc/terms/format":[{"value":"http://dbpedia.org/page/Simple_Knowledge_Organization_System","xmldatatype":"anyURI"}],
+	"http://purl.org/dc/terms/creator":[{"value":"theflash","xmldatatype":"string"}],
+	"http://purl.org/dc/terms/language":[{"value":"fr","xmldatatype":"language"}],
+	"http://purl.org/dc/terms/title":[{"value":"thematiques_fr","xmldatatype":"string"}],
+	"http://purl.org/dc/terms/models":[{"value":"default","xmldatatype":"string"}],
+	},
+	uriTransformation :
+	[{
+		oldURI : "http://id.loc.gov/vocabulary/relators",
+		newURI : "http://import/"
+	},
+	
+]
+}

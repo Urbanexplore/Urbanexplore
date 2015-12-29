@@ -1,0 +1,137 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li class="active"><a ng-href="#/projects">Home</a></li>
+    <li><a ng-href="#/medias">Medias</a></li>
+    <li><a ng-href="#/search">Search</a></li>
+    <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<ol class="breadcrumb">
+  <li><a ng-href="#/">Home</a></li>
+  <li class="active">{{project.name}}</li>
+</ol>
+<div class="hero-unit">
+<h3 class ="subTitle">{{subTitleView}}</h3>
+</div>
+<div>
+  <div class="row">
+    <div class="col-lg-6"><h4>Project Info<h4></div>
+    <div class="col-lg-6"><h4>Management Route</h4></div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
+      <dl class="dl-horizontal">
+        <dt>Publication statut</dt>
+        <dd>{{project.status}}</dd>
+        <dt>Number of media</dt>
+        <dd>{{nbMedia}}</dd>
+        <dt>Number of step</dt>
+        <dd>{{project.steps.length}}</dd>
+      </dl>
+    </div>
+    <div class="col-lg-6 ">
+      <button ng-show="isDefineArea"type="submit" class="btn btn-info" ng-click="goNext('/projectroute/{{project.id}}')" >Edit Route</button>
+      <button type="submit" class="btn btn-info" ng-click="console.log('{{project.id}}');goNext('/areaproject/{{project.id}}')">Define area</button>
+    </div>
+  </div>
+</div>
+<div class="hero-unit">
+<h3 class ="subTitle">{{titleView}}</h3>
+</div>
+
+<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="row-border hover">
+    <thead>
+    <tr>
+      <th>Step</th>
+      <th>Title</th>
+      <th>Visible</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+     <tr ng-repeat="step in project.steps | orderBy:position">
+      <td>{{step.position}}</td>
+      <td>{{step.title}}</td>
+      <td ng-click="changeVisibility(step)">
+        <span ng-if = "step.isVisible"  class="glyphicon glyphicon-eye-open"></span>
+        <span ng-if = "!step.isVisible" class="glyphicon glyphicon-eye-close"></span>
+      </td>
+      <td>
+        <button class="btn btn-warning" ng-click="edit(step)"><i class="fa fa-edit"></i></button>
+        <button class="btn btn-danger" ng-click="delete(step.id)"><span class="glyphicon glyphicon-trash"></span></button>
+      </td>
+    </tr>
+    </tbody>
+</table>
+ <input type="hidden" ng-model="project.newstep.id" />
+<!--<button class="btn" ng-click="edit()">Add</button>-->
+
+
+<div class="hero-unit">
+<h3 class ="subTitle">{{subTitleView1}}</h3>
+</div>
+<div>
+  <form class="form-inline" role="form">
+    <div class="row">
+    <div class="col-lg-5">
+      <label class="radio-inline" ng-repeat="type in project.ishomePage">
+        <input type="radio" name="ishomePage"  value="true"
+            ng-model="type.ischecked" >{{type.name}}
+      </label>
+    </div>
+    <div class="col-lg-2 col-lg-offset-1">
+      <button type="submit" class="btn btn-info" ng-click="goNext('/homePage/{{project.id}}')">Edit Home page</button>
+    </div>
+  </div>
+  </form>
+</div>
+
+<div class="hero-unit">
+  <h3 class ="subTitle">{{subTitleView2}}</h3>
+</div>
+<form class="form-inline" role="form">
+  <div class="row">
+    <div class="col-lg-5">
+      <label class="radio-inline" ng-repeat="type in project.isfooter">
+        <input type="radio" name="isfooter"  value="true"
+            ng-model="type.ischecked" >{{type.name}}
+      </label>
+    </div>
+    <div class="col-lg-2 col-lg-offset-1">
+      <button type="submit" class="btn btn-info" ng-click="goNext('/footer/{{project.id}}')" >Edit Footer</button>
+    </div>
+  </div>
+</form>
+<div class="hero-unit ">
+  <h3 class ="subTitle">{{subTitleView3}}</h3>
+</div>
+<div>
+  <div class="row">
+    <div class="col-lg-6"><h4>Mode of publication<h4></div>
+    <div class="col-lg-6"><h4>Preview project</h4></div>
+  </div>
+  <div class="row">
+     <button id="reloader" type="submit" class="btn btn-info" ng-click="publier()" >Publier</button>
+  </div>
+  <div class="row" ng-repeat="advertising in project.advertising">
+
+    <div class="col-lg-6">
+       <div class="checkbox" >
+          <label>
+            <input type="checkbox" name="selectedAdvertising[]"
+                  value="{{advertising.value}}" ng-model="advertising.selected"
+                > {{advertising.name}}
+          </label>
+        </div>
+    </div>
+    <div class="col-lg-6">
+      <button id="reloader" type="submit" class="btn btn-info" ng-click="viewIpad()" >{{advertising.name}}</button>
+    </div>
+  </div>
+
+</div>

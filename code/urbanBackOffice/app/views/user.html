@@ -1,0 +1,185 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li><a ng-href="#/projects">Home</a></li>
+    <li><a ng-href="#/medias">Medias</a></li>
+    <li><a ng-href="#/search">Search</a></li>
+    <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<ol class="breadcrumb">
+  <li><a ng-href="#/">Home</a></li>
+  <li><a ng-href="#/users">Users</a></li>
+  <li class="active">{{title}}</li>
+</ol>
+<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+<div>
+  <div class="panel">
+    <div class="panel-heading">Sign up</div>
+    <form name="signup_form" novalidate ng-submit="signupForm()" ng-controller="UserCtrl" class="ng-pristine ng-invalid ng-invalid-required">
+      <div class= "row">
+        <div class="form-group col-md-6">
+          <label class="control-label" for="username">Username</label>
+          <input type="text" class="form-control"
+                autofocus
+                ng-model="user.userName"
+                required
+                unique-username=""
+                placeholder="Username"
+                id="username" name="username"
+                ng-minlength=3
+                ng-maxlength=20
+                ng-class="{error: signup_form.username.$dirty && signup_form.username.$invalid}"
+              >
+          <div class="error"
+             ng-show="signup_form.username.$dirty && signup_form.username.$invalid && !signup_form.username.$focused">
+            <span class="help-block" ng-show="signup_form.username.$error.required" >Please choose a username</span>
+            <span class="help-block" ng-show="signup_form.username.$dirty && signup_form.username.$error.isTaken" >Username already taken</span>
+
+            <span class="help-block" ng-show="signup_form.username.$error.minlength">
+                 Your username is required to be at least 3 characters
+            </span>
+            <span class="help-block" ng-show="signup_form.username.$error.maxlength">
+                 Your username cannot be longer than 20 characters
+            </span>
+          </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label" for="email">Email</label>
+        <input type="email" class="form-control"
+            required
+            placeholder="Email"
+            id="email" name="email"
+            ng-model="user.email"
+            ng-class="{error: signup_form.email.$dirty && signup_form.email.$invalid}">
+
+             <div class="error"
+             ng-show="signup_form.email.$dirty && signup_form.email.$invalid && !signup_form.email.$focused">
+              <span class="help-block" ng-show="signup_form.email.$error.required" >Please choose a Email</span>
+              <span class="help-block"
+                     ng-show="signup_form.email.$error.email">
+                     That is not a valid email. Please input a valid email.
+              </span>
+
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label" for="password">Password</label>
+        <input type="password" class="form-control"
+              match="user.verification"
+              required
+              ng-model="user.password"
+              id="password" name="password"
+              placeholder="Password"
+              ng-class="{error: signup_form.password.$dirty && signup_form.password.$invalid}">
+        <div class="error" ng-show="signup_form.password.$dirty && signup_form.password.$invalid && !signup_form.password.$focused">
+          <span class="help-block"
+          ng-show="signup_form.password.$error.required" >Please enter a password</span>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label" for="verification">Repeat password</label>
+        <input type="password" class="form-control"
+          match="user.password"
+          required
+          ng-model="user.verification"
+          id="verification" name="verification"
+          ng-class="{error: signup_form.verification.$dirty && signup_form.verification.$invalid}">
+        <div class="error" ng-show="signup_form.verification.$dirty && signup_form.verification.$invalid && !signup_form.verification.$focused">
+          <span class="help-block" ng-show="signup_form.verification.$error.required" >Please repeat your password</span>
+          <span class="help-block" ng-show="signup_form.verification.$error.match && !signup_form.verification.$error.required">Passwords don't match</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label" for="name">Name</label>
+        <input type="text" class="form-control"
+                autofocus
+                ng-model="user.name"
+                required
+                placeholder="Name"
+                id="name" name="name"
+                ng-minlength=3
+                ng-maxlength=20
+                ng-class="{error: signup_form.name.$dirty && signup_form.name.$invalid}"
+              >
+          <div class="error"
+             ng-show="signup_form.name.$dirty && signup_form.name.$invalid && !signup_form.name.$focused">
+            <span class="help-block" ng-show="signup_form.name.$error.required" >Please choose a name</span>
+
+            <span class="help-block" ng-show="signup_form.name.$error.minlength">
+                 Your name is required to be at least 3 characters
+            </span>
+            <span class="help-block" ng-show="signup_form.name.$error.maxlength">
+                 Your name cannot be longer than 20 characters
+            </span>
+          </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label" for="firstname">First Name</label>
+        <input type="text" class="form-control"
+                autofocus
+                ng-model="user.firstname"
+                required
+                placeholder="First Name"
+                id="firstname" name="firstname"
+                ng-minlength=3
+                ng-maxlength=20
+                ng-class="{error: signup_form.firstname.$dirty && signup_form.firstname.$invalid}"
+              >
+          <div class="error"
+             ng-show="signup_form.firstname.$dirty && signup_form.firstname.$invalid && !signup_form.name.$focused">
+            <span class="help-block" ng-show="signup_form.firstname.$error.required" >Please choose a firstname</span>
+
+            <span class="help-block" ng-show="signup_form.firstname.$error.minlength">
+                 Your firstname is required to be at least 3 characters
+            </span>
+            <span class="help-block" ng-show="signup_form.firstname.$error.maxlength">
+                 Your firstname cannot be longer than 20 characters
+            </span>
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label" for="avatar">Avatar</label>
+        <img width ="100" height="100" src="{{user.avatar}}" class="img-thumbnail" alt="{{user.username}}">
+        <input type="file" nv-file-select="" uploader="uploader"  file-model="myFile"/>
+        <button  ng-click="uploadFile()">Upload me</button>
+        <ul ng-show= "!showImage">
+        <li ng-repeat="item in uploader.queue">
+
+          <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 100 }"> </div>
+        </li>
+        </ul>
+          <p class="help-block">Pour modifier votre avatar, click sur Browse puis upload me</p>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label" for="accountType">Account Type</label>
+         <div class="radio" ng-repeat="type in user.accountType">
+              <label>
+                <input
+                type="radio"
+                name="accountType"
+                value="true"
+                ng-model="type.ischecked" >
+                {{type.name}}
+              </label>
+            </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-10">
+          <input type="submit" class="btn btn-primary" ng-disabled="signup_form.$invalid" value="Sign up" disabled="disabled" ng-click="save()">
+      </div>
+    </div>
+    </form>
+  </div>
+
+</div>

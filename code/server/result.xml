@@ -1,0 +1,517 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://xplor.com/ontology/v0.1#" > 
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier147">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier144"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier155"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier173">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier11"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier75"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier44"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier160"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier153"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier150"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier48">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier155"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier147"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier178"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier163">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier149"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier162"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier157">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier149"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier156"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier162"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier54"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier72">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier156"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier158"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier162"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier52"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier175"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier153">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier150"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier160"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier51"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier44"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier75"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier11"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier173"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier77">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier147"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier155"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier44">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier160"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier150"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier51"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier26"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier11"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier173"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier177">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier178"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier161"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier152"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier144"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier14">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier39"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier148">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier139"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier147"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier155"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier167">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier102"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier145"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier146"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier140"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier91"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier138">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier139"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier168"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier146">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier145"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier151"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier16"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier172">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier16"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier146"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier147"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier152"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier144"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier39">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier139"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier14"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier168"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier52">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier162"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier158"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier156"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier72"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier175"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier162">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier149"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier54"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier14"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier156">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier149"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier162"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier54"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier152">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier144"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier151"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier161"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier149">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier156"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier54"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier102">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier136"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier140"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier91"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier145"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier26"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier176">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier54"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier149"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier11">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier173"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier75"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier51"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier44"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier150"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier153"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier160"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier29">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier168"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier149"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier139">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier168"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier166">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier139"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier39"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier168"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier175">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier72"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier52"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier158"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier156"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier162"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier51">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier136"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier160"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier44"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier102"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier26"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier173"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier145">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier91"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier146"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier151"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier178"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier155">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier139"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier161"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier77"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier159">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier149"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier162"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier54"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier72"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier91">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier140"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier136"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier151"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier145"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier146"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier102"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier171">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier14"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier139"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier161">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier144"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier152"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier155"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier70">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier161"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier155"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier39"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier77"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier151">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier91"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier145"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier146"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier152"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier161"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier16"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier169">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier14"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier29"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier75">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier136"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier140"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier91"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier160"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier26"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier173"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier16">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier151"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier146"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier136">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier91"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier140"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier51"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier75"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier102"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier26"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier165">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier144"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier155"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier161"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier178"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier26">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier75"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier102"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier51"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier44"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier140"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier136"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier144">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier152"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier147"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier161"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier174">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier16"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier146"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier144"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier154">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier91"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier136"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier140"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier160"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier51"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier75"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier26"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier140">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier91"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier136"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier75"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier102"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier26"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier160">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier140"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier154"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier51"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier44"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier75"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier11"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier173"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier158">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier156"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier157"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier159"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier162"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier52"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier72"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier175"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier54">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier163"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier149"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier168"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier176"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier170">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier169"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier14"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier70"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier39"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier168">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier39"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier164"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier139"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier150">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier153"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier160"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier51"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier44"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier26"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier11"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier173"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier178">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier78"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier48"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier161"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier144"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier164">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier139"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier138"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier148"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier155"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier166"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier171"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier168"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://xplor.com/ontology/v0.1#metier78">
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier165"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier146"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier16"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier177"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier174"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier172"/>
+    <j.0:hasClosestJob rdf:resource="http://xplor.com/ontology/v0.1#metier178"/>
+  </rdf:Description>
+</rdf:RDF>

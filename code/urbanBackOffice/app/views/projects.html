@@ -1,0 +1,84 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li class="active"><a ng-href="#/projects">Home</a></li>
+    <li><a ng-href="#/medias">Medias</a></li>
+    <li><a ng-href="#/search">Search</a></li>
+    <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<ol class="breadcrumb">
+  <li><a ng-href="#/">Home</a></li>
+
+</ol>
+<div class="hero-unit">
+<h3 class ="subTitle">{{titleView}}</h3>
+</div>
+
+<div>
+<p class="text-danger"><strong>{{ message }}</strong></p>
+<br>
+<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+<!--<table datatable="" dt-options="dtOptions" dt-columns="dtColumns" class="row-border hover"></table>-->
+<table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="row-border hover" >
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Created</th>
+      <th>Modified</th>
+      <th>Created by</th>
+      <th>Pub</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="project in projects">
+      <td ng-click="edit(project)">{{project.name}}</td>
+      <td>{{project.dateCreate}}</td>
+      <td>{{project.dateUpdate}}</td>
+      <td>{{project.author}}</td>
+      <td>{{project.status}}</td>
+
+      <td>
+        <button class="btn btn-warning" ng-click="edit(project)"><i class="fa fa-edit"></i></button>
+
+        <button class="btn btn-danger" ng-click="delete(project)"><i class="fa fa-trash-o"></i></button>
+      </td>
+    </tbody>
+</table>
+
+<br>
+<form  class="form-inline" name="myForm">
+    <div class="form-group">
+      <input type="hidden" ng-model="newproject.id" />
+      <input type="text" placeholder="Enter project name" id="name" class="form-control" ng-model="newproject.name" required>
+    </div>
+      <button  class="btn btn-success" type="submit" ng-disabled="myForm.$invalid" ng-click="save()"> Add New Project</button>
+</form>
+
+
+<div class="hero-unit">
+<h3 class ="subTitle">{{subTitleView1}}</h3>
+</div>
+<div class="row">
+  <div class="col-md-4">
+      <button type="submit" class="btn btn-info" ng-click="goNext('/users')">Users</button>
+  </div>
+
+</div>
+
+<div class="hero-unit">
+<h3 class ="subTitle">Médias</h3>
+</div>
+<div class="row">
+  <div class="col-md-2">
+      <button type="submit" class="btn btn-info" ng-click="goNext('/search')">Search</button>
+  </div>
+  <div class="col-md-2">
+      <button type="submit" class="btn btn-info" ng-click="goNext('/medias')">Medias & carts</button>
+  </div>
+
+</div>
+<br>

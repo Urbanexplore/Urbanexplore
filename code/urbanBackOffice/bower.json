@@ -1,0 +1,47 @@
+{
+  "name": "urbanBackOffice",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "~1.2.0",
+    "json3": "~3.3.1",
+    "es5-shim": "~3.1.0",
+    "bootstrap": "~3.2.0",
+    "angular-resource": "~1.2.0",
+    "angular-cookies": "~1.2.0",
+    "angular-sanitize": "~1.2.0",
+    "angular-animate": "~1.2.0",
+    "angular-touch": "~1.2.0",
+    "angular-route": "~1.2.0",
+    "datatables": ">=1.9.4",
+    "angular-datatables": "~0.2.0",
+    "angular-ui-tinymce": "https://github.com/angular-ui/ui-tinymce.git#0b2a007e6878e1a4599cc1fac57cf063bdc2f951",
+    "tinymce": "~4.0.0",
+    "angular-leaflet": "0.7.11",
+    "ng-file-upload": "~2.2.2",
+    "ng-file-upload-shim": "~1.6.12",
+    "Leaflet.awesome-markers": "2.0.2",
+    "Leaflet.MakiMarkers": "1.0.1",
+    "angular-bootstrap": "~0.11.2",
+    "fontawesome": "~4.2.0",
+    "angular-bootstrap-select": "~0.0.5",
+    "nya-bootstrap-select": "~2.0.5",
+    "angularjs-file-upload": "~2.2.2",
+    "angular-file-upload": "~1.1.5",
+    "angular-rdf-ui": "git@github.com:florent-andre/rdfui.git#091ba83243254f0c7bda31c3ddb2fd4fa1499846"
+  },
+  "devDependencies": {
+    "grunt-karma": "~0.10.1",
+    "karma-jasmine": "~0.3.5",
+    "angular-mocks": "~1.2.0",
+    "angular-scenario": "~1.2.0",
+    "qunit": "~1.18.0"
+  },
+  "appPath": "app",
+  "resolutions": {
+    "tinymce": "0d54976232b120a9f975cb7945522383f00ec808",
+    "angular-ui-tinymce": "0b2a007e6878e1a4599cc1fac57cf063bdc2f951",
+    "angular": "~1.2.0",
+    "es5-shim": ">=3.4.0",
+    "angular-sanitize": "~1.2.0"
+  }
+}

@@ -1,0 +1,79 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li class="active"><a ng-href="#/projects">Home</a></li>
+    <li><a ng-href="#/medias">Medias</a></li>
+    <li><a ng-href="#/search">Search</a></li>
+    <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<ol class="breadcrumb">
+    <li><a ng-href="#/">Home</a></li>
+    <li><a ng-href="#/project/{{project.id}}">Project</a></li>
+    <li class="active">{{project.name}} Route</li>
+</ol>
+<!--
+<div class="hero-unit">
+<h3 class ="subTitle">{{titleView}} Route</h3>
+</div>-->
+
+<p>Cliquer sur la carte pour ajouter un marcker puis cliquer sur le marcker pour le personnaliser. Il est possible d'ajouter un seul marcker à la fois.
+</p>
+
+ <div class="row">
+    <div class="col-md-4" ng-show="showme">
+      <div class="panel panel-default">
+        <div class="panel-heading">Step</div>
+          <div class="panel-body">
+
+            <form role="form">
+              <div class="form-group">
+                            <label for="tilte">Title</label>
+                            <input type="text"  ng-model="step.title" class="form-control" id="tilte" placeholder="Enter a title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tilte">Marker position</label>
+
+                            <input required ng-model="step.lat" type="text" placeholder="lat">
+                            <input required ng-model="step.lng" type="text" placeholder="lng">
+                        </div>
+                        <div class="form-group">
+                            <label for="tilte">Position</label>
+
+                             <input required ng-model="step.position" type="text" placeholder="Enter a position">
+                        </div>
+                        <!--<div class="form-group">
+                            <label for="tilte">Popup message</label>
+
+                             <input required ng-model="step.message" type="text" placeholder="Enter a message">
+                        </div>-->
+                        <div class="form-group">
+                        <label for="tilte">Step visible</label><br>
+                        <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1" required ng-model="step.isVisible" ng-init="step.isVisible='1'" value="1">Visible
+        </label>
+<label class="radio-inline">
+  <input type="radio" required  name="inlineRadioOptions" id="inlineRadio0" ng-model="step.isVisible" value="0">Non Visible
+</label>
+                </div>
+
+
+
+                        <br /><br />
+                        <div>
+                            <button type="submit" class="btn btn-default" ng-click="save()">Save</button>
+                            <button type="submit" class="btn btn-danger" ng-click="delete(step.id)">Delete</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+		<div ng-class="myCssVar">
+
+    		<leaflet paths="paths" center="center" markers="markers" event-broadcast="events" height="480px" defaults="defaults"></leaflet>
+        </div>
+    </div>
+</div>

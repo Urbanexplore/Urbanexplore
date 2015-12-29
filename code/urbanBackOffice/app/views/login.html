@@ -1,0 +1,56 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li class="disabled"><a ng-href="#/projects">Home</a></li>
+    <li class="disabled"><a ng-href="#/medias">Medias</a></li>
+    <li class="disabled"><a ng-href="#/search">Search</a></li>
+    <!--<li class="disabled"><a ng-href="#/users">Users</a></li>-->
+    <li class="active"><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<!-- <ol class="breadcrumb">
+  <li><a ng-href="#/">Home</a></li>
+  <li class="active">Login</li>
+</ol> -->
+ <div class="panel">
+    <div class="panel-heading">Login</div>
+		<div class="row ">
+	  		<div class="col-md-6 col-md-offset-3">
+	   		<form role="form" name="loginForm" ng-submit="login()" ng-class="{submitted:submitted}" novalidate>
+	      		<div class="form-group">
+	        			<label for="username">Username</label>
+	        				<input type="text"
+			               class="form-control"
+			               name="username"
+			               id="username"
+			               ng-model="credentials.username"
+			               placeholder="Username"
+			               required />
+			        			<span class="error"
+			              ng-show="(loginForm.username.$dirty || submitted) && loginForm.username.$error.required">This is a required field.</span>
+	      		</div>
+		      	<div class="form-group">
+			         <label for="password">Password</label>
+			         <input type="password"
+		               class="form-control"
+		               name="password"
+			            id="password"
+		               ng-model="credentials.password"
+		               placeholder="Password"
+			               required />
+			         <span class="error"
+			              ng-show="(loginForm.password.$dirty || submitted) && loginForm.password.$error.required">This is a required field.</span>
+			      </div>
+			      <div class="form-group">
+			        	<button type="submit"
+			                class="btn btn-primary pull-right"
+			                value="Login" title="Login" ng-click="loginT()">Login</button>
+			        <!-- ng-disabled="!loginForm.$valid" -->
+			      </div>
+	      		<p><a href="/forgot">Forgot password</a></p>
+	   		</form>
+	   	</div>
+		</div>
+   </div>
+</div>

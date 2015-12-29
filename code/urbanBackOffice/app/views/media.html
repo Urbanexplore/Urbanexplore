@@ -1,0 +1,100 @@
+<div class="header">
+  <ul class="nav nav-pills pull-right">
+    <li><a ng-href="#/projects">Home</a></li>
+    <li class= "active"><a ng-href="#/medias">Medias</a></li>
+    <li><a ng-href="#/search">Search</a></li>
+    <!--<li><a ng-href="#/users">Users</a></li>-->
+    <li><a ng-href="#/login">Login</a></li>
+
+  </ul>
+  <h3 class="text-muted">Urban Explore</h3>
+</div>
+<ol class="breadcrumb">
+  <li><a ng-href="#/">Home</a></li>
+  <li><a ng-href="#/medias">Medias</a></li>
+  <li class="active">{{media.title}}</li>
+</ol>
+<div>
+
+
+    <div class="row" ng-show="!{{media | isEmpty}}">
+    	<div class="col-md-6">
+
+         <a class="pull-left" href="{{trustSrc(media.link)}}">
+
+           <img  width="400" height="280" ng-show="{{video}}"  ng-src="{{trustSrc(media.link)}}" >
+
+          <embed width="400" height="280" ng-show="{{!video}}" ng-src="{{trustSrc(media.link)}}">
+
+
+
+        </a>
+        </div>
+        <div class="col-md-6">
+        	<dl class="dl-horizontal">
+		        <dt>Title :</dt>
+		        <dd>{{media.title}}</dd>
+            <dt>Description :</dt>
+            <dd ng-bind-html=media.description></dd>
+            <dt>Type :</dt>
+            <dd>{{media.typeMedia}}</dd>
+		        <dt>Cart(s) :</dt>
+		        <dd><a href="#/cart/{{cart.id}}"  ng-repeat="cart in getCarts">{{cart.name}} | </a> </dd>
+
+
+      		</dl>
+        </div>
+
+    </div>
+</div>
+
+<br>
+<br>
+
+<div class=" hero-unit">
+  <div class = "row subTitle">
+    <h3 class ="">{{subTitleView2}}</h3>
+    </div>
+</div>
+<br>
+<div class= "row">
+  <div class="col-md-10 col-sm-offset-2">
+      <form  class="form-inline" name="myForm">
+        <div class="form-group">
+          <input type="hidden" ng-model="newcart.id" />
+          <input type="text" placeholder="Enter cart name" id="name" class="form-control" ng-model="newcart.name" required>
+        </div>
+        <button  class="btn btn-default" type="submit" ng-disabled="myForm.$invalid" ng-click="saveCart()">
+          <span class="glyphicon glyphicon-shopping-cart"></span>New Cart
+        </button>
+      </form>
+  </div>
+</div>
+
+<br>
+<br>
+<alert ng-repeat="alert in alertsCart" type="{{alert.type}}" close="closeAlertCart($index)">{{alert.msg}}</alert>
+
+<table datatable="ng" dt-options="dtOptionsCart" dt-column-defs="dtColumnDefs" class="row-border hover" >
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Nb of medias</th>
+      <th>Created</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+     <tr ng-repeat="cart in carts">
+      <td>{{cart.name}}</td>
+      <td>{{cart.medias | nbOfMedia}} </td>
+      <td>{{cart.created}}</td>
+
+      <td>
+        <button class="btn btn-info" ng-click="viewCart(cart.id)">View <span class="badge">{{cart.medias | nbOfMedia}}</span></button>
+        <button class="btn btn-warning" ng-click="emptyCart(cart)">Empty</button>
+        <button class="btn btn-danger" ng-click="deleteCart(cart.id)"><span class="glyphicon glyphicon-trash"></span></button>
+    </td>
+     </tr>
+    </tbody>
+</table>

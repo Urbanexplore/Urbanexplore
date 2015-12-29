@@ -1,0 +1,1 @@
+pour l'instant il faut modifier le fichier dans services/projects.json

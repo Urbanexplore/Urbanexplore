@@ -1,0 +1,42 @@
+
+<div class="row">
+
+    <div class="col-md-6">
+
+         <leaflet id="map"  paths="paths" locate="locate" center="center" markers="markers" event-broadcast="events" height="700px" defaults="defaults"></leaflet>
+   
+        
+    </div>
+    <div class="col-md-6 shadowHome" style="height:720">
+        <div class="row" style="background-color:white;margin-left:10px">
+	       <img ng-src="{{trustSrc(project.footer.footerimages)}}"/>
+        </div>
+
+        <div class="row" style="background-color:white;margin-left:10px;">
+            <img ng-src="{{trustSrc(project.homepage.images)}}" width="100%" height="240" style="background-color:white"/>
+        
+            <div class="span7">
+            <h2 style="padding:0px 0px 0px 20px;background-color:white">{{project.name}}</h2>
+            
+            <div class="text-justify" style="background-color:white;padding-left:8px;" ng-bind-html=project.homepage.description></div>
+
+        </div>
+        <br>
+        <div class="span7 text-center" style="padding:0px 0px 0px 20px;background-color:white">
+            <button class="btn btn-default btn-home" type="button" ng-click="vueMixte()">Commencer la promenade</button>
+            <br><br>
+            <button class="btn btn-default btn-home" type="button" ng-click="open()">En savoir plus</button>
+            <br>
+
+            <img src="imagesCommun/logoAppli.png"  style="padding-bottom:1px;"/>
+
+            <!--<button class="btn btn-primary btn-md" type="button" ng-click="openApropos('md')">A propos</button>-->
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
