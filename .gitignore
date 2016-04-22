@@ -1,0 +1,18 @@
+.classpath
+.project
+.settings
+target
+*~
+.metadata
+.~*
+.idea
+
+#fichier caché mac
+.DS_Store
+
+### Emacs ###
+# -*- mode: gitignore; -*-
+*~
+\#*\#
+.\#*
+*.sw*
