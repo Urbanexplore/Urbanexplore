@@ -15,7 +15,7 @@ Put in the europeana-client.properties this content :
 ```
 # the uri of the search API using JSON response => http://www.europeana.eu/api/v2/search.json                                                                                                                                          
 # for testing within the development environment a local URI can be used e.g. localhost:8989/api/v2/search.json                                                                                                                        
-europeana.api.uri = http://www.europeana.eu/api/v2/                                                                                                                                                                                    
+europeana.api.uri = http://www.europeana.eu/api/v2/
 
 # the uri of the search API using JSON response => http://www.europeana.eu/api/v2/search.json                                                                                                                                          
 # for testing within the development environment a local URI can be used e.g. localhost:8989/api/v2/search.json                                                                                                                        

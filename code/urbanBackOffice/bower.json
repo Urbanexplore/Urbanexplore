@@ -41,7 +41,7 @@
     "tinymce": "0d54976232b120a9f975cb7945522383f00ec808",
     "angular-ui-tinymce": "0b2a007e6878e1a4599cc1fac57cf063bdc2f951",
     "angular": "~1.2.0",
-    "es5-shim": ">=3.4.0",
+    "es5-shim": "2.3.0",
     "angular-sanitize": "~1.2.0"
   }
 }

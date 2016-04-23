@@ -1,26 +1,30 @@
-## Urban Xplor Back office
+# Urban Xplor Back office
 
 
-### Installation
-
-* [Node 0.10.x](http://nodejs.org/)
-* installation de ruby *version dev* 
- * vérifier la version actuelle $ruby -v
- * sudo apt-get install ruby{{version}}-dev
+# Installation utilities
 
 ```
-sudo apt-get install node
+curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo apt-get install -y build-essential
+
+
+sudo apt-get install npm
+sudo apt-get install ruby-dev
 
 sudo npm install -g bower
 sudo npm install -g grunt-cli
 sudo gem install compass
 ```
 
-1. `git clone git@bitbucket.org:FlorentAndre/urbanxplor.git`
-2. `cd urbanBackOffice`
-3. `sudo npm install`
-4. `bower install`
-5. `grunt build`
+# Urban BackOffice installation
+
+```
+cd urbanBackOffice
+sudo npm install
+bower install
+grunt build
+```
 
 You should see "Done, without errors." in green.
 

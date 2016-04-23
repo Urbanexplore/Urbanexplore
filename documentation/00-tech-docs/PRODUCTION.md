@@ -23,7 +23,17 @@ start_stanbol_prod.sh start
 ```
 
 # pour lancer le serveur java sur la prod : 
-/urban/urbanxplor/code/server$ ./start_stanbol_prod.sh start
+
+```
+cd /urban/urbanxplor/code/server
+./start_stanbol_prod.sh start
+```
+
+## in order to see the logs 
+
+```
+tail -f /home/florent/urban/urbanxplor/code/server/launcher/target/stanbol/logs/error.log
+```
 
 # pour publier les modifications de la partie backoffice sur le serveur 
 

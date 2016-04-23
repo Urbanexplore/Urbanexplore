@@ -30,58 +30,51 @@ angular.module('urbanBackOfficeApp')
     };
     
  	$scope.titleView = "Step information";
-  $scope.subTitleView1 = "Search";
+ 	$scope.subTitleView1 = "Search";
  	$scope.subTitleView2 = "Medias";
 
 
  	 var step_id    = $routeParams.stepId;
  	 var project_id = $routeParams.projectId;
-  console.log(project_id);
-   var listOfMedias = new Array();
+ 	 console.log(project_id);
+ 	 var listOfMedias = new Array();
 
-   var step22 = [];
+ 	 var step22 = [];
+ 	 
+ 	 //TOOD : review all this code can be mutch more simple and efficient (with the création of a good projet object directly)
 
     var promise = ProxyProjectsService.getProjectJsById(project_id, true, true);
-   promise.then(function(data){
-     console.timeStamp("test");
-     $scope.project = data;
-   }).then(function(){
+   
+    promise.then(function(data){
+    	console.log("*********");
+    	console.log(data);
+    	$scope.project = data;
+    })
+    .then(function(){
 
-    var promiseStep =  ProjectsService.getStepByPosition($scope.project,step_id);
-    promiseStep.then(function(dataStep){
-      $scope.step = dataStep;
-      step22 = dataStep;
-    }).then(function(){
-     //step22 = ProjectsService.getStepByPosition($scope.project,step_id);
-     console.log(step22);
-     console.log(step22.medias);
+	    var promiseStep =  ProjectsService.getStepByPosition($scope.project,step_id);
+	    promiseStep.then(function(dataStep){
+	      $scope.step = ProxyProjectsService.createStep(dataStep);
+	      step22 = dataStep;
+	    })
+	    .then(function(){
+		     //step22 = ProjectsService.getStepByPosition($scope.project,step_id);
+		     console.log(step22);
+		     console.log(step22.medias);
 
-    //alert(step.medias);
-     listOfMedias = step22.medias;
-
-//   console.log(listOfMedias);
-//   console.log(listOfMedias.length);
-
-
-//      listOfMedias.forEach(function(entry) {
-//        console.log (entry);
-//        console.log ("entry");
-//
-//      });
-     
-     if(listOfMedias){
-    	 listOfMedias.sort(function(a,b){
-             if(a.ordreDsStep < b.ordreDsStep)
-               return(-1);
-             else
-               return(1);
-           });
-
-         $scope.step.medias = listOfMedias; 
-     }
-
-      
-});
+		     listOfMedias = step22.medias;
+		     
+		     if(listOfMedias){
+		    	 listOfMedias.sort(function(a,b){
+		             if(a.ordreDsStep < b.ordreDsStep)
+		               return(-1);
+		             else
+		               return(1);
+		           });
+		
+		         $scope.step.medias = listOfMedias; 
+		     }      
+	    });
 
    });
 
@@ -107,7 +100,8 @@ angular.module('urbanBackOfficeApp')
         $scope.alertsStep.splice($scope.alertsStep.indexOf(alert), 1);
       }, 3000);//' to avoid calling apply
     };
-   var step = new Array();
+  
+    //var step = new Array();
 
    $scope.isVideo = function(input){
 
@@ -131,7 +125,12 @@ angular.module('urbanBackOfficeApp')
   $scope.save = function() {
     //$scope.step.visible = true;
     //ProjectsService.saveStep($scope.project,$scope.step);
-    ProjectsService.saveProject($scope.project, $scope.center);
+	  console.log('******seeeeeeeeeeeeeeeeeeeeeeeeeeeee********');
+	  console.warn($scope.step);
+	  $scope.step.saveObj($scope.step);
+    
+	  //ProjectsService.saveProject($scope.project, $scope.center);
+    
     //$scope.project.step = {};
     //$location.path('/project/'+project_id);
   }

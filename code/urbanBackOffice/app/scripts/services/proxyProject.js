@@ -10,6 +10,8 @@ angular.module('urbanBackOfficeApp')
 	
   var uriBase = 'http://ooffee.eu/ns/urban#';
   var dataAll = [];
+  
+  this.graph = null;
 
   this.getProjectJS = function(isSteps, isMedias){
     var initialisation = $q.defer();
@@ -157,10 +159,15 @@ angular.module('urbanBackOfficeApp')
             }
     };
 
-    $http({
+    /*$http({
         method : 'GET',
         url : parameters.queryFn().url, //rdfuiConfig.server+'skosifier?uri='+uri,
-    }).success(function(data){
+    })*/
+    
+    graphService.getLazyGraph(baseUrl,parameters,false)
+    .then(function(data){
+    	
+    	self.graph = data;
       //console.log (data);
         dataProject = data['@graph'];
         //console.log (data);
@@ -171,91 +178,92 @@ angular.module('urbanBackOfficeApp')
               project = d;
             }
             if(d[uriBase+'type'] === 'step'){
-              steps.push(d);
+              steps.push(self.createStep(d));
             }
           });
         }else{
           //console.log(data);
           project = data;
-
-
-        }
-    }).error(function(){
-        console.log('error');
-    }).then(function(){
+        };
+        
       //console.log (project);
-      var projectJS = self.createProject(project);
-      //console.log (projectJS);
-      if (isSteps){
-        var stepsTmp = [];
-        if(project[uriBase+'steps']){
-        	var stepsReferences = project[uriBase+'steps'];
-        	if(!angular.isArray(stepsReferences)){
-        		stepsReferences = [stepsReferences];
-        	}
-        	
-        	
-        	//note : if gardé pour pas tout casser, mais doit etre supprimé lors d'un refactoring
-          if(stepsReferences){
-        	  stepsReferences.forEach(function(s,i){
-              var step = self.getStepJsByProject(s,dataProject);
-              //console.log (steps);
-              //TODO : a revoir mais cette partie "ismedia" ne semble rien à voir à faire ici... je sais même pas si c'est accessible
-              if (isMedias){  
-                var medias = self.getMedias(steps, step['@id']);
-                //console.log (medias);
-                if (medias !== undefined && medias !== null){
-                if(angular.isArray(medias)){
-                  medias.forEach(function(m){
-                	  if(typeof(m) === 'string'){
-                		  if (m.indexOf('BNode') === -1){ //les noeud vides
-                              var media = [];
-                              var promiseM = self.MediaJsById(m);
-                              promiseM.then(function(media){
-                                console.log (media);
-                                step.medias.push(media);
-                                step._medias.push(media);
-                              });  
-                            } 
-                	  }else{
-                		  console.log('cas particulier où l\'on a un object à la place d\'un string.');
-                	  }
-                  });
-                }
-                else {
-                  console.log('step 2');
-                    var media = [];
-                    //console.log (medias);
-                   
-                    var promiseM = self.MediaJsById(medias);
-                      promiseM.then(function(media){
-                        //console.log (media);
-                        step.medias.push(media);
-                        step._medias.push(media);
-                    });  
+        var projectJS = self.createProject(project);
+        //console.log (projectJS);
+        if (isSteps){
+          var stepsTmp = [];
+          if(project[uriBase+'steps']){
+          	var stepsReferences = project[uriBase+'steps'];
+          	if(!angular.isArray(stepsReferences)){
+          		stepsReferences = [stepsReferences];
+          	}
+          	
+          	
+          	//note : if gardé pour pas tout casser, mais doit etre supprimé lors d'un refactoring
+            if(stepsReferences){
+          	  stepsReferences.forEach(function(s,i){
+                var step = self.getStepJsByProject(s,dataProject);
+                //console.log (steps);
+                //TODO : a revoir mais cette partie "ismedia" ne semble rien à voir à faire ici... je sais même pas si c'est accessible
+                if (isMedias){  
+                  var medias = self.getMedias(steps, step['@id']);
+                  //console.log (medias);
+                  if (medias !== undefined && medias !== null){
+                  if(angular.isArray(medias)){
+                    medias.forEach(function(m){
+                  	  if(typeof(m) === 'string'){
+                  		  if (m.indexOf('BNode') === -1){ //les noeud vides
+                                var media = [];
+                                var promiseM = self.MediaJsById(m);
+                                promiseM.then(function(media){
+                                  console.log (media);
+                                  step.medias.push(media);
+                                  step._medias.push(media);
+                                });  
+                              } 
+                  	  }else{
+                  		  console.log('cas particulier où l\'on a un object à la place d\'un string.');
+                  	  }
+                    });
                   }
-                }
-              }  
+                  else {
+                    console.log('step 2');
+                      var media = [];
+                      //console.log (medias);
+                     
+                      var promiseM = self.MediaJsById(medias);
+                        promiseM.then(function(media){
+                          //console.log (media);
+                          step.medias.push(media);
+                          step._medias.push(media);
+                      });  
+                    }
+                  }
+                }  
 
-                projectJS.steps.push(step);
-            }); //project.foreach
-          }
-          else{
-        	  console.warn('on en doit pas aller normalement dans cette partie du code');
-        	  //commenté depuis le 20151014
-        	  //on est dans le cas du premier step, l'on a donc pas un tableau de référence mais juste un item seul.
-//        	  if(project[uriBase+'steps']){
-//        		  var step = self.getStep(project[uriBase+'steps']);
-//                  projectJS.steps.push(step);
-//        	  }
-            
-          }
+                  projectJS.steps.push(step);
+              }); //project.foreach
+            }
+            else{
+          	  console.warn('on en doit pas aller normalement dans cette partie du code');
+          	  //commenté depuis le 20151014
+          	  //on est dans le cas du premier step, l'on a donc pas un tableau de référence mais juste un item seul.
+//          	  if(project[uriBase+'steps']){
+//          		  var step = self.getStep(project[uriBase+'steps']);
+//                    projectJS.steps.push(step);
+//          	  }
+              
+            }
 
+          }
+         
         }
-       
-      }
-      initialisation.resolve(projectJS);
-    });
+        initialisation.resolve(projectJS);
+
+    },
+    function(){
+        console.log('error');
+    }
+    );
     return(initialisation.promise);
   };
 
@@ -594,8 +602,10 @@ angular.module('urbanBackOfficeApp')
     return(step);
   };
 
+  
+  //TODO : comment and remove this function
   this.getStepJsByProject = function(id, dataProject){
-
+	  console.warn("deprecated function, please not use it");
     var step = {};
     //graphService.findNode('http://ooffee.eu/ns/urban##step#1d6c');
     dataProject.forEach(function(d,i){
@@ -1176,7 +1186,7 @@ this.createStep = function(stepInProgress){
      console.log('step.saveObj');
      var promise = self.saveObj(step,graph);
      promise.then(function(){
-       console.log('step sauvÃ©e');
+       console.log('step sauvée');
        def.resolve();
      });
      return(def.promise);
@@ -1443,13 +1453,24 @@ this.createStep = function(stepInProgress){
     return(def.promise);
   };
 
+  //TODO : check all the calling function, as the "graph" parameter is not still needed as it's cached by the "self.graph" parameter.
   this.saveObj = function(obj,graph){
+	  
+	  if(!graph){
+		  graph = self.graph;
+	  }
+	  
 	  console.log('start save obj');
+	  console.log(graph);
+	  
       var def = $q.defer();
       var uriBase = 'http://ooffee.eu/ns/urban#';
       var projectJSDataBase = [];
       var modif = false;
 
+      console.warn(obj);
+      //the object already exist
+      
       Object.keys(obj).forEach(function(K){
         if(K.startsWith('_')){
           if(!(angular.equals(obj[K],obj[K.substring(1)]))){
@@ -1464,7 +1485,7 @@ this.createStep = function(stepInProgress){
                           });
                         });
                   }
-                else{
+                  else{
                     if(K.substring(1)!== 'medias'){
                       console.log('ok');
                       obj[K.substring(1)].forEach(function(step){
@@ -1482,14 +1503,19 @@ this.createStep = function(stepInProgress){
 	                        console.log('ok2');
 	                        // Cas d'une step déjà  existante qu'on modifie
 	                        var objStep2 = self.createStep(step);
-	                        objStep2.saveObj(objStep2,graph);
+	                        console.log(step);
+	                        console.log("=================");
+	                        console.log(objStep2);
+	                        
+	                        step.saveObj(step,graph);
+	                        //objStep2.saveObj(objStep2,graph);
 	                        def.resolve();
 	
 	                      }
                       });
                     }
                     else{// objet non step -> medias des steps
-                      console.warn('To do -> amÃ©liorer ce code pour le rendre plus gÃ©nÃ©rique... Rustine pas top ');
+                      console.warn('To do -> améliorer ce code pour le rendre plus générique... Rustine pas top ');
                       var medId = '';
 
                       obj[K.substring(1)].forEach(function(media){
