@@ -11,5 +11,8 @@ Lire les notes dans le document TODO.md de rdfui pour avoir une idées des piste
 * Sur la branche revert-20150609
 * Julien Brouillard indique que la dernière version fonctionnelle de l'application est au 9 juin. 
 
+* la version avant ce revert présente sur le serveur n'était pas à jour des commits... du coup ce qui était sur la production à ce moment là est sauvegardé dans la branche "en-prod-20160425"
+
+
 
 

@@ -10,18 +10,19 @@ $scope.loginT = function(){
     var tableLogin = new Array  ();
     tableLogin["julien.brouillard@dedale.info"] = "passwordDedale";
     tableLogin["barbara@packed.be"] = "urbanpacked";
+    tableLogin["anna.desantis@ingv.it"] = "61atTannybau";
 
     if (tableLogin[$scope.credentials.username] == $scope.credentials.password){
       $location.path('/projects');
     }
     else{
       console.log("login ko");
-      alert("Le couple Login/Password n'a pas été reconnu");
+      alert("Your login and/or password is not recognized");
     }
   }
   else{
     console.log("login ko");
-    alert("Veuillez saisir un couple Login/Password");
+    alert("Please fill your Login/Password");
   }
 
 };
