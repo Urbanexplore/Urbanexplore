@@ -10,6 +10,10 @@ angular.module('urbanBackOfficeApp')
 
   this.saveObj = function(obj,graph){
 	  
+	  if(!graph){
+		  graph = ProjectsService.getCurrentProject();
+		  if(graph == null) console.warn('Problème lors de la définitino du graph par défault. C\'est à cleanner de manière plus générale.');
+	  }
 	  
 	  console.log('start save obj');
 	  console.log(graph);

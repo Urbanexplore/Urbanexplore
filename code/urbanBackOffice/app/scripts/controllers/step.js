@@ -127,7 +127,7 @@ angular.module('urbanBackOfficeApp')
     //ProjectsService.saveStep($scope.project,$scope.step);
 	  console.log('******seeeeeeeeeeeeeeeeeeeeeeeeeeeee********');
 	  console.warn($scope.step);
-	  $scope.step.saveObj($scope.step);
+	  saveObjectService.saveObj($scope.step);
     
 	  //ProjectsService.saveProject($scope.project, $scope.center);
     

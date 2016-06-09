@@ -149,22 +149,23 @@ angular.module('urbanBackOfficeApp')
     var steps = [];
     var baseUrl = 'http://tofix.uri/'+idProject;
     var dataProject;
-    var parameters = {
+    /*var parameters = {
             scheme : '', //the default one
-            queryFn : function(/*string*/ uri){
+            queryFn : function( uri){
                 return {
                     method : 'GET',
                     url:urlStanbol.address+'/graph/data/myUser/'+baseUrl,
                 };
             }
-    };
+    };*/
 
     /*$http({
         method : 'GET',
         url : parameters.queryFn().url, //rdfuiConfig.server+'skosifier?uri='+uri,
     })*/
     
-    graphService.getLazyGraph(baseUrl,parameters,false)
+    //graphService.getLazyGraph(baseUrl,parameters,false)
+    ProjectsService.setCurrentProject(idProject)
     .then(function(data){
     	
     	self.graph = data;
