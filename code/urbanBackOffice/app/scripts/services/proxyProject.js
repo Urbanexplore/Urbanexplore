@@ -2,7 +2,7 @@
 
 
 angular.module('urbanBackOfficeApp')
-.service('ProxyProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService) {
+.service('ProxyProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService,saveObjectService) {
 
 	//note : jshint directive to remove "better written in dot notation warning"
 	
@@ -1454,7 +1454,7 @@ this.createStep = function(stepInProgress){
   };
 
   //TODO : check all the calling function, as the "graph" parameter is not still needed as it's cached by the "self.graph" parameter.
-  this.saveObj = function(obj,graph){
+  /*this.saveObj = function(obj,graph){
 	  
 	  if(!graph){
 		  graph = self.graph;
@@ -1565,7 +1565,7 @@ this.createStep = function(stepInProgress){
         }
       });
       return(def.promise);
-    };
+    };*/
 
   /* To do utiliser cette fonction pour sauvegarder chaque steps */
 
