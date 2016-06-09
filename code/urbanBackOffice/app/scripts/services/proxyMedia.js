@@ -407,7 +407,7 @@ this.createCart = function(d){
     mediaJS.saveObj(mediaJS, graph);
   }
 
-  this.saveObj = function(obj,graph){
+  /*this.saveObj = function(obj,graph){
     console.log (obj);
 
       var uriBase = "http://ooffee.eu/ns/urban#";
@@ -457,10 +457,7 @@ this.createCart = function(d){
           }
         }
       });
-
-
-
-}
+    }*/
 
     this.addMediaToCart = function(graph, idC, idM){
       var def = $q.defer();

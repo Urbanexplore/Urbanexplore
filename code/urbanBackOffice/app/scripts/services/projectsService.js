@@ -8,7 +8,7 @@
  * Service in the sitejsApp.
  */
 angular.module('urbanBackOfficeApp')
-  .service('ProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol, ProxyProjectsService, MediasService, $q, utils) {
+  .service('ProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol, confUri, ProxyProjectsService, MediasService, $q, utils) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     //to create unique project id
     var uid  = 1;
@@ -22,9 +22,49 @@ angular.module('urbanBackOfficeApp')
 
     this.toJsonLd = function(obj){
 
-
-
     }
+    
+    var currentProject = null;
+
+    //TODO : manage get and set CurrentProject in a better way when uniques call to "GET" procedure is cleanned
+    
+    this.setCurrentProject = function(projectID){
+    	//TODO : make baseUrl a real parameter and put it globally
+    	//var baseUrl = "http://tofix.uri/"
+
+        var idGraph = confUri.baseUrl + projectID;
+        //console.log(idGraph);
+
+
+        var facetteName = "data";
+        var userName = "myUser";
+
+        var parameters = {
+                scheme : '', //the default one
+                queryFn : function(/*string*/ uri){
+                    return {
+                        method : 'GET',
+                        url : urlStanbol.address+'/graph/'+facetteName+'/'+userName+'/'+uri,
+                    };
+                }
+        };
+        //console.log(idGraph);
+        var promiseGraph = graphService.getLazyGraph(idGraph,parameters,false);
+        promiseGraph.then(function(dataGraph){
+          currentProject = dataGraph;
+          console.log(currentProject);
+        });
+        
+        return promiseGraph;
+    }
+    
+    this.getCurrentProject = function(){
+    	console.warn("............");
+    	console.log(currentProject);
+    	if(currentProject != null) return currentProject;
+    	return null;
+    }
+    
 
     //saveProject method create a new project if not already exists
     //else update the existing object
@@ -87,6 +127,7 @@ angular.module('urbanBackOfficeApp')
 
 
         } else {
+        	console.error('Cette partie de la fonction n\' est pas à utiliser');
             console.log("update");
             console.log(project.id);
 
@@ -123,8 +164,9 @@ angular.module('urbanBackOfficeApp')
         return(initialisation.promise);
     }
 
+    //@deprecated ? 
     this.saveStep = function (project, step) {
-
+    	console.warn("TODO : see if this function is called. If not, remove it");
         if (step.id == null) {
             //if this is new project, add it in projects array
 

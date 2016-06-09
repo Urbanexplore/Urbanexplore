@@ -2,7 +2,7 @@
 
 
 angular.module('urbanBackOfficeApp')
-.service('ProxyProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService,saveObjectService) {
+.service('ProxyProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService,saveObjectService,stepModel) {
 
 	//note : jshint directive to remove "better written in dot notation warning"
 	
@@ -997,18 +997,17 @@ angular.module('urbanBackOfficeApp')
     });
 
     projectJS.saveObj = function(projectJS, graph){
-      var def = $q.defer();
-      var promiseObj = self.saveObj(projectJS,graph);
-      promiseObj.then(function(){
-        def.resolve();
-      });
-      return(def.promise);
+    	return saveObjectService.saveObj(projectJS,graph);
     };
+    
     return projectJS;
 };
 
 
 this.createStep = function(stepInProgress){
+	console.warn("TODO : remove call to this function, better call directly the model");
+	return stepModel.createStep(stepInProgress);
+	/*
 	console.log(stepInProgress);
   var step = {};
 
@@ -1182,17 +1181,11 @@ this.createStep = function(stepInProgress){
 
 
   step.saveObj = function(step, graph){
-     var def = $q.defer();
-     console.log('step.saveObj');
-     var promise = self.saveObj(step,graph);
-     promise.then(function(){
-       console.log('step sauvée');
-       def.resolve();
-     });
-     return(def.promise);
+	  return saveObjectService.saveObj(step,graph);
   };
 
   return step;
+  */
 };
 
 
@@ -1401,17 +1394,10 @@ this.createStep = function(stepInProgress){
 
 
   this.save = function(graph,uri, projectJS, center){
-    var def = $q.defer();
     var uriBase = 'http://ooffee.eu/ns/urban#';
     var projectJSDataBase = [];
     var modif = false;
-    var promise = projectJS.saveObj(projectJS, graph);
-    promise.then(function(){
-      def.resolve();
-    });
-
-    return(def.promise);
-
+    return projectJS.saveObj(projectJS, graph);
   };
 
   this.delete = function(graph, idProject){

@@ -91,12 +91,18 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    
+    <!-- @TODO : remettre les scripts dans l'ordre en groupant les services et les controllers  -->
     <script src="scripts/app.js"></script>
     
     <script src="scripts/config.js"></script>
     <script src="scripts/services/jsonLD.js"></script>
 
-    <script src="scripts/services/projects.js"></script>
+	<script src="scripts/services/stepModel.js"></script>
+	
+    <script src="scripts/services/projectsService.js"></script>
+    <script src="scripts/services/saveObjectService.js"></script>
+    
     <script src="scripts/controllers/projects.js"></script>
     <script src="scripts/controllers/project.js"></script>
     <script src="scripts/controllers/step.js"></script>

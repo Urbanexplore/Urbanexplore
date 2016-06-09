@@ -139,6 +139,10 @@ module.exports = function (grunt) {
     	      dest: '<%= yeoman.app %>/scripts/config.js'
     	    },
     	    constants: { //TODO : remove the use of url & port parameters, and use .address property only
+    	    	confUri:{
+    	    		baseUrl : 'http://tofix.uri/',
+    	    		urbanNS : 'http://ooffee.eu/ns/urban#'
+    	    	},
     	      urlStanbol: {
     	    	  url: 'http://127.0.0.1',
     	          port: '8080',
@@ -155,6 +159,10 @@ module.exports = function (grunt) {
     	      dest: '<%= yeoman.app %>/scripts/config.js'
     	    },
     	    constants: { //TODO : remove the use of url & port parameters, and use .address property only
+    	    	confUri:{
+    	    		baseUrl : 'http://tofix.uri/',
+    	    		urbanNS : 'http://ooffee.eu/ns/urban#'
+    	    	},
     	    	urlStanbol: {
       	    	  url: 'http://ajax.urbanexplore.fr',
       	          port: '22',

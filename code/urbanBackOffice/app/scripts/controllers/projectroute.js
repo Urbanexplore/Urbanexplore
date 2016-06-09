@@ -8,7 +8,7 @@
  * Controller of the sitejsApp
  */
 angular.module('urbanBackOfficeApp')
-  .controller('ProjectrouteCtrl', function ($scope ,$routeParams, $location,leafletEvents,leafletDirective, ProjectsService, ProxyProjectsService, $q, utils) {
+  .controller('ProjectrouteCtrl', function ($scope ,$routeParams, $location,leafletEvents,leafletDirective, ProjectsService, ProxyProjectsService, $q, utils,stepModel,graphService,confUri,saveObjectService) {
 
     var project_id = $routeParams.projectId;
     $scope.myCssVar = "col-md-12";
@@ -205,15 +205,43 @@ $scope.$on('leafletDirectiveMarker.click', function(event, args){
 
 });//fin then promise
 
+  	//TODO : revoir la gestion de defered, c'est n'importe quoi.
      $scope.save = function() {
+    	 
+    	 //TODO : remove this tricks with projectService when the graph retrieve is correctly managed.
+    	 if(ProjectsService.getCurrentProject() != null){
+    		 var objStep = stepModel.createStep($scope.step);
+        	 
+        	 var promiseChange = $q.defer();
+        	 //création d'une nouvelle step, on ajoute alors sa référence dans le graph général
+    	   	 if(!$scope.step['@id']){
+    	   		  promiseChange = graphService.buildChanges(ProjectsService.getCurrentProject(), [null,$scope.project['@id']], confUri.urbanNS + 'steps', [null,objStep['@id']]);
+    	   	  
+    	   	 }else{
+    	   		promiseChange.resolve();
+    	   	 }
+    	   	 
+    	   	 //sinon on sauvegarde directement les modidication de l'objet
+    	   	 
+    		  promiseChange.then(function(){
+    			  //objStep.saveObj(objStep,graph);
+    			  saveObjectService.saveObj(objStep,ProjectsService.getCurrentProject());
+    		  });
+    	
+            //ProjectsService.saveStep($scope.project,$scope.step);
 
-        //ProjectsService.saveStep($scope.project,$scope.step);
+            //ProjectsService.saveProject($scope.project, $scope.center);
+            
+            updatePath();
 
-        ProjectsService.saveProject($scope.project, $scope.center);
-        updatePath();
-
-        $scope.myCssVar ="col-md-12";
-        $scope.showme = false;
+            $scope.myCssVar ="col-md-12";
+            $scope.showme = false;
+    	 }else{
+    		 
+    		 ProjectsService.setCurrentProject($scope.project.id).then($scope.save);
+    	 }
+    	 
+    	 
     }
 
     $scope.delete = function(id) {
