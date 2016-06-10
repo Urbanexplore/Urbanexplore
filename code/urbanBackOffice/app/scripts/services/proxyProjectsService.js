@@ -2,7 +2,7 @@
 
 
 angular.module('urbanBackOfficeApp')
-.service('ProxyProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService,saveObjectService,stepModel) {
+.service('ProxyProjectsService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService,saveObjectService,stepModel,ProjectsService) {
 
 	//note : jshint directive to remove "better written in dot notation warning"
 	
@@ -23,7 +23,7 @@ angular.module('urbanBackOfficeApp')
 
     var parameters = {
             scheme : '', //the default one
-            queryFn : function(/*string*/ uri){
+            queryFn : function(){
                 return {
                     method : 'GET',
                     url : urlStanbol.address+'/graph/list/typeGraph?typeGraph=data'
@@ -39,7 +39,7 @@ angular.module('urbanBackOfficeApp')
     }).success(function(data){
         dataAll = data['@graph'];
         if (dataAll  !== null){
-          dataAll.forEach(function(d,i){
+          dataAll.forEach(function(d){
             if(d[uriBase+'type'] === 'Project'){
               projects.push(d);
             }
@@ -54,14 +54,13 @@ angular.module('urbanBackOfficeApp')
         console.log('error');
     }).then(function(){
 
-      projects.forEach(function(d,i){
+      projects.forEach(function(d){
         var projectJS = self.createProject(d);
 
         if (isSteps){
-          var stepsTmp = [];
           if(d[uriBase+'steps']!==null){
             if(angular.isArray(d[uriBase+'steps'])){
-              d[uriBase+'steps'].forEach(function(s,i){
+              d[uriBase+'steps'].forEach(function(s){
                 var step = self.getStep(s);
                 if (isMedias){
                   var medias = self.getMedias(steps, step['@id']);
@@ -107,7 +106,7 @@ angular.module('urbanBackOfficeApp')
    var projectsJS = [];
    var steps = [];
 
-  dataAll.forEach(function(d,i){
+  dataAll.forEach(function(d){
    if(d[uriBase+'type'] === 'Project'){
       projects.push(d);
     }
@@ -116,12 +115,11 @@ angular.module('urbanBackOfficeApp')
     }
   });
 
-  projects.forEach(function(d,i){
+  projects.forEach(function(d){
         var projectJS = self.createProject(d);
-        var stepsTmp = [];
         if(d[uriBase+'steps']!==null){
           if(angular.isArray(d[uriBase+'steps'])){
-            d[uriBase+'steps'].forEach(function(s,i){
+            d[uriBase+'steps'].forEach(function(s){
               var step = self.getStepJsByProject(s,dataAll);
 
               projectJS.steps.push(step);
@@ -144,27 +142,10 @@ angular.module('urbanBackOfficeApp')
 
  this.getProjectJsById = function(idProject, isSteps, isMedias){
     var initialisation = $q.defer();
-    var projectJS = [];
     var project = [];
     var steps = [];
-    var baseUrl = 'http://tofix.uri/'+idProject;
     var dataProject;
-    /*var parameters = {
-            scheme : '', //the default one
-            queryFn : function( uri){
-                return {
-                    method : 'GET',
-                    url:urlStanbol.address+'/graph/data/myUser/'+baseUrl,
-                };
-            }
-    };*/
 
-    /*$http({
-        method : 'GET',
-        url : parameters.queryFn().url, //rdfuiConfig.server+'skosifier?uri='+uri,
-    })*/
-    
-    //graphService.getLazyGraph(baseUrl,parameters,false)
     ProjectsService.setCurrentProject(idProject)
     .then(function(data){
     	
@@ -174,7 +155,7 @@ angular.module('urbanBackOfficeApp')
         //console.log (data);
         //console.log (dataProject);
         if (dataProject){
-          dataProject.forEach(function(d,i){
+          dataProject.forEach(function(d){
             if(d[uriBase+'type'] === 'Project'){
               project = d;
             }
@@ -185,13 +166,12 @@ angular.module('urbanBackOfficeApp')
         }else{
           //console.log(data);
           project = data;
-        };
+        }
         
       //console.log (project);
         var projectJS = self.createProject(project);
         //console.log (projectJS);
         if (isSteps){
-          var stepsTmp = [];
           if(project[uriBase+'steps']){
           	var stepsReferences = project[uriBase+'steps'];
           	if(!angular.isArray(stepsReferences)){
@@ -201,7 +181,7 @@ angular.module('urbanBackOfficeApp')
           	
           	//note : if gardé pour pas tout casser, mais doit etre supprimé lors d'un refactoring
             if(stepsReferences){
-          	  stepsReferences.forEach(function(s,i){
+          	  stepsReferences.forEach(function(s){
                 var step = self.getStepJsByProject(s,dataProject);
                 //console.log (steps);
                 //TODO : a revoir mais cette partie "ismedia" ne semble rien à voir à faire ici... je sais même pas si c'est accessible
@@ -213,7 +193,6 @@ angular.module('urbanBackOfficeApp')
                     medias.forEach(function(m){
                   	  if(typeof(m) === 'string'){
                   		  if (m.indexOf('BNode') === -1){ //les noeud vides
-                                var media = [];
                                 var promiseM = self.MediaJsById(m);
                                 promiseM.then(function(media){
                                   console.log (media);
@@ -228,9 +207,7 @@ angular.module('urbanBackOfficeApp')
                   }
                   else {
                     console.log('step 2');
-                      var media = [];
-                      //console.log (medias);
-                     
+                    
                       var promiseM = self.MediaJsById(medias);
                         promiseM.then(function(media){
                           //console.log (media);
@@ -274,8 +251,8 @@ angular.module('urbanBackOfficeApp')
     //console.log (steps);
     var medias = [];
     steps.forEach(function(step){
-      if(step["@id"] == uriBase +"#step#" +id){ // Je trouve la bonne étape
-        medias = step[uriBase + "medias"];
+      if(step['@id'] === uriBase +'#step#' +id){ // Je trouve la bonne étape
+        medias = step[uriBase + 'medias'];
       }
     });
     //console.log (medias);
@@ -291,7 +268,7 @@ angular.module('urbanBackOfficeApp')
     var uriToFix = 'http://tofix.uri/';
     var parameters = {
             scheme : '', //the default one
-            queryFn : function(/*string*/ uri){
+            queryFn : function(){
                 return {
                     method : 'GET',
                     url:urlStanbol.address+'/graph/data/myUser/'+baseUrl,
@@ -323,114 +300,114 @@ angular.module('urbanBackOfficeApp')
   this.getMediaObj = function(id){
     var mediaJS = {};
     var uriToFix = 'http://tofix.uri/';
-    dataAll.forEach(function(d,i){
+    dataAll.forEach(function(d){
       //console.log (d);
-      if(d["@id"]== uriToFix +id + "##" +id){
+      if(d['@id'] === uriToFix +id + '##' +id){
     	  
-    	  Object.defineProperty(mediaJS, "_@id", {
-	          value : d[uriBase + "@id"],
+    	  Object.defineProperty(mediaJS, '_@id', {
+	          value : d[uriBase + '@id'],
 	          enumerable : true,
 	          writable : true
 	      });
     	  
-    	  Object.defineProperty(mediaJS, "@id", {
-    		  value : d[uriBase + "@id"],
+    	  Object.defineProperty(mediaJS, '@id', {
+    		  value : d[uriBase + '@id'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "_description", {
-    		  value : d[uriBase + "description"],
+    	  Object.defineProperty(mediaJS, '_description', {
+    		  value : d[uriBase + 'description'],
     		  enumerable : true,
     		  writable : true
     	  });
     	  
-    	  Object.defineProperty(mediaJS, "description", {
-    		  value : d[uriBase + "description"],
+    	  Object.defineProperty(mediaJS, 'description', {
+    		  value : d[uriBase + 'description'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "_id", {
-    		  value : d[uriBase + "id"],
+    	  Object.defineProperty(mediaJS, '_id', {
+    		  value : d[uriBase + 'id'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "_link", {
-    		  value : d[uriBase + "link"],
+    	  Object.defineProperty(mediaJS, '_link', {
+    		  value : d[uriBase + 'link'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "_source", {
-    		  value : d[uriBase + "source"],
+    	  Object.defineProperty(mediaJS, '_source', {
+    		  value : d[uriBase + 'source'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "_title", {
-    		  value : d[uriBase + "title"],
+    	  Object.defineProperty(mediaJS, '_title', {
+    		  value : d[uriBase + 'title'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "_type", {
-    		  value : d[uriBase + "type"],
+    	  Object.defineProperty(mediaJS, '_type', {
+    		  value : d[uriBase + 'type'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "_typeMedia", {
-    		  value : d[uriBase + "typeMedia"],
+    	  Object.defineProperty(mediaJS, '_typeMedia', {
+    		  value : d[uriBase + 'typeMedia'],
     		  enumerable : true,
     		  writable : true
     	  });
         
-    	  Object.defineProperty(mediaJS, "ordreDsStep", {
-    		  value : d[uriBase + "ordreDsStep"],
+    	  Object.defineProperty(mediaJS, 'ordreDsStep', {
+    		  value : d[uriBase + 'ordreDsStep'],
     		  enumerable : true,
     		  writable : true
     	  });
         
-    	  Object.defineProperty(mediaJS, "_ordreDsStep", {
-    		  value : d[uriBase + "ordreDsStep"],
+    	  Object.defineProperty(mediaJS, '_ordreDsStep', {
+    		  value : d[uriBase + 'ordreDsStep'],
     		  enumerable : true,
     		  writable : true
     	  });
     	  
-    	  Object.defineProperty(mediaJS, "id", {
-    		  value : d[uriBase + "id"],
+    	  Object.defineProperty(mediaJS, 'id', {
+    		  value : d[uriBase + 'id'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "link", {
-    		  value : d[uriBase + "link"],
+    	  Object.defineProperty(mediaJS, 'link', {
+    		  value : d[uriBase + 'link'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "source", {
-    		  value : d[uriBase + "source"],
+    	  Object.defineProperty(mediaJS, 'source', {
+    		  value : d[uriBase + 'source'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "title", {
-    		  value : d[uriBase + "title"],
+    	  Object.defineProperty(mediaJS, 'title', {
+    		  value : d[uriBase + 'title'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "type", {
-    		  value : d[uriBase + "type"],
+    	  Object.defineProperty(mediaJS, 'type', {
+    		  value : d[uriBase + 'type'],
     		  enumerable : true,
     		  writable : true
     	  });
 
-    	  Object.defineProperty(mediaJS, "typeMedia", {
-    		  value : d[uriBase + "typeMedia"],
+    	  Object.defineProperty(mediaJS, 'typeMedia', {
+    		  value : d[uriBase + 'typeMedia'],
     		  enumerable : true,
     		  writable : true
     	  });
@@ -441,10 +418,10 @@ angular.module('urbanBackOfficeApp')
 
   //TODO : see not usable
   this.getStep = function(id){
-	  console.warn("20151014 : this function seems deprecated, please don't use it, and remove it.");
+	  console.warn('20151014 : this function seems deprecated, please don\'t use it, and remove it.');
     var step = {};
     //graphService.findNode('http://ooffee.eu/ns/urban##step#1d6c');
-    dataAll.forEach(function(d,i){
+    dataAll.forEach(function(d){
       if(d['@id']=== uriBase +'#step#' +id){
           Object.defineProperty(step, '_id',{
             value : d[uriBase + 'id'],
@@ -606,10 +583,10 @@ angular.module('urbanBackOfficeApp')
   
   //TODO : comment and remove this function
   this.getStepJsByProject = function(id, dataProject){
-	  console.warn("deprecated function, please not use it");
+	  console.warn('deprecated function, please not use it');
     var step = {};
     //graphService.findNode('http://ooffee.eu/ns/urban##step#1d6c');
-    dataProject.forEach(function(d,i){
+    dataProject.forEach(function(d){
       if(d['@id']=== uriBase +'#step#' +id){
           Object.defineProperty(step, '_id',{
             value : d[uriBase + 'id'],
@@ -1006,7 +983,7 @@ angular.module('urbanBackOfficeApp')
 
 
 this.createStep = function(stepInProgress){
-	console.warn("TODO : remove call to this function, better call directly the model");
+	console.warn('TODO : remove call to this function, better call directly the model');
 	return stepModel.createStep(stepInProgress);
 	/*
 	console.log(stepInProgress);
@@ -1217,12 +1194,12 @@ this.createStep = function(stepInProgress){
       var promiseProject = graphService.getLazyGraph(uri,parameters,'');
       promiseProject.then(function(data){
     	  
-    	  console.warn("Deprecated code, read the comments in the code");
+    	  console.warn('Deprecated code, read the comments in the code');
     	  //TODO : use the self.toJsObject function here.
     	  //This is a previous implementation, and not clean about how this is really works.
-        project = data["@graph"];
+        project = data['@graph'];
         
-        project.forEach(function(d,i){
+        project.forEach(function(d){
           var projectJS = {};
 
           Object.defineProperty(projectJS, '_author', {
@@ -1394,17 +1371,13 @@ this.createStep = function(stepInProgress){
   };
 
 
-  this.save = function(graph,uri, projectJS, center){
-    var uriBase = 'http://ooffee.eu/ns/urban#';
-    var projectJSDataBase = [];
-    var modif = false;
+  this.save = function(graph,uri, projectJS){
     return projectJS.saveObj(projectJS, graph);
   };
 
   this.delete = function(graph, idProject){
     var def = $q.defer();
     var uriAll = 'http://www.culture-terminology.org/ontologies/history#all';
-    var uriDelete = 'http://www.culture-terminology.org/ontologies/history#delete';
     var promiseChange = graphService.buildChanges(graph, idProject, uriAll, [uriAll]);
     promiseChange.then(function(){
         console.log('fini');
@@ -1415,9 +1388,7 @@ this.createStep = function(stepInProgress){
 
   this.deleteLienProjectStep = function(graph, uriProject, idStep){
     var def = $q.defer();
-    var uriAll = 'http://www.culture-terminology.org/ontologies/history#all';
-    var uriDelete = 'http://www.culture-terminology.org/ontologies/history#delete';
-
+    
     var promiseChange = graphService.buildChanges(graph, uriProject, uriBase + 'steps', [idStep, null]);
     promiseChange.then(function(){
       console.log('step supprimÃ©e');
@@ -1430,8 +1401,7 @@ this.createStep = function(stepInProgress){
   this.deleteLienStep = function(graph,  idMedia){
     var def = $q.defer();
     var uriAll = 'http://www.culture-terminology.org/ontologies/history#all';
-    var uriDelete = 'http://www.culture-terminology.org/ontologies/history#delete';
-
+    
     var promiseChange = graphService.buildChanges(graph, uriAll, uriBase + 'medias', [idMedia, null]);
     promiseChange.then(function(){
       console.log('media supprimée from step');
@@ -1439,122 +1409,6 @@ this.createStep = function(stepInProgress){
     });
     return(def.promise);
   };
-
-  //TODO : check all the calling function, as the "graph" parameter is not still needed as it's cached by the "self.graph" parameter.
-  /*this.saveObj = function(obj,graph){
-	  
-	  if(!graph){
-		  graph = self.graph;
-	  }
-	  
-	  console.log('start save obj');
-	  console.log(graph);
-	  
-      var def = $q.defer();
-      var uriBase = 'http://ooffee.eu/ns/urban#';
-      var projectJSDataBase = [];
-      var modif = false;
-
-      console.warn(obj);
-      //the object already exist
-      
-      Object.keys(obj).forEach(function(K){
-        if(K.startsWith('_')){
-          if(!(angular.equals(obj[K],obj[K.substring(1)]))){
-            if((Array.isArray(obj[K.substring(1)]) || angular.isObject(obj[K.substring(1)])) && (obj[K.substring(1)]['@type'] !== 'xsd:double')){
-                  console.warn('changement propriete array/object: ' + K);
-                  if(obj[K.substring(1)].isVirtualObj){
-                        Object.keys(obj[K.substring(1)]).forEach(function(prop){
-                          var p = uriBase+K.substring(1)+prop;
-                          var promiseChange = graphService.buildChanges(graph, obj['@id'], p, [obj[K][prop],obj[K.substring(1)][prop]]);
-                          promiseChange.then(function(){
-                            def.resolve();
-                          });
-                        });
-                  }
-                  else{
-                    if(K.substring(1)!== 'medias'){
-                      console.log('ok');
-                      obj[K.substring(1)].forEach(function(step){
-                    	  if(!step['@id']){
-                    		  var objStep = self.createStep(step);
-                    		  step['@id'] = '';
-                    		  console.log("%%%%%%%%%%%%%%%%%%% premier element");
-                    		  var promiseChange = graphService.buildChanges(graph, [null,obj['@id']], uriBase + 'steps', [null,objStep['@id']]);
-                    		  promiseChange.then(function(){
-                    			  objStep.saveObj(objStep,graph);
-                    			  def.resolve();
-                    		  });
-                    	  }
-	                      else{
-	                        console.log('ok2');
-	                        // Cas d'une step déjà  existante qu'on modifie
-	                        var objStep2 = self.createStep(step);
-	                        console.log(step);
-	                        console.log("=================");
-	                        console.log(objStep2);
-	                        
-	                        step.saveObj(step,graph);
-	                        //objStep2.saveObj(objStep2,graph);
-	                        def.resolve();
-	
-	                      }
-                      });
-                    }
-                    else{// objet non step -> medias des steps
-                      console.warn('To do -> améliorer ce code pour le rendre plus générique... Rustine pas top ');
-                      var medId = '';
-
-                      obj[K.substring(1)].forEach(function(media){
-                        var promiseChange = graphService.buildChanges(graph, [null,uriBase+'#step#'+obj['@id']], uriBase + 'medias', [null,media]);
-                        promiseChange.then(function(){
-                          console.log('ajout media');
-                          obj[K] = obj[K.substring(1)];
-                          def.resolve();
-
-                        });
-                      });
-                    }
-
-                  }
-
-            }else{
-              //console.log('changement propriete : ' + K);
-              if((obj['@id']!=='' && (obj[K]!==obj[K.substring(1)]))){
-                var oldV = obj[K];
-                var newV = obj[K.substring(1)];
-                //console.log(oldV);
-                //console.log(newV);
-
-                if(obj['type'] === 'Project'){
-                  var promiseChange = graphService.buildChanges(graph, [obj['@id'],obj['@id']], uriBase + K.substring(1), [oldV,newV]);
-                 // console.log('ok passage');
-                }
-                else{
-                  var promiseChange = graphService.buildChanges(graph, [uriBase+'#step#'+obj['@id'],uriBase+'#step#'+obj['@id']], uriBase + K.substring(1), [oldV,newV]);
-                }
-              }
-            else{
-                if(obj['type'] === 'Project'){
-                    var promiseChange = graphService.buildChanges(graph, [null,obj['@id']], uriBase + K.substring(1), [null,String(obj[K.substring(1)])]);
-                  }
-                else{
-                    var promiseChange = graphService.buildChanges(graph, [null,uriBase+'#step#'+obj['@id']], uriBase + K.substring(1), [null,String(obj[K.substring(1)])]);
-                  }
-                }
-              promiseChange.then(function(){
-                obj[K] = obj[K.substring(1)];
-                def.resolve();
-              });
-
-            }
-          }
-        }
-      });
-      return(def.promise);
-    };*/
-
-  /* To do utiliser cette fonction pour sauvegarder chaque steps */
 
 
   this.getCartJS = function(){
@@ -1564,7 +1418,7 @@ this.createStep = function(stepInProgress){
     var dataAll = [];
     var parameters = {
             scheme : '', //the default one
-            queryFn : function(/*string*/ uri){
+            queryFn : function(){
                 return {
                     method : 'GET',
                     url : urlStanbol.address+'/graph/list/typeGraph?typeGraph=data'
@@ -1572,14 +1426,14 @@ this.createStep = function(stepInProgress){
                 };
             }
     };
-    var uriBase = 'http://ooffee.eu/ns/urban#'
+    var uriBase = 'http://ooffee.eu/ns/urban#';
 
     $http({
         method : 'GET',
         url : parameters.queryFn().url, //rdfuiConfig.server+'mediamanagement?uri='+uri,
     }).success(function(data){
         dataAll = data['@graph'];
-        dataAll.forEach(function(d,i){
+        dataAll.forEach(function(d){
           if(d[uriBase+'type'] === 'Cart'){
             carts.push(d);
           }
@@ -1590,12 +1444,12 @@ this.createStep = function(stepInProgress){
         console.log('error');
     }).then(function(){
 
-      carts.forEach(function(d,i){
+      carts.forEach(function(d){
         var cartJS = self.createCart(d);
         //console.log(cartJS);
         if(d[uriBase+'medias']!==null){
           if(angular.isArray(d[uriBase+'medias'])){
-            d[uriBase+'medias'].forEach(function(s,i){
+            d[uriBase+'medias'].forEach(function(s){
               var media = self.getMedia(s,dataAll);
               //console.log(media);
               cartJS.medias.push(media);
@@ -1613,15 +1467,14 @@ this.createStep = function(stepInProgress){
       });
       initialisation.resolve(cartsJS);
     });
-  return(initialisation.promise)
+  return(initialisation.promise);
 };
 
 this.getMedia = function(mediaId, dataAll){
-  console.log('To do amÃ©liorer ce dataAll pas top du tout')
-  var uriToFix ='http://tofix.uri/';
+  console.log('To do amÃ©liorer ce dataAll pas top du tout');
   var media = [];
 
-  dataAll.forEach(function(d,i){
+  dataAll.forEach(function(d){
 
         //console.log(uriBase +'#step#' +mediaId);
         if(d[uriBase + 'type'] === 'Media'){
@@ -1696,7 +1549,7 @@ this.createCart = function(d){
   });
 
   Object.defineProperty(cartJS, '_medias', {
-    value : new Array,
+    value : [],
     enumerable : true,
     writable : true
   });
@@ -1828,8 +1681,7 @@ this.saveMediaJS = function(obj,graph){
   var def = $q.defer();
   var uriFixe = 'http://tofix.uri/';
   var uriBase = 'http://ooffee.eu/ns/urban#';
-  var projectJSDataBase = [];
-  var modif = false;
+  
   Object.keys(obj).forEach(function(K){
     if(K.startsWith('_')){
       if(!(angular.equals(obj[K],obj[K.substring(1)]))){
@@ -1843,7 +1695,7 @@ this.saveMediaJS = function(obj,graph){
       }
     }
   });
-  return(def.promise)
+  return(def.promise);
 };
 
 

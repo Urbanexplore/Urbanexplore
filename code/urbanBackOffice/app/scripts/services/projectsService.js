@@ -28,6 +28,7 @@ angular.module('urbanBackOfficeApp')
 
     //TODO : manage get and set CurrentProject in a better way when uniques call to "GET" procedure is cleanned
     
+    // ProjectsService.setCurrentProject
     this.setCurrentProject = function(projectID){
     	//TODO : make baseUrl a real parameter and put it globally
     	//var baseUrl = "http://tofix.uri/"

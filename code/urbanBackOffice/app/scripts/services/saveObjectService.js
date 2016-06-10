@@ -2,7 +2,7 @@
 
 
 angular.module('urbanBackOfficeApp')
-.service('saveObjectService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService,stepModel) {
+.service('saveObjectService', function ($filter, $http, jsonLD,graphService,urlStanbol,$q, utils,ProxyMediasService,stepModel,ProjectsService) {
 
 	//note : jshint directive to remove "better written in dot notation warning"
 	
@@ -12,7 +12,7 @@ angular.module('urbanBackOfficeApp')
 	  
 	  if(!graph){
 		  graph = ProjectsService.getCurrentProject();
-		  if(graph == null) console.warn('Problème lors de la définitino du graph par défault. C\'est à cleanner de manière plus générale.');
+		  if(graph === null){ console.warn('Problème lors de la définitino du graph par défault. C\'est à cleanner de manière plus générale.')};
 	  }
 	  
 	  console.log('start save obj');
@@ -79,7 +79,6 @@ angular.module('urbanBackOfficeApp')
                     }
 
                   }
-
             }else{
             	 var promiseChange = null;
             	 
@@ -120,57 +119,55 @@ angular.module('urbanBackOfficeApp')
     
     //TODO : remove when done, commented since 20160609
     //version du save dasn le proxy media 
-    /*this.saveObj = function(obj,graph){
-    console.log (obj);
-
-      var uriBase = "http://ooffee.eu/ns/urban#";
-      var mediaJSDataBase = new Array();
-      var modif = false;
-
-       Object.keys(obj).forEach(function(K){
-        if(K.startsWith("_")){
-          if(!(angular.equals(obj[K],obj[K.substring(1)]))){
-            if(Array.isArray(obj[K.substring(1)]) || angular.isObject(obj[K.substring(1)])){
-                console.warn("changement propriete array/object: " + K);
-                if(obj[K.substring(1)].isVirtualObj){
-                        Object.keys(obj[K.substring(1)]).forEach(function(prop){
-                          var p = uriBase+K.substring(1)+prop;
-                          var promiseChange = graphService.buildChanges(graph, obj['@id'], p, [obj[K][prop],obj[K.substring(1)][prop]]);
-                          promiseChange.then(function(){
-                            });
-                        });
-                  }else{
-
-
-                    obj[K.substring(1)].forEach(function(media){
-                      console.log(media);
-                      alert("ko");
-                      if(media["@id"] == null){
-                        var objMedia= self.createMedia(media);
-                        media["@id"] = "";
-                        var promiseChange = graphService.buildChanges(graph, [null,obj['@id']], uriBase + "medias", [null,objStep['@id']]);
-                        promiseChange.then(function(){
-
-                          objStep.saveObj(objStep,graph);
-
-                        });
-                    }
-                  });
-                }
-
-            }else{
-
-              var promiseChange = graphService.buildChanges(graph, [null,uriBase+"#media#"+obj['@id']], uriBase + K.substring(1), [null,obj[K.substring(1)]]);
-              promiseChange.then(function(){
-
-              });
-              obj[K] = obj[K.substring(1)];
-
-            }
-          }
-        }
-      });
-    }*/
+//    this.saveObj = function(obj,graph){
+//    console.log (obj);
+//
+//      var uriBase = "http://ooffee.eu/ns/urban#";
+//      var mediaJSDataBase = new Array();
+//      var modif = false;
+//
+//       Object.keys(obj).forEach(function(K){
+//        if(K.startsWith("_")){
+//          if(!(angular.equals(obj[K],obj[K.substring(1)]))){
+//            if(Array.isArray(obj[K.substring(1)]) || angular.isObject(obj[K.substring(1)])){
+//                console.warn("changement propriete array/object: " + K);
+//                if(obj[K.substring(1)].isVirtualObj){
+//                        Object.keys(obj[K.substring(1)]).forEach(function(prop){
+//                          var p = uriBase+K.substring(1)+prop;
+//                          var promiseChange = graphService.buildChanges(graph, obj['@id'], p, [obj[K][prop],obj[K.substring(1)][prop]]);
+//                        });
+//                  }else{
+//
+//
+//                    obj[K.substring(1)].forEach(function(media){
+//                      console.log(media);
+//                      alert("ko");
+//                      if(media["@id"] == null){
+//                        var objMedia= self.createMedia(media);
+//                        media["@id"] = "";
+//                        var promiseChange = graphService.buildChanges(graph, [null,obj['@id']], uriBase + "medias", [null,objStep['@id']]);
+//                        promiseChange.then(function(){
+//
+//                          objStep.saveObj(objStep,graph);
+//
+//                        });
+//                    }
+//                  });
+//                }
+//
+//            }else{
+//
+//              var promiseChange = graphService.buildChanges(graph, [null,uriBase+"#media#"+obj['@id']], uriBase + K.substring(1), [null,obj[K.substring(1)]]);
+//              promiseChange.then(function(){
+//
+//              });
+//              obj[K] = obj[K.substring(1)];
+//
+//            }
+//          }
+//        }
+//      });
+//    }
 
     var self = this;
 });
